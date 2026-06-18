@@ -200,6 +200,10 @@ footer a{color:var(--muted)}
         <button data-v="2">≥2</button>
       </div>
     </div>
+    <label class="tog field" id="contraQxTog" data-key="contraQx">
+      <span class="flab"><span>Contraindicación quirúrgica <span class="hint">cirugía no asumible — vía alternativa al requisito de CENS</span></span></span>
+      <span class="switch"></span>
+    </label>
     <div class="field">
       <div class="flab"><span>Recidiva postquirúrgica <span class="hint">reaparición de poliposis tras CENS</span></span></div>
       <div class="seg" id="recidivaSeg">
@@ -295,7 +299,7 @@ footer a{color:var(--muted)}
     </div>
 
     <div class="disc">
-      <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i> y los <i>Informes de Posicionamiento Terapéutico (SNS España)</i> para dupilumab, omalizumab y mepolizumab en RSCcPN (≥2 CENS previas). El perfil de biológico es orientativo según estudios comparativos (SINUS-24/52, POLYP 1/2, SYNAPSE y meta-análisis indirectas publicadas 2022-2023). No sustituye el juicio clínico ni la ficha técnica vigente. Uso diagnóstico hospitalario.
+      <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i> y los <i>Informes de Posicionamiento Terapéutico (SNS España)</i>. Cuatro biológicos para RSCcPN: <b>dupilumab</b> (anti-IL-4Rα), <b>tezepelumab</b> (anti-TSLP), <b>omalizumab</b> (anti-IgE) y <b>mepolizumab</b> (anti-IL-5). El perfil por fármaco es orientativo según estudios pivotales y comparaciones indirectas (SINUS-24/52, WAYPOINT 2025, POLYP 1/2, SYNAPSE, NMA 2021-2025); no hay ensayos head-to-head. <b>Requisito quirúrgico:</b> el SNS español exige habitualmente ≥2 CENS para financiar el biológico, mientras que POLINA (Fig. 13.4) exige ≥1 — verifica el IPT/criterio autonómico vigente. <b>Tezepelumab:</b> aprobado por la EMA para RSCcPN grave (oct-2025); financiación en el SNS propuesta por la CIPM (ene-2026) — confirmar disponibilidad y condiciones antes de prescribir. No sustituye el juicio clínico ni la ficha técnica vigente. Uso diagnóstico hospitalario.
     </div>
     <button class="reset" id="resetBtn">Reiniciar parámetros</button>
   </div>
@@ -319,19 +323,28 @@ footer a{color:var(--muted)}
 "use strict";
 const S = {
   eva:5, olf:5, snot:30, pol:2, co:0,
-  bilat:false, cens:0, recidiva:0,
+  bilat:false, cens:0, contraQx:false, recidiva:0,
   loem:0, lm:0, reman:false,
   t2:false, asma:false, erea:false
 };
 
-/* ---------- LOEM descriptions ---------- */
+/* Tabla 10.1 POLINA: 5 criterios validados de control (la recidiva NO es un criterio
+   de control — es un modificador pronóstico que se muestra aparte).
+   Declarado aquí arriba porque render() lo usa y se invoca durante el cableado de inputs. */
+const CTRL_KEYS = ["grav","olf","snot","pol","co"];
+
+/* ---------- LOEM descriptions (Lamella-Ostium-Extent-Mucosa, 2024) ----------
+   Sistema descriptivo de la extensión quirúrgica de la CENS (4 tipos), no un score
+   de gravedad. Fuente: Lamella Ostium Extent Mucosa (LOEM) system, PMID 39440768;
+   validación en RSC, PMID 40304255. Publicado tras POLINA 2023. */
 const LOEM_DESC = [
   "",
-  "LOEM I — Básica: uncinectomía ± antrostomía maxilar limitada",
-  "LOEM II — Estándar: etmoidectomía anterior bilateral ± antrostomía maxilar",
-  "LOEM III — Ampliada: etmoidectomía completa + esfenoidotomía ± sinusotomía frontal",
-  "LOEM IV — Extendida/radical: CENS total + procedimientos de Draf II–III ± demolición maxilar"
+  "LOEM tipo I — Funcional limitada: intervención mínima de lamelas/ostia, mucosa preservada (M0/Mf).",
+  "LOEM tipo II — Funcional extendida: ≥2 lamelas + ≥2 ostia o abordaje ampliado, preservando mucosa (Mf).",
+  "LOEM tipo III — Radical extendida: las 3 lamelas + los 3 ostia + ≥2 abordajes ampliados, con eliminación mucosa (reboot, Mr).",
+  "LOEM tipo IV — Radical regenerativa: resección ósea y mucosa completa + mucoplastia (Mm)."
 ];
+const LOEM_FOOT = "LOEM describe la extensión de la cirugía realizada (no la gravedad). Una cirugía de extensión limitada (tipo I–II) en enfermedad difusa puede dejar celdas/remanentes y peor control posterior.";
 
 /* ---------- input wiring ---------- */
 function setRange(id, key){
@@ -368,8 +381,8 @@ censSeg.addEventListener("click",e=>{
 
 const RECIDIVA_DESC = [
   "",
-  "Recidiva tardía (≥ 2 años post-CENS): fenotipo moderado. Considerar revisión quirúrgica ± optimización médica antes de biológico. Menor asociación con IL-5/eosinofilia tisular grave.",
-  "Recidiva precoz (< 2 años post-CENS): fenotipo agresivo. Marcador clínico de inflamación tipo 2 grave (POLINA rec. 9.6 / 20.2). Asociado a IL-5 elevada, eosinofilia tisular alta, EREA y asma eosinofílico. Refuerza indicación de biológico (Calus 2019; Arancibia, Rhinology 2022)."
+  "Recidiva tardía (≥ 2 años post-CENS): fenotipo de curso más lento. Valorar revisión quirúrgica ± optimización médica. Menor asociación con eosinofilia tisular grave.",
+  "Recidiva precoz (< 2 años post-CENS): fenotipo agresivo y marcador de inflamación tipo 2 grave (eosinofilia tisular alta, frecuente asma/EREA). Refuerza la indicación de biológico. Es un modificador pronóstico, no un criterio del score de control validado (Tabla 10.1)."
 ];
 const recidivaSeg=document.getElementById("recidivaSeg");
 recidivaSeg.addEventListener("click",e=>{
@@ -388,7 +401,7 @@ loemSeg.addEventListener("click",e=>{
   loemSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
   b.classList.add("on"); S.loem=parseInt(b.dataset.v,10);
   const d=document.getElementById("loemDesc");
-  if(S.loem>0){ d.textContent=LOEM_DESC[S.loem]; d.style.display=""; }
+  if(S.loem>0){ d.innerHTML=LOEM_DESC[S.loem]+'<br><span style="color:var(--faint)">'+LOEM_FOOT+'</span>'; d.style.display=""; }
   else { d.style.display="none"; }
   render();
 });
@@ -401,11 +414,10 @@ function grade(){
   g.snot     = S.snot<=20?0 : S.snot<=50?1:2;
   g.pol      = S.pol<=2?0 : S.pol<=4?1:2;
   g.co       = S.co===0?0 : S.co<=2?1:2;
-  g.recidiva = S.recidiva; // 0=no, 1=tardía≥2a (parcial), 2=precoz<2a (no controlada)
   return g;
 }
 function control(g){
-  const vals=Object.values(g);
+  const vals=CTRL_KEYS.map(k=>g[k]);
   const noc=vals.filter(v=>v===2).length;
   if(noc>=3) return {k:2,label:"No controlada",cls:"is-red"};
   if(vals.every(v=>v===0)) return {k:0,label:"Controlada",cls:"is-green"};
@@ -425,8 +437,8 @@ function phenotype(){
   let d = endo + (extra.length?" · "+extra.join(" · "):"");
 
   const imgCtx=[];
-  if(S.loem>0){ const ll=["","I","II","III","IV"]; imgCtx.push("LOEM "+ll[S.loem]); }
-  if(S.lm>0){ const lmSev=S.lm<=4?"mínimo":S.lm<=12?"moderado":"extenso"; imgCtx.push("Lund-Mackay "+S.lm+" ("+lmSev+")"); }
+  if(S.loem>0){ const ll=["","I","II","III","IV"]; imgCtx.push("CENS LOEM tipo "+ll[S.loem]); }
+  if(S.lm>0){ const lmSev=S.lm<=4?"bajo":S.lm<=12?"moderado":"extenso"; imgCtx.push("Lund-Mackay "+S.lm+"/24 ("+lmSev+")"); }
   if(S.reman) imgCtx.push("remanentes óseos en TC");
   if(imgCtx.length) d += " · "+imgCtx.join(", ");
 
@@ -434,10 +446,14 @@ function phenotype(){
   return {v:lateral, d};
 }
 
-/* ---------- biologic criteria (SNS España: ≥2 CENS) ---------- */
+/* ---------- biologic criteria ----------
+   Requisito quirúrgico: el SNS (España) exige habitualmente ≥2 CENS para financiar el
+   biológico; POLINA Fig. 13.4 exige ≥1 CENS. Se admite además contraindicación quirúrgica
+   documentada como vía alternativa. La regla de gravedad es OR: EVA>7 O SNOT-22>50. */
 function biologics(){
   const sev = (S.eva>7)||(S.snot>50);
-  const base = S.bilat && sev && (S.cens>=2);
+  const qx  = (S.cens>=2) || S.contraQx;
+  const base = S.bilat && sev && qx;
   const add = [
     {ok:S.t2,    t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"},
     {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 · hiposmia grave / anosmia"},
@@ -445,31 +461,40 @@ function biologics(){
     {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"vía respiratoria única / intolerancia a AINE"}
   ];
   const addOk = add.some(a=>a.ok);
-  return {sev, base, eligible: base && addOk, add};
+  return {sev, qx, base, eligible: base && addOk, add};
 }
 
-/* ---------- biologic drug profile ---------- */
+/* ---------- biologic drug profile ----------
+   Orden fijo = ranking global en NMA indirectas para desenlaces nucleares de RSCcPN
+   (dupilumab > tezepelumab > omalizumab > mepolizumab). NO implica superioridad
+   estadística; no hay ensayos head-to-head. Marcado de preferente (★) reconciliado y
+   mutuamente coherente por fenotipo. Fuentes: SINUS-24/52 (Bachert, Lancet 2019),
+   WAYPOINT (NEJM 2025), POLYP 1/2 (Gevaert 2020), SYNAPSE (Han 2021),
+   NMA Cai 2021 / Xu 2025, EPOS/EUFOREA 2023. */
 function bioProfile(){
-  // Returns HTML for specific drug recommendation based on comorbidities
-  // Based on: SINUS-24/52 (dupilumab), POLYP1/2 (omalizumab), SYNAPSE (mepolizumab)
-  // and indirect network meta-analyses (Xian 2022, Delemarre 2023, Fokkens EPOS update)
   const drugs = [
     {
       name:"Dupilumab",
       trade:"(Dupixent®)",
-      preferred: (S.erea && S.asma) || (!S.erea && !S.asma && S.t2) || S.olf>7,
+      preferred: S.olf>7 || S.erea || (S.t2 && !S.asma && !S.erea),
       profile: dupilumabProfile()
+    },
+    {
+      name:"Tezepelumab",
+      trade:"(Tezspire®)",
+      preferred: (!S.t2) || (S.asma && !S.erea && !(S.olf>7)),
+      profile: tezepelumabProfile()
     },
     {
       name:"Omalizumab",
       trade:"(Xolair®)",
-      preferred: S.erea || (S.asma && !S.t2),
+      preferred: false,
       profile: omalizumabProfile()
     },
     {
       name:"Mepolizumab",
       trade:"(Nucala®)",
-      preferred: S.asma && S.t2 && S.olf<=7,
+      preferred: S.asma && S.t2 && !S.erea && !(S.olf>7),
       profile: mepolizumabProfile()
     }
   ];
@@ -485,30 +510,41 @@ function bioProfile(){
 
 function dupilumabProfile(){
   const parts=[];
-  parts.push("Anti-IL-4Rα (bloquea IL-4 e IL-13). Mayor reducción de NPS en meta-análisis indirectas (NPS −2.06 en SINUS-52).");
-  if(S.recidiva===2) parts.push("✓ Recidiva precoz documentada: marcador T2 agresivo — dupilumab es la opción con mayor evidencia en este perfil (POLINA rec. 9.6; Arancibia 2022).");
-  if(S.olf>7) parts.push("✓ Mejor recuperación olfatoria documentada (SINUS-24/52).");
-  if(S.erea) parts.push("✓ Eficaz en EREA; puede reducir sensibilización a aspirina.");
-  if(S.asma) parts.push("✓ Aprobado en RSCcPN + asma no controlado. Cubre ambas patologías.");
-  if(!S.asma && !S.erea) parts.push("Primera opción en perfil T2 sin asma ni EREA según EPOS update 2023.");
+  parts.push("Anti-IL-4Rα (bloquea IL-4 e IL-13). 1º en pólipos y especialmente en olfato en comparaciones indirectas (NPS LS-mean vs placebo −2,06 en SINUS-24 y −1,80 en SINUS-52; Bachert, Lancet 2019).");
+  if(S.olf>7) parts.push("✓ Anosmia/pérdida grave de olfato: mejor recuperación olfatoria documentada — opción preferente.");
+  if(S.erea) parts.push("✓ EREA/N-ERD: mayor evidencia, única que restaura tolerancia a aspirina (~57%) — preferente en este perfil.");
+  if(S.recidiva===2) parts.push("✓ Recidiva precoz (marcador T2 agresivo): opción de elevada evidencia para frenar la recurrencia.");
+  if(S.t2 && !S.asma && !S.erea) parts.push("✓ RSCcPN tipo 2 aislada (sin asma/EREA), sobre todo con olfato afectado: opción preferente razonable (EPOS/EUFOREA 2023 no fija jerarquía formal).");
+  if(S.asma) parts.push("Cubre también el asma tipo 2 no controlado.");
+  return parts.join(" ");
+}
+
+function tezepelumabProfile(){
+  const parts=[];
+  parts.push("Anti-TSLP: bloquea la alarmina epitelial en el VÉRTICE de la cascada (aguas arriba de IL-4/IL-5/IL-13 e IgE). En WAYPOINT (NEJM 2025, n=408, 52 sem): NPS −2,07 y congestión −1,03 vs placebo (p<0,001), con gran reducción de cirugía (0,5% vs 22,1%; HR 0,02) y de corticoides sistémicos (5,2% vs 18,3%; HR 0,12).");
+  if(!S.t2) parts.push("✓ Sin marcadores tipo 2 documentados: es el biológico con racional mecanístico más sólido en enfermedad tipo 2-bajo / no eosinofílica (nicho exclusivo). NOTA: en RSCcPN es extrapolación desde el asma (eficacia con eos <150/µl) y del mecanismo upstream — WAYPOINT no publicó subgrupo por eosinófilos y su población fue mayoritariamente T2-alto; el beneficio es menor en T2-bajo.");
+  if(S.asma) parts.push("✓ Asma concomitante: encabeza la reducción de exacerbaciones en asma+RSCcPN; un solo agente cubre vía aérea superior e inferior, con eficacia independiente de eosinófilos/FeNO.");
+  if((S.cens>=2||S.contraQx) && S.recidiva===2) parts.push("✓ Poliposis recurrente postquirúrgica: opción razonable por su efecto rápido y la gran reducción de reintervenciones.");
+  if(S.erea) parts.push("En EREA es alternativa, no preferente (la mayor evidencia específica es de dupilumab).");
+  parts.push("Posología: 210 mg SC/4 sem + corticoide intranasal; sin umbral de biomarcador en ficha técnica.");
   return parts.join(" ");
 }
 
 function omalizumabProfile(){
   const parts=[];
-  parts.push("Anti-IgE. Requiere IgE sérica 30–1500 UI/ml. Eficaz si componente alérgico/IgE-mediado (POLYP 1/2).");
-  if(S.erea) parts.push("✓ Eficaz en EREA; reduce hipersensibilidad a AINEs a largo plazo.");
-  if(S.asma && !S.t2) parts.push("✓ Primera opción si asma alérgico con IgE elevada (cubre rinitis + asma + RSCcPN).");
-  if(!S.erea && !S.asma) parts.push("Segunda opción si IgE muy elevada o rinitis alérgica comórbida.");
+  parts.push("Anti-IgE (POLYP 1/2). Efecto sobre el pólipo más modesto del grupo. La dosis se determina por IgE total basal (30–1500 UI/ml) Y peso corporal (30–150 kg) según tabla; fuera de esa malla no es dosificable según ficha técnica.");
+  parts.push("Nicho: asma alérgico/IgE-mediado comórbido en rango dosificable, o intolerancia a otras dianas (no exige alergia para eficacia en RSCcPN, pero su preferencia se da cuando aplica el racional anti-IgE).");
+  if(S.asma) parts.push("Valorar IgE total y peso para confirmar dosificación.");
   return parts.join(" ");
 }
 
 function mepolizumabProfile(){
   const parts=[];
-  parts.push("Anti-IL-5. Más específico de la vía eosinofílica (SYNAPSE trial).");
-  if(S.asma && S.t2) parts.push("✓ Primera opción si asma eosinofílico grave con eosinofilia ≥300/µL en sangre (cubre ambas indicaciones).");
-  else if(S.t2) parts.push("Considerar si eosinofilia periférica muy alta (≥500/µL) sin asma.");
-  else parts.push("Menor evidencia en ausencia de asma eosinofílico o eosinofilia marcada.");
+  parts.push("Anti-IL-5 (SYNAPSE; NPS −0,73, obstrucción nasal VAS −3,14). Beneficio ligado a la carga eosinofílica.");
+  if(S.asma && S.t2) parts.push("✓ Asma eosinofílico grave con eosinofilia ≥300/µl donde domina el fenotipo eosinofílico de vía baja: opción razonable que cubre ambas indicaciones.");
+  else if(S.t2) parts.push("Considerar si eosinofilia periférica muy alta sin asma.");
+  else parts.push("Menor evidencia sin asma eosinofílico o eosinofilia marcada.");
+  parts.push("Efecto sobre el olfato débil/casi nulo frente a dupilumab; si recuperar el olfato es prioritario, preferir dupilumab.");
   return parts.join(" ");
 }
 
@@ -525,55 +561,60 @@ function ladder(ctrl, bio){
   ];
 
   if(ctrl.k===0){
+    const riskNote = S.recidiva>0
+      ? " <b>Modificador de riesgo</b>: antecedente de recidiva "+(S.recidiva===2?"precoz (&lt;2a)":"tardía (≥2a)")+" — vigilancia estrecha pese al buen control actual."
+      : "";
     return {step:"Escalón 1 — Tratamiento médico de mantenimiento",cls:"green",
       meds:base,
-      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral para exacerbaciones."};
+      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral para exacerbaciones."+riskNote};
   }
 
   if(bio.eligible){
     return {step:"Escalón 4 — Tratamiento biológico",cls:"red",
       meds:[...base,...bioMeds],
-      note:"Cumple criterios SNS para biológico. Ver perfil de fármaco recomendado según comorbilidades."};
+      note:"Cumple criterios para biológico. Ver perfil de fármaco recomendado según comorbilidades."};
   }
 
-  if(S.cens===0){
+  const qxDone = (S.cens>=2) || S.contraQx;
+
+  if(!qxDone && S.cens===0){
     return {step:"Escalón 2–3 — Optimizar tratamiento y valorar 1ª CENS",cls:"amber",
       meds:[...base,co,
         {h:"Indicar 1ª CENS",t:" — si persiste parcial/no controlada pese a tto. médico óptimo"}
       ],
-      note:"Sin CENS previa. El biológico requiere <b>≥2 cirugías documentadas (SNS España)</b>. Optimizar tratamiento médico e indicar primera CENS si no responde."};
+      note:"Sin CENS previa. Para biológico: <b>cirugía endoscópica previa</b> (el SNS exige habitualmente ≥2 CENS; POLINA Fig. 13.4, ≥1) <b>o contraindicación quirúrgica documentada</b>. Optimizar tratamiento médico e indicar primera CENS si no responde."};
   }
 
-  if(S.cens===1){
+  if(!qxDone && S.cens===1){
     const remanNote = S.reman
       ? " <b>Remanentes óseos en TC</b>: la revisión quirúrgica ampliará el acceso y puede mejorar la respuesta al tratamiento médico."
       : "";
     const precozNote = S.recidiva===2
-      ? " <b>Recidiva precoz (&lt;2 años)</b>: fenotipo agresivo — completar fenoendotipado con prioridad; considerar 2ª CENS extendida (Draf si Lund-Mackay>16) y documentar criterios para biológico cuanto antes."
-      : S.recidiva===1 ? " Recidiva tardía (≥2 años): fenotipo moderado; 2ª CENS puede ser suficiente si acceso quirúrgico correcto." : "";
+      ? " <b>Recidiva precoz (&lt;2 años)</b>: fenotipo agresivo — completar fenoendotipado con prioridad; considerar 2ª CENS extendida y documentar criterios para biológico cuanto antes."
+      : S.recidiva===1 ? " Recidiva tardía (≥2 años): la 2ª CENS puede ser suficiente si el acceso quirúrgico es correcto." : "";
     return {step:"Escalón 3 — Optimizar y valorar 2ª CENS de revisión",cls:"amber",
       meds:[...base,co,
         {h:"2ª CENS de revisión",t:" — ampliar apertura; valorar si remanentes óseos o acceso incompleto"},
         {h:"Completar fenoendotipado",t:" — Eo en sangre/tejido, IgE total, documentar criterios tipo 2"}
       ],
-      note:"Con 1 CENS previa: <b>SNS exige ≥2 cirugías para financiación de biológico</b>. Valorar 2ª CENS de revisión."+remanNote+precozNote+" Si existe contraindicación quirúrgica documentada, puede solicitarse exención."};
+      note:"Con 1 CENS previa: el <b>SNS exige habitualmente ≥2 CENS</b> para financiar el biológico (POLINA Fig. 13.4 exige ≥1). Valorar 2ª CENS de revisión, o solicitar exención si hay <b>contraindicación quirúrgica</b>."+remanNote+precozNote};
   }
 
-  // S.cens >= 2 pero no cumple criterios adicionales
-  const remanNote2 = S.reman ? " Remanentes óseos presentes: valorar CENS de revisión adicional antes de biológico." : "";
+  // Requisito quirúrgico cumplido (≥2 CENS o contraindicación) pero faltan criterios adicionales
+  const remanNote2 = S.reman ? " Remanentes óseos presentes: valorar CENS de revisión antes de biológico." : "";
   return {step:"Escalón 3–4 — Completar criterios para biológico",cls:"amber",
     meds:[...base,co,
       {h:"Completar fenoendotipado",t:" — biopsia/analítica: Eo sangre y tisular, IgE total"},
       {h:"Reevaluar criterio adicional",t:" — documentar tipo 2, olfato EVA, ciclos CO, asma/EREA"}
     ],
-    note:"≥2 CENS previas pero <b>faltan criterios adicionales</b> ("+bioMissing(bio)+")."+remanNote2};
+    note:"Requisito quirúrgico cumplido pero <b>faltan criterios adicionales</b> ("+bioMissing(bio)+")."+remanNote2};
 }
 
 function bioMissing(bio){
   const m=[];
   if(!S.bilat) m.push("no bilateral");
   if(!bio.sev) m.push("no grave (EVA>7 y/o SNOT>50)");
-  if(S.cens<2) m.push("menos de 2 CENS");
+  if(!bio.qx) m.push("requisito quirúrgico no cumplido (&lt;2 CENS y sin contraindicación)");
   if(!bio.add.some(a=>a.ok)) m.push("ningún criterio adicional");
   return m.join(", ")||"criterios incompletos";
 }
@@ -591,15 +632,22 @@ function render(){
   const pv=document.getElementById("vPhen"); pv.className="vbox full is-accent";
   pv.querySelector(".vv").textContent=phen.v; pv.querySelector(".vd").textContent=phen.d;
 
-  // control breakdown
-  const labels={grav:"Gravedad (EVA)",olf:"Pérdida de olfato (EVA)",snot:"Calidad de vida (SNOT-22)",pol:"Tamaño de pólipos",co:"Corticoides orales/año",recidiva:"Recidiva postquirúrgica"};
+  // control breakdown (solo los 5 criterios validados de Tabla 10.1)
+  const labels={grav:"Gravedad (EVA)",olf:"Pérdida de olfato (EVA)",snot:"Calidad de vida (SNOT-22)",pol:"Tamaño de pólipos",co:"Corticoides orales/año"};
   const stTxt=["Controlada","Parcial","No controlada"], stDot=["g","a","r"];
   const cb=document.getElementById("ctrlBreak"); cb.innerHTML="";
-  Object.keys(labels).forEach(k=>{
+  CTRL_KEYS.forEach(k=>{
     const v=g[k];
     cb.insertAdjacentHTML("beforeend",
       `<div class="cb"><span class="dot ${stDot[v]}"></span><span class="lbl">${labels[k]}</span><span class="st" style="color:var(--${v===0?"green":v===1?"amber":"red"})">${stTxt[v]}</span></div>`);
   });
+  // modificador pronóstico (fuera del score validado)
+  if(S.recidiva>0){
+    const rd = S.recidiva===2?"r":"a";
+    const rt = S.recidiva===2?"Recidiva precoz (&lt;2a)":"Recidiva tardía (≥2a)";
+    cb.insertAdjacentHTML("beforeend",
+      `<div class="cb" style="border-top:1px dashed var(--line);padding-top:7px;margin-top:3px"><span class="dot ${rd}"></span><span class="lbl">Recidiva postquirúrgica <small style="color:var(--faint)">· modificador pronóstico, no puntúa</small></span><span class="st" style="color:var(--${S.recidiva===2?"red":"amber"})">${rt}</span></div>`);
+  }
 
   // ladder
   const L=ladder(ctrl,bio);
@@ -614,7 +662,7 @@ function render(){
 
   const bc=document.getElementById("bioCrit"); bc.innerHTML="";
   bc.insertAdjacentHTML("beforeend",critRow(S.bilat&&bio.sev,"RSCcPN bilateral GRAVE","EVA>7 y/o SNOT-22>50 — "+(bio.sev?"gravedad cumplida":"gravedad NO cumplida")));
-  bc.insertAdjacentHTML("beforeend",critRow(S.cens>=2,"≥2 CENS previas (SNS España)","cirugías endoscópicas documentadas — actualmente: "+S.cens+(S.cens>=2?" ✓":"")));
+  bc.insertAdjacentHTML("beforeend",critRow(bio.qx,"Requisito quirúrgico","SNS España: habitualmente ≥2 CENS (POLINA Fig. 13.4: ≥1) o contraindicación quirúrgica — actualmente: "+(S.contraQx?"contraindicación documentada ✓":S.cens+" CENS"+(S.cens>=2?" ✓":""))));
   bc.insertAdjacentHTML("beforeend",`<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥1 criterio adicional:</div></div>`);
   bio.add.forEach(a=>bc.insertAdjacentHTML("beforeend",critRow(a.ok,a.t,a.s)));
 
@@ -623,8 +671,8 @@ function render(){
   bpBox.innerHTML = bio.eligible ? bioProfile() : "";
 
   document.getElementById("bioNote").innerHTML = bio.eligible
-    ? "Reevaluar respuesta a los <b>6 y 12 meses</b> (Figura 13.6 POLINA). ★ = primera opción orientativa según perfil."
-    : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave ya operada en ≥2 ocasiones con ≥1 criterio adicional.";
+    ? "Reevaluar respuesta a los <b>6 y 12 meses</b> (Figura 13.6 POLINA). ★ = primera opción orientativa según perfil; el orden no implica superioridad estadística (no hay ensayos head-to-head)."
+    : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave con requisito quirúrgico cumplido (SNS: habitualmente ≥2 CENS, o contraindicación quirúrgica) y ≥1 criterio adicional.";
 
   // sticky bar
   document.getElementById("bSev").textContent=sev.label;
