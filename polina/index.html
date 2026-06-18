@@ -200,10 +200,15 @@ footer a{color:var(--muted)}
         <button data-v="2">≥2</button>
       </div>
     </div>
-    <label class="tog field" id="recidivaTog" data-key="recidiva">
-      <span class="flab"><span>Recidiva documentada <span class="hint">poliposis recurrente tras CENS</span></span></span>
-      <span class="switch"></span>
-    </label>
+    <div class="field">
+      <div class="flab"><span>Recidiva postquirúrgica <span class="hint">reaparición de poliposis tras CENS</span></span></div>
+      <div class="seg" id="recidivaSeg">
+        <button data-v="0" class="on">No</button>
+        <button data-v="1">Tardía ≥2a</button>
+        <button data-v="2">Precoz &lt;2a</button>
+      </div>
+      <div class="loem-desc" id="recidDesc" style="display:none"></div>
+    </div>
     <div class="field">
       <div class="flab"><span>Extensión quirúrgica LOEM <span class="hint">si se conoce</span></span></div>
       <div class="seg" id="loemSeg">
@@ -314,7 +319,7 @@ footer a{color:var(--muted)}
 "use strict";
 const S = {
   eva:5, olf:5, snot:30, pol:2, co:0,
-  bilat:false, cens:0, recidiva:false,
+  bilat:false, cens:0, recidiva:0,
   loem:0, lm:0, reman:false,
   t2:false, asma:false, erea:false
 };
@@ -361,6 +366,22 @@ censSeg.addEventListener("click",e=>{
   b.classList.add("on"); S.cens=parseInt(b.dataset.v,10); render();
 });
 
+const RECIDIVA_DESC = [
+  "",
+  "Recidiva tardía (≥ 2 años post-CENS): fenotipo moderado. Considerar revisión quirúrgica ± optimización médica antes de biológico. Menor asociación con IL-5/eosinofilia tisular grave.",
+  "Recidiva precoz (< 2 años post-CENS): fenotipo agresivo. Marcador clínico de inflamación tipo 2 grave (POLINA rec. 9.6 / 20.2). Asociado a IL-5 elevada, eosinofilia tisular alta, EREA y asma eosinofílico. Refuerza indicación de biológico (Calus 2019; Arancibia, Rhinology 2022)."
+];
+const recidivaSeg=document.getElementById("recidivaSeg");
+recidivaSeg.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  recidivaSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); S.recidiva=parseInt(b.dataset.v,10);
+  const d=document.getElementById("recidDesc");
+  if(S.recidiva>0){ d.textContent=RECIDIVA_DESC[S.recidiva]; d.style.display=""; }
+  else { d.style.display="none"; }
+  render();
+});
+
 const loemSeg=document.getElementById("loemSeg");
 loemSeg.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b)return;
@@ -380,7 +401,7 @@ function grade(){
   g.snot     = S.snot<=20?0 : S.snot<=50?1:2;
   g.pol      = S.pol<=2?0 : S.pol<=4?1:2;
   g.co       = S.co===0?0 : S.co<=2?1:2;
-  g.recidiva = S.recidiva?2:0;
+  g.recidiva = S.recidiva; // 0=no, 1=tardía≥2a (parcial), 2=precoz<2a (no controlada)
   return g;
 }
 function control(g){
@@ -465,6 +486,7 @@ function bioProfile(){
 function dupilumabProfile(){
   const parts=[];
   parts.push("Anti-IL-4Rα (bloquea IL-4 e IL-13). Mayor reducción de NPS en meta-análisis indirectas (NPS −2.06 en SINUS-52).");
+  if(S.recidiva===2) parts.push("✓ Recidiva precoz documentada: marcador T2 agresivo — dupilumab es la opción con mayor evidencia en este perfil (POLINA rec. 9.6; Arancibia 2022).");
   if(S.olf>7) parts.push("✓ Mejor recuperación olfatoria documentada (SINUS-24/52).");
   if(S.erea) parts.push("✓ Eficaz en EREA; puede reducir sensibilización a aspirina.");
   if(S.asma) parts.push("✓ Aprobado en RSCcPN + asma no controlado. Cubre ambas patologías.");
@@ -526,12 +548,15 @@ function ladder(ctrl, bio){
     const remanNote = S.reman
       ? " <b>Remanentes óseos en TC</b>: la revisión quirúrgica ampliará el acceso y puede mejorar la respuesta al tratamiento médico."
       : "";
+    const precozNote = S.recidiva===2
+      ? " <b>Recidiva precoz (&lt;2 años)</b>: fenotipo agresivo — completar fenoendotipado con prioridad; considerar 2ª CENS extendida (Draf si Lund-Mackay>16) y documentar criterios para biológico cuanto antes."
+      : S.recidiva===1 ? " Recidiva tardía (≥2 años): fenotipo moderado; 2ª CENS puede ser suficiente si acceso quirúrgico correcto." : "";
     return {step:"Escalón 3 — Optimizar y valorar 2ª CENS de revisión",cls:"amber",
       meds:[...base,co,
         {h:"2ª CENS de revisión",t:" — ampliar apertura; valorar si remanentes óseos o acceso incompleto"},
         {h:"Completar fenoendotipado",t:" — Eo en sangre/tejido, IgE total, documentar criterios tipo 2"}
       ],
-      note:"Con 1 CENS previa: <b>SNS exige ≥2 cirugías para financiación de biológico</b>. Valorar 2ª CENS de revisión."+remanNote+" Si existe contraindicación quirúrgica documentada, puede solicitarse exención."};
+      note:"Con 1 CENS previa: <b>SNS exige ≥2 cirugías para financiación de biológico</b>. Valorar 2ª CENS de revisión."+remanNote+precozNote+" Si existe contraindicación quirúrgica documentada, puede solicitarse exención."};
   }
 
   // S.cens >= 2 pero no cumple criterios adicionales
