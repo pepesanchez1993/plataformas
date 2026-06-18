@@ -116,6 +116,16 @@ ul.meds li small{color:var(--muted)}
   border-radius:0 10px 10px 0;padding:11px 14px;margin-top:14px}
 .note b{color:var(--ink)}
 
+.bio-profile{margin-top:12px;border-radius:12px;border:1px solid var(--line);overflow:hidden}
+.bio-profile .bph{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+  padding:9px 14px;background:rgba(52,198,214,.08);color:var(--accent);border-bottom:1px solid var(--line)}
+.bio-profile .bpb{padding:10px 14px;display:flex;flex-direction:column;gap:8px}
+.bpdrug{display:flex;gap:12px;align-items:flex-start;font-size:.88rem}
+.bpdrug .bpname{flex:0 0 auto;min-width:90px;font-weight:700;color:var(--ink)}
+.bpdrug .bpdet{color:var(--muted);font-size:.82rem;line-height:1.4}
+.bpdrug.active .bpname{color:#5fe39a}
+.bpdrug.preferred .bpname::after{content:" ★";color:var(--amber)}
+
 /* Sticky live bar */
 #bar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(10,18,22,.86);backdrop-filter:blur(14px);
   border-top:1px solid var(--line);padding:11px 16px calc(11px + env(safe-area-inset-bottom));
@@ -134,15 +144,17 @@ footer a{color:var(--muted)}
 .reset{display:block;margin:18px auto 0;background:transparent;border:1px solid var(--line);color:var(--muted);
   font:inherit;font-size:.84rem;padding:10px 18px;border-radius:10px;cursor:pointer}
 .reset:hover{border-color:var(--accent);color:var(--accent)}
+.loem-desc{font-size:.76rem;color:var(--muted);margin-top:8px;padding:8px 10px;background:rgba(52,198,214,.05);
+  border-radius:8px;border:1px solid var(--line)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Guía POLINA 2023 · SEORL-CCC</div>
+    <div class="kicker">Guía POLINA 2023 · SEORL-CCC · Criterios SNS España</div>
     <h1>Asistente RSCcPN</h1>
-    <p class="sub">Rinosinusitis crónica con poliposis nasal. Introduce los parámetros y obtén clasificación, gravedad, control, escalón terapéutico y elegibilidad para biológicos.</p>
+    <p class="sub">Rinosinusitis crónica con poliposis nasal. Introduce los parámetros y obtén clasificación, gravedad, control, escalón terapéutico y elegibilidad para biológicos (criterios SNS).</p>
   </header>
 
   <!-- ================= INPUTS ================= -->
@@ -178,7 +190,43 @@ footer a{color:var(--muted)}
     </div>
   </div>
 
-  <div class="group">Tratamiento y evolución</div>
+  <div class="group">Antecedentes quirúrgicos e imagen</div>
+  <div class="card">
+    <div class="field">
+      <div class="flab"><span>CENS previas <span class="hint">cirugías endoscópicas documentadas</span></span></div>
+      <div class="seg" id="censSeg">
+        <button data-v="0" class="on">0</button>
+        <button data-v="1">1</button>
+        <button data-v="2">≥2</button>
+      </div>
+    </div>
+    <label class="tog field" id="recidivaTog" data-key="recidiva">
+      <span class="flab"><span>Recidiva documentada <span class="hint">poliposis recurrente tras CENS</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <div class="field">
+      <div class="flab"><span>Extensión quirúrgica LOEM <span class="hint">si se conoce</span></span></div>
+      <div class="seg" id="loemSeg">
+        <button data-v="0" class="on">—</button>
+        <button data-v="1">I</button>
+        <button data-v="2">II</button>
+        <button data-v="3">III</button>
+        <button data-v="4">IV</button>
+      </div>
+      <div class="loem-desc" id="loemDesc" style="display:none"></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>Score TC Lund-Mackay <span class="hint">TC senos, 0–24 (si disponible)</span></span><span class="fval"><span id="lmV">0</span></span></div>
+      <input type="range" id="lm" min="0" max="24" step="1" value="0">
+      <div class="scale"><span>0–4 normal</span><span>5–12 moderado</span><span>13–24 extenso</span></div>
+    </div>
+    <label class="tog field" id="remanTog" data-key="reman">
+      <span class="flab"><span>Remanentes óseos en TC <span class="hint">cirugía previa incompleta — limita acceso</span></span></span>
+      <span class="switch"></span>
+    </label>
+  </div>
+
+  <div class="group">Tratamiento médico en curso</div>
   <div class="card">
     <div class="field">
       <div class="flab"><span>Ciclos de corticoide oral <span class="hint">en el último año</span></span></div>
@@ -189,14 +237,6 @@ footer a{color:var(--muted)}
         <button data-v="3">≥3</button>
       </div>
     </div>
-    <label class="tog field" id="surgTog" data-key="surg">
-      <span class="flab"><span>Necesidad de cirugía <span class="hint">enfermedad no controlable con tto. médico</span></span></span>
-      <span class="switch"></span>
-    </label>
-    <label class="tog field" id="censTog" data-key="cens">
-      <span class="flab"><span>CENS previa <span class="hint">cirugía endoscópica &gt; 6 meses</span></span></span>
-      <span class="switch"></span>
-    </label>
   </div>
 
   <div class="group">Comorbilidades y biomarcadores</div>
@@ -240,22 +280,23 @@ footer a{color:var(--muted)}
     </div>
 
     <div class="block">
-      <h3>Elegibilidad para biológicos (Figura 13.4)</h3>
+      <h3>Elegibilidad para biológicos · criterios SNS España</h3>
       <div class="body">
         <div class="tx-strong" id="bioVerdict">—</div>
         <div class="crit" id="bioCrit"></div>
+        <div id="bioProfileBox"></div>
         <div class="note" id="bioNote"></div>
       </div>
     </div>
 
     <div class="disc">
-      <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i>. No sustituye el juicio clínico, la exploración ni la ficha técnica vigente de cada fármaco. Los biológicos para RSCcPN son de diagnóstico hospitalario y no financiados para esta indicación.
+      <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i> y los <i>Informes de Posicionamiento Terapéutico (SNS España)</i> para dupilumab, omalizumab y mepolizumab en RSCcPN (≥2 CENS previas). El perfil de biológico es orientativo según estudios comparativos (SINUS-24/52, POLYP 1/2, SYNAPSE y meta-análisis indirectas publicadas 2022-2023). No sustituye el juicio clínico ni la ficha técnica vigente. Uso diagnóstico hospitalario.
     </div>
     <button class="reset" id="resetBtn">Reiniciar parámetros</button>
   </div>
 
   <footer>
-    Privado · no indexado · Guía POLINA. Documento de consenso sobre rinosinusitis crónica con poliposis nasal. ISBN 978-84-19069-76-4.
+    Privado · no indexado · Guía POLINA 2023. Consenso SEORL-CCC/SEAIC/SEPAR. ISBN 978-84-19069-76-4.
   </footer>
 </div>
 
@@ -271,7 +312,21 @@ footer a{color:var(--muted)}
 
 <script>
 "use strict";
-const S = { eva:5, olf:5, snot:30, pol:2, co:0, bilat:false, surg:false, cens:false, t2:false, asma:false, erea:false };
+const S = {
+  eva:5, olf:5, snot:30, pol:2, co:0,
+  bilat:false, cens:0, recidiva:false,
+  loem:0, lm:0, reman:false,
+  t2:false, asma:false, erea:false
+};
+
+/* ---------- LOEM descriptions ---------- */
+const LOEM_DESC = [
+  "",
+  "LOEM I — Básica: uncinectomía ± antrostomía maxilar limitada",
+  "LOEM II — Estándar: etmoidectomía anterior bilateral ± antrostomía maxilar",
+  "LOEM III — Ampliada: etmoidectomía completa + esfenoidotomía ± sinusotomía frontal",
+  "LOEM IV — Extendida/radical: CENS total + procedimientos de Draf II–III ± demolición maxilar"
+];
 
 /* ---------- input wiring ---------- */
 function setRange(id, key){
@@ -285,12 +340,13 @@ function setRange(id, key){
   };
   el.addEventListener("input",upd); upd();
 }
-setRange("eva","eva"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol");
+setRange("eva","eva"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol"); setRange("lm","lm");
 
 document.querySelectorAll(".tog").forEach(t=>{
   const key=t.dataset.key;
   t.addEventListener("click",()=>{ S[key]=!S[key]; t.classList.toggle("on",S[key]); render(); });
 });
+
 const coSeg=document.getElementById("coSeg");
 coSeg.addEventListener("click",e=>{
   const b=e.target.closest("button"); if(!b)return;
@@ -298,16 +354,33 @@ coSeg.addEventListener("click",e=>{
   b.classList.add("on"); S.co=parseInt(b.dataset.v,10); render();
 });
 
+const censSeg=document.getElementById("censSeg");
+censSeg.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  censSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); S.cens=parseInt(b.dataset.v,10); render();
+});
+
+const loemSeg=document.getElementById("loemSeg");
+loemSeg.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  loemSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); S.loem=parseInt(b.dataset.v,10);
+  const d=document.getElementById("loemDesc");
+  if(S.loem>0){ d.textContent=LOEM_DESC[S.loem]; d.style.display=""; }
+  else { d.style.display="none"; }
+  render();
+});
+
 /* ---------- clinical logic ---------- */
-// per-criterion grade: 0 controlada / 1 parcial / 2 no controlada
 function grade(){
   const g={};
-  g.grav = S.eva<=3?0 : S.eva<=7?1:2;
-  g.olf  = S.olf<=3?0 : S.olf<=7?1:2;
-  g.snot = S.snot<=20?0 : S.snot<=50?1:2;
-  g.pol  = S.pol<=2?0 : S.pol<=4?1:2;
-  g.co   = S.co===0?0 : S.co<=2?1:2;     // 0 / 1-2 / >2 ciclos
-  g.surg = S.surg?2:0;                    // "No" en controlada y parcial; "Sí" no controlada
+  g.grav     = S.eva<=3?0 : S.eva<=7?1:2;
+  g.olf      = S.olf<=3?0 : S.olf<=7?1:2;
+  g.snot     = S.snot<=20?0 : S.snot<=50?1:2;
+  g.pol      = S.pol<=2?0 : S.pol<=4?1:2;
+  g.co       = S.co===0?0 : S.co<=2?1:2;
+  g.recidiva = S.recidiva?2:0;
   return g;
 }
 function control(g){
@@ -323,96 +396,164 @@ function severity(){
   return {label:"Grave",cls:"is-red",d:"EVA "+S.eva.toFixed(1)+" · >7"};
 }
 function phenotype(){
-  const parts=[];
-  parts.push(S.bilat?"RSCcPN bilateral (difusa)":"RSCcPN unilateral / localizada");
-  let endo = S.t2 ? "Inflamación tipo 2 (eosinofílica)" : "Sin marcadores tipo 2 documentados";
-  let extra=[];
-  if(S.erea) extra.push("fenotipo EREA");
-  if(S.asma) extra.push("vía respiratoria única (asma)");
-  const d = endo + (extra.length? " · "+extra.join(" · ") : "");
-  if(!S.bilat) return {v:parts[0], d:d+". La poliposis unilateral obliga a descartar causa tumoral/micótica (valorar biopsia/TC)."};
-  return {v:parts[0], d};
+  const lateral = S.bilat?"RSCcPN bilateral (difusa)":"RSCcPN unilateral / localizada";
+  let endo = S.t2?"Inflamación tipo 2 (eosinofílica)":"Sin marcadores tipo 2 documentados";
+  const extra=[];
+  if(S.erea) extra.push("EREA");
+  if(S.asma) extra.push("asma (vía única)");
+  let d = endo + (extra.length?" · "+extra.join(" · "):"");
+
+  const imgCtx=[];
+  if(S.loem>0){ const ll=["","I","II","III","IV"]; imgCtx.push("LOEM "+ll[S.loem]); }
+  if(S.lm>0){ const lmSev=S.lm<=4?"mínimo":S.lm<=12?"moderado":"extenso"; imgCtx.push("Lund-Mackay "+S.lm+" ("+lmSev+")"); }
+  if(S.reman) imgCtx.push("remanentes óseos en TC");
+  if(imgCtx.length) d += " · "+imgCtx.join(", ");
+
+  if(!S.bilat) return {v:lateral, d:d+". La poliposis unilateral obliga a descartar causa tumoral/micótica (valorar biopsia/TC)."};
+  return {v:lateral, d};
 }
-// biologic criteria (Figura 13.4)
+
+/* ---------- biologic criteria (SNS España: ≥2 CENS) ---------- */
 function biologics(){
-  const sev = (S.eva>7) || (S.snot>50);
-  const base = S.bilat && sev && S.cens;
+  const sev = (S.eva>7)||(S.snot>50);
+  const base = S.bilat && sev && (S.cens>=2);
   const add = [
-    {ok:S.t2, t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"},
-    {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 o hiposmia grave/anosmia"},
+    {ok:S.t2,    t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"},
+    {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 · hiposmia grave / anosmia"},
     {ok:S.co>=2, t:"Corticoides orales ≥2 ciclos/año o contraindicación", s:"necesidad recurrente de corticoide sistémico"},
-    {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"con corticoide inhalado continuado"}
+    {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"vía respiratoria única / intolerancia a AINE"}
   ];
   const addOk = add.some(a=>a.ok);
   return {sev, base, eligible: base && addOk, add};
 }
 
-/* ---------- treatment ladder (Figura 13.5) ---------- */
+/* ---------- biologic drug profile ---------- */
+function bioProfile(){
+  // Returns HTML for specific drug recommendation based on comorbidities
+  // Based on: SINUS-24/52 (dupilumab), POLYP1/2 (omalizumab), SYNAPSE (mepolizumab)
+  // and indirect network meta-analyses (Xian 2022, Delemarre 2023, Fokkens EPOS update)
+  const drugs = [
+    {
+      name:"Dupilumab",
+      trade:"(Dupixent®)",
+      preferred: (S.erea && S.asma) || (!S.erea && !S.asma && S.t2) || S.olf>7,
+      profile: dupilumabProfile()
+    },
+    {
+      name:"Omalizumab",
+      trade:"(Xolair®)",
+      preferred: S.erea || (S.asma && !S.t2),
+      profile: omalizumabProfile()
+    },
+    {
+      name:"Mepolizumab",
+      trade:"(Nucala®)",
+      preferred: S.asma && S.t2 && S.olf<=7,
+      profile: mepolizumabProfile()
+    }
+  ];
+
+  let html = '<div class="bio-profile"><div class="bph">Orientación de biológico por perfil</div><div class="bpb">';
+  drugs.forEach(d=>{
+    const cls = d.preferred ? "bpdrug preferred" : "bpdrug";
+    html += `<div class="${cls}"><span class="bpname">${d.name} <span style="font-weight:400;color:var(--faint);font-size:.8em">${d.trade}</span></span><span class="bpdet">${d.profile}</span></div>`;
+  });
+  html += '</div></div>';
+  return html;
+}
+
+function dupilumabProfile(){
+  const parts=[];
+  parts.push("Anti-IL-4Rα (bloquea IL-4 e IL-13). Mayor reducción de NPS en meta-análisis indirectas (NPS −2.06 en SINUS-52).");
+  if(S.olf>7) parts.push("✓ Mejor recuperación olfatoria documentada (SINUS-24/52).");
+  if(S.erea) parts.push("✓ Eficaz en EREA; puede reducir sensibilización a aspirina.");
+  if(S.asma) parts.push("✓ Aprobado en RSCcPN + asma no controlado. Cubre ambas patologías.");
+  if(!S.asma && !S.erea) parts.push("Primera opción en perfil T2 sin asma ni EREA según EPOS update 2023.");
+  return parts.join(" ");
+}
+
+function omalizumabProfile(){
+  const parts=[];
+  parts.push("Anti-IgE. Requiere IgE sérica 30–1500 UI/ml. Eficaz si componente alérgico/IgE-mediado (POLYP 1/2).");
+  if(S.erea) parts.push("✓ Eficaz en EREA; reduce hipersensibilidad a AINEs a largo plazo.");
+  if(S.asma && !S.t2) parts.push("✓ Primera opción si asma alérgico con IgE elevada (cubre rinitis + asma + RSCcPN).");
+  if(!S.erea && !S.asma) parts.push("Segunda opción si IgE muy elevada o rinitis alérgica comórbida.");
+  return parts.join(" ");
+}
+
+function mepolizumabProfile(){
+  const parts=[];
+  parts.push("Anti-IL-5. Más específico de la vía eosinofílica (SYNAPSE trial).");
+  if(S.asma && S.t2) parts.push("✓ Primera opción si asma eosinofílico grave con eosinofilia ≥300/µL en sangre (cubre ambas indicaciones).");
+  else if(S.t2) parts.push("Considerar si eosinofilia periférica muy alta (≥500/µL) sin asma.");
+  else parts.push("Menor evidencia en ausencia de asma eosinofílico o eosinofilia marcada.");
+  return parts.join(" ");
+}
+
+/* ---------- treatment ladder ---------- */
 function ladder(ctrl, bio){
-  const baseMeds=[
-    {h:"Corticoide intranasal",t:" — mometasona o fluticasona furoato, 2 pulv./fosa/día (escalable según respuesta)"},
+  const base=[
+    {h:"Corticoide intranasal",t:" — mometasona o fluticasona furoato, 2 pulv./fosa/día"},
     {h:"Lavados nasales",t:" — solución salina isotónica a diario"}
   ];
-  // Controlada
+  const co={h:"Tanda corta de corticoide oral",t:" — prednisona 0,5–1 mg/kg/día, 5–21 días (máx. 1–2 ciclos/año)"};
+  const bioMeds=[
+    {h:"Añadir biológico anti-tipo 2",t:" — elegir según perfil (ver abajo)"},
+    {h:"Reevaluar a 6 y 12 meses",t:" — Tabla 10.1 POLINA; suspender si no respuesta a 6 meses"}
+  ];
+
   if(ctrl.k===0){
-    return {step:"Escalón 1 — Tratamiento médico de mantenimiento", cls:"green",
-      meds:baseMeds,
-      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral solo para exacerbaciones."};
+    return {step:"Escalón 1 — Tratamiento médico de mantenimiento",cls:"green",
+      meds:base,
+      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral para exacerbaciones."};
   }
-  // Parcial o no controlada
+
   if(bio.eligible){
-    return {step:"Escalón 4 — Tratamiento biológico", cls:"red",
-      meds:[
-        ...baseMeds,
-        {h:"Añadir biológico anti-tipo 2",t:" — dupilumab (Dupixent®), omalizumab (Xolair®) o mepolizumab (Nucala®)"},
-        {h:"Reevaluar a 6 y 12 meses",t:" — Tabla 10.1; suspender si no controlada a los 6 meses"}
-      ],
-      note: bioHint(bio)};
+    return {step:"Escalón 4 — Tratamiento biológico",cls:"red",
+      meds:[...base,...bioMeds],
+      note:"Cumple criterios SNS para biológico. Ver perfil de fármaco recomendado según comorbilidades."};
   }
-  if(!S.cens){
-    return {step:"Escalón 2–3 — Optimizar tto. médico y valorar CENS", cls:"amber",
-      meds:[
-        ...baseMeds,
-        {h:"Tanda corta de corticoide oral",t:" — prednisona 0,5–1 mg/kg/día, 5–21 días (máx. 1–2 ciclos/año)"},
-        {h:"Valorar cirugía endoscópica nasosinusal (CENS)",t:" — si persiste parcial/no controlada pese a tto. médico óptimo"}
+
+  if(S.cens===0){
+    return {step:"Escalón 2–3 — Optimizar tratamiento y valorar 1ª CENS",cls:"amber",
+      meds:[...base,co,
+        {h:"Indicar 1ª CENS",t:" — si persiste parcial/no controlada pese a tto. médico óptimo"}
       ],
-      note:"Aún <b>sin CENS previa</b>: el biológico todavía no está indicado. Optimizar corticoide intranasal/oral y, si no se controla, indicar CENS con apertura de senos afectados."};
+      note:"Sin CENS previa. El biológico requiere <b>≥2 cirugías documentadas (SNS España)</b>. Optimizar tratamiento médico e indicar primera CENS si no responde."};
   }
-  // CENS previa pero no cumple criterios de biológico
-  return {step:"Escalón 3 — CENS de revisión / reevaluar criterios", cls:"amber",
-    meds:[
-      ...baseMeds,
-      {h:"Tanda corta de corticoide oral",t:" — prednisona 0,5–1 mg/kg/día, 5–21 días"},
-      {h:"Valorar CENS de revisión",t:" — apertura de senos afectados"},
-      {h:"Completar fenoendotipado",t:" — biopsia/analítica para documentar inflamación tipo 2 (Eo, IgE)"}
+
+  if(S.cens===1){
+    const remanNote = S.reman
+      ? " <b>Remanentes óseos en TC</b>: la revisión quirúrgica ampliará el acceso y puede mejorar la respuesta al tratamiento médico."
+      : "";
+    return {step:"Escalón 3 — Optimizar y valorar 2ª CENS de revisión",cls:"amber",
+      meds:[...base,co,
+        {h:"2ª CENS de revisión",t:" — ampliar apertura; valorar si remanentes óseos o acceso incompleto"},
+        {h:"Completar fenoendotipado",t:" — Eo en sangre/tejido, IgE total, documentar criterios tipo 2"}
+      ],
+      note:"Con 1 CENS previa: <b>SNS exige ≥2 cirugías para financiación de biológico</b>. Valorar 2ª CENS de revisión."+remanNote+" Si existe contraindicación quirúrgica documentada, puede solicitarse exención."};
+  }
+
+  // S.cens >= 2 pero no cumple criterios adicionales
+  const remanNote2 = S.reman ? " Remanentes óseos presentes: valorar CENS de revisión adicional antes de biológico." : "";
+  return {step:"Escalón 3–4 — Completar criterios para biológico",cls:"amber",
+    meds:[...base,co,
+      {h:"Completar fenoendotipado",t:" — biopsia/analítica: Eo sangre y tisular, IgE total"},
+      {h:"Reevaluar criterio adicional",t:" — documentar tipo 2, olfato EVA, ciclos CO, asma/EREA"}
     ],
-    note:"Con CENS previa pero <b>sin cumplir el mínimo de criterios</b> para biológico ("+bioMissing(bio)+"). Confirmar gravedad (EVA>7 y/o SNOT-22>50) e inflamación tipo 2 antes de indicar biológico."};
+    note:"≥2 CENS previas pero <b>faltan criterios adicionales</b> ("+bioMissing(bio)+")."+remanNote2};
 }
-function bioHint(bio){
-  let h="Candidato a biológico (RSCcPN bilateral grave, con CENS previa y ≥1 criterio adicional). ";
-  if(S.erea) h+="En <b>EREA</b>, dupilumab/omalizumab muestran buen perfil. ";
-  else if(S.asma) h+="Con <b>asma</b>, elegir el biológico que cubra ambas patologías (vía respiratoria única). ";
-  else h+="Las comparaciones indirectas sitúan a <b>dupilumab</b> como el más eficaz en RSCcPN grave. ";
-  h+="Reevaluar respuesta a los 6 meses (Figura 13.6).";
-  return h;
-}
+
 function bioMissing(bio){
   const m=[];
   if(!S.bilat) m.push("no bilateral");
-  if(!bio.sev) m.push("no grave (EVA>7 y/o SNOT-22>50)");
-  if(!S.cens) m.push("sin CENS previa");
+  if(!bio.sev) m.push("no grave (EVA>7 y/o SNOT>50)");
+  if(S.cens<2) m.push("menos de 2 CENS");
   if(!bio.add.some(a=>a.ok)) m.push("ningún criterio adicional");
   return m.join(", ")||"criterios incompletos";
 }
 
 /* ---------- render ---------- */
-function setBox(id,cls,v,d){
-  const el=document.getElementById(id);
-  el.className="vbox"+(id==="vPhen"?" full":"")+(id==="vSev"||id==="vPhen"?" "+(cls||"is-accent"):" "+cls);
-  if(id==="vCtrl") el.className="vbox "+cls;
-  el.querySelector(".vv").textContent=v;
-  el.querySelector(".vd").textContent=d||"";
-}
 function render(){
   const g=grade(), ctrl=control(g), sev=severity(), phen=phenotype(), bio=biologics();
 
@@ -421,18 +562,18 @@ function render(){
   sv.querySelector(".vv").textContent=sev.label; sv.querySelector(".vd").textContent=sev.d;
   const cv=document.getElementById("vCtrl"); cv.className="vbox "+ctrl.cls;
   cv.querySelector(".vv").textContent=ctrl.label;
-  cv.querySelector(".vd").textContent = ctrl.k===2?"≥3 criterios alterados": ctrl.k===0?"todos los criterios controlados":"criterios intermedios";
+  cv.querySelector(".vd").textContent=ctrl.k===2?"≥3 criterios alterados":ctrl.k===0?"todos los criterios controlados":"criterios intermedios";
   const pv=document.getElementById("vPhen"); pv.className="vbox full is-accent";
   pv.querySelector(".vv").textContent=phen.v; pv.querySelector(".vd").textContent=phen.d;
 
   // control breakdown
-  const labels={grav:"Gravedad (EVA)",olf:"Pérdida de olfato (EVA)",snot:"Calidad de vida (SNOT-22)",pol:"Tamaño de pólipos",co:"Corticoides orales/año",surg:"Necesidad de cirugía"};
+  const labels={grav:"Gravedad (EVA)",olf:"Pérdida de olfato (EVA)",snot:"Calidad de vida (SNOT-22)",pol:"Tamaño de pólipos",co:"Corticoides orales/año",recidiva:"Recidiva postquirúrgica"};
   const stTxt=["Controlada","Parcial","No controlada"], stDot=["g","a","r"];
   const cb=document.getElementById("ctrlBreak"); cb.innerHTML="";
   Object.keys(labels).forEach(k=>{
     const v=g[k];
     cb.insertAdjacentHTML("beforeend",
-      `<div class="cb"><span class="dot ${stDot[v]}"></span><span class="lbl">${labels[k]}</span><span class="st" style="color:var(--${v===0?'green':v===1?'amber':'red'})">${stTxt[v]}</span></div>`);
+      `<div class="cb"><span class="dot ${stDot[v]}"></span><span class="lbl">${labels[k]}</span><span class="st" style="color:var(--${v===0?"green":v===1?"amber":"red"})">${stTxt[v]}</span></div>`);
   });
 
   // ladder
@@ -441,35 +582,37 @@ function render(){
   document.getElementById("stepMeds").innerHTML=L.meds.map(m=>`<li><span><b>${m.h}</b><small>${m.t}</small></span></li>`).join("");
   document.getElementById("stepNote").innerHTML=L.note;
 
-  // biologics
+  // biologics eligibility
   const bv=document.getElementById("bioVerdict");
-  bv.textContent = bio.eligible?"Cumple criterios para biológico":"No cumple (todavía) criterios";
+  bv.textContent=bio.eligible?"Cumple criterios SNS para biológico":"No cumple (todavía) criterios SNS";
   bv.className="tx-strong "+(bio.eligible?"green":"amber");
-  const reqs=[
-    {ok:S.bilat,t:"RSCcPN bilateral grave",s:"EVA>7 y/o SNOT-22>50 — "+(bio.sev?"gravedad cumplida":"gravedad NO cumplida")},
-    {ok:S.cens,t:"Intervenida previamente (CENS >6 meses)",s:"cirugía endoscópica con apertura de senos"}
-  ];
+
   const bc=document.getElementById("bioCrit"); bc.innerHTML="";
-  // base requirements (bilateral counts with severity)
-  bc.insertAdjacentHTML("beforeend",critRow(S.bilat&&bio.sev,"RSCcPN bilateral GRAVE","EVA>7 y/o SNOT-22>50"));
-  bc.insertAdjacentHTML("beforeend",critRow(S.cens,"CENS previa (>6 meses)","cirugía endoscópica nasosinusal"));
+  bc.insertAdjacentHTML("beforeend",critRow(S.bilat&&bio.sev,"RSCcPN bilateral GRAVE","EVA>7 y/o SNOT-22>50 — "+(bio.sev?"gravedad cumplida":"gravedad NO cumplida")));
+  bc.insertAdjacentHTML("beforeend",critRow(S.cens>=2,"≥2 CENS previas (SNS España)","cirugías endoscópicas documentadas — actualmente: "+S.cens+(S.cens>=2?" ✓":"")));
   bc.insertAdjacentHTML("beforeend",`<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥1 criterio adicional:</div></div>`);
   bio.add.forEach(a=>bc.insertAdjacentHTML("beforeend",critRow(a.ok,a.t,a.s)));
+
+  // biologic drug profile box
+  const bpBox=document.getElementById("bioProfileBox");
+  bpBox.innerHTML = bio.eligible ? bioProfile() : "";
+
   document.getElementById("bioNote").innerHTML = bio.eligible
-    ? bioHint(bio)
-    : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave ya operada con ≥1 criterio adicional.";
+    ? "Reevaluar respuesta a los <b>6 y 12 meses</b> (Figura 13.6 POLINA). ★ = primera opción orientativa según perfil."
+    : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave ya operada en ≥2 ocasiones con ≥1 criterio adicional.";
 
   // sticky bar
   document.getElementById("bSev").textContent=sev.label;
   document.getElementById("bCtrl").textContent=ctrl.label.replace("Parcialmente","Parcial");
   document.getElementById("bStep").textContent=L.step.split("—")[0].trim();
   const bar=document.getElementById("bar");
-  bar.querySelectorAll(".pill")[1].style.borderColor = ctrl.k===2?"#6e2722":ctrl.k===0?"#1d5a3a":"#6a5320";
-  document.getElementById("bCtrl").style.color = "var(--"+(ctrl.k===0?"green":ctrl.k===1?"amber":"red")+")";
-  document.getElementById("bSev").style.color = "var(--"+(sev.cls==="is-green"?"green":sev.cls==="is-amber"?"amber":"red")+")";
+  bar.querySelectorAll(".pill")[1].style.borderColor=ctrl.k===2?"#6e2722":ctrl.k===0?"#1d5a3a":"#6a5320";
+  document.getElementById("bCtrl").style.color="var(--"+(ctrl.k===0?"green":ctrl.k===1?"amber":"red")+")";
+  document.getElementById("bSev").style.color="var(--"+(sev.cls==="is-green"?"green":sev.cls==="is-amber"?"amber":"red")+")";
 }
+
 function critRow(ok,t,s){
-  return `<div class="row"><div class="mk ${ok?'yes':'no'}">${ok?'✓':'·'}</div><div class="ct">${t}<small>${s}</small></div></div>`;
+  return `<div class="row"><div class="mk ${ok?"yes":"no"}">${ok?"✓":"·"}</div><div class="ct">${t}<small>${s}</small></div></div>`;
 }
 
 document.getElementById("bar").addEventListener("click",()=>document.getElementById("results").scrollIntoView({behavior:"smooth"}));
