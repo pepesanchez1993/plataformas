@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0b1418">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>POLINA · Asistente RSCcPN</title>
+<style>
+:root{
+  --bg:#0a1216; --bg2:#0e1a20; --panel:#12222a; --panel2:#162b34; --line:#1f3a45;
+  --ink:#eaf4f6; --muted:#8fb0b9; --faint:#5d7f89;
+  --accent:#34c6d6; --accent2:#2aa6b8;
+  --green:#27ae60; --greenbg:#103022;
+  --amber:#e0a93b; --amberbg:#352812;
+  --red:#e05a4f; --redbg:#3a1614;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --r:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100dvh;line-height:1.5;
+  background-image:radial-gradient(circle at 1px 1px,rgba(52,198,214,.05) 1px,transparent 0);background-size:24px 24px;
+  padding:0 0 130px;}
+.wrap{width:100%;max-width:680px;margin:0 auto;padding:0 18px}
+
+/* Header */
+header{text-align:center;padding:clamp(2.2rem,7vw,3.4rem) 0 1.4rem}
+.kicker{font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);font-weight:700}
+h1{font-family:var(--serif);font-size:clamp(2.1rem,8vw,3rem);line-height:1.04;margin:.3em 0 .12em;font-weight:600;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:.92rem;max-width:46ch;margin:0 auto}
+
+/* Section labels */
+.group{display:flex;align-items:center;gap:12px;margin:26px 0 12px;
+  color:var(--accent);font-size:.64rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+
+/* Cards */
+.card{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  border-radius:var(--r);padding:18px;box-shadow:0 12px 30px -22px rgba(0,0,0,.9),0 1px 0 rgba(255,255,255,.03) inset}
+.field{padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05)}
+.field:last-child{border-bottom:0;padding-bottom:2px}
+.field:first-child{padding-top:2px}
+.flab{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:.96rem;font-weight:600}
+.flab .hint{font-size:.74rem;color:var(--faint);font-weight:400;text-align:right}
+.fval{font-family:var(--serif);font-size:1.35rem;font-weight:600;color:var(--accent);min-width:2.6em;text-align:right;
+  font-variant-numeric:tabular-nums}
+.fval small{font-size:.62em;color:var(--muted)}
+
+/* Range sliders */
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:6px;margin:14px 0 4px;
+  background:linear-gradient(90deg,var(--accent) var(--p,0%),#21404b var(--p,0%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+  background:#eafaff;border:5px solid var(--accent);box-shadow:0 3px 8px rgba(0,0,0,.5);cursor:pointer;transition:transform .12s}
+input[type=range]::-webkit-slider-thumb:active{transform:scale(1.15)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:#eafaff;border:5px solid var(--accent);cursor:pointer}
+.scale{display:flex;justify-content:space-between;font-size:.66rem;color:var(--faint);margin-top:2px}
+
+/* Segmented */
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;margin-top:12px;
+  background:#0e1c22;border-radius:12px;padding:5px}
+.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:inherit;font-size:.86rem;font-weight:600;
+  padding:10px 6px;border-radius:9px;cursor:pointer;transition:.18s;line-height:1.15}
+.seg button.on{background:linear-gradient(160deg,var(--accent),var(--accent2));color:#04181c;box-shadow:0 4px 12px -4px rgba(52,198,214,.6)}
+
+/* Toggle */
+.tog{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer}
+.tog .flab{flex:1}
+.switch{flex:0 0 auto;width:54px;height:31px;border-radius:999px;background:#21404b;position:relative;transition:.2s;border:1px solid var(--line)}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:23px;height:23px;border-radius:50%;background:#cfe6ea;transition:.2s}
+.tog.on .switch{background:var(--accent)}
+.tog.on .switch::after{transform:translateX(23px);background:#04181c}
+
+/* Results */
+#results{margin-top:30px}
+.verdict{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.vbox{border-radius:14px;padding:14px 16px;border:1px solid var(--line);background:#0e1c22}
+.vbox.full{grid-column:1/-1}
+.vbox .vl{font-size:.64rem;letter-spacing:.18em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:4px}
+.vbox .vv{font-family:var(--serif);font-size:1.4rem;font-weight:600;line-height:1.1}
+.vbox .vd{font-size:.8rem;color:var(--muted);margin-top:3px}
+.is-green{background:var(--greenbg);border-color:#1d5a3a}.is-green .vv{color:#5fe39a}
+.is-amber{background:var(--amberbg);border-color:#6a5320}.is-amber .vv{color:#f1c463}
+.is-red{background:var(--redbg);border-color:#6e2722}.is-red .vv{color:#ff8e84}
+.is-accent .vv{color:var(--accent)}
+
+.block{margin-top:14px;border-radius:14px;border:1px solid var(--line);background:#0e1c22;overflow:hidden}
+.block h3{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700;
+  padding:13px 16px 0}
+.block .body{padding:10px 16px 15px}
+.tx-strong{font-family:var(--serif);font-size:1.16rem;font-weight:600;margin-bottom:6px}
+.tx-strong.green{color:#5fe39a}.tx-strong.amber{color:#f1c463}.tx-strong.red{color:#ff8e84}
+ul.meds{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:8px}
+ul.meds li{display:flex;gap:10px;font-size:.9rem;color:var(--ink);align-items:flex-start}
+ul.meds li::before{content:"▸";color:var(--accent);font-weight:700;flex:0 0 auto}
+ul.meds li small{color:var(--muted)}
+
+/* criteria checklist */
+.crit{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.crit .row{display:flex;gap:10px;align-items:flex-start;font-size:.88rem}
+.crit .mk{flex:0 0 auto;width:20px;height:20px;border-radius:6px;display:grid;place-items:center;font-size:.74rem;font-weight:800;margin-top:1px}
+.crit .yes{background:var(--greenbg);color:#5fe39a;border:1px solid #1d5a3a}
+.crit .no{background:#13242b;color:var(--faint);border:1px solid var(--line)}
+.crit .ct{flex:1}.crit .ct small{display:block;color:var(--faint);font-size:.76rem}
+
+.controlbreak{display:flex;flex-direction:column;gap:5px;margin-top:6px}
+.cb{display:flex;align-items:center;gap:9px;font-size:.84rem}
+.dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%}
+.dot.g{background:var(--green)}.dot.a{background:var(--amber)}.dot.r{background:var(--red)}
+.cb .lbl{flex:1;color:var(--muted)}.cb .st{font-size:.74rem;font-weight:600}
+
+.note{font-size:.82rem;color:var(--muted);background:#0e1c22;border-left:3px solid var(--accent);
+  border-radius:0 10px 10px 0;padding:11px 14px;margin-top:14px}
+.note b{color:var(--ink)}
+
+/* Sticky live bar */
+#bar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(10,18,22,.86);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding:11px 16px calc(11px + env(safe-area-inset-bottom));
+  display:flex;gap:10px;align-items:center;cursor:pointer}
+#bar .seg-bar{flex:1;display:flex;gap:8px;min-width:0}
+#bar .pill{flex:1;min-width:0;border-radius:11px;padding:7px 8px;text-align:center;border:1px solid var(--line);background:#0e1c22}
+#bar .pl{font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--faint);font-weight:700}
+#bar .pv{font-size:.84rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#bar .go{flex:0 0 auto;width:40px;height:40px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(160deg,var(--accent),var(--accent2));color:#04181c;font-size:1.2rem;font-weight:800}
+
+footer{margin-top:26px;color:var(--faint);font-size:.74rem;text-align:center;line-height:1.6}
+footer a{color:var(--muted)}
+.disc{font-size:.74rem;color:var(--faint);background:#0e1c22;border:1px dashed var(--line);border-radius:12px;
+  padding:12px 14px;margin-top:18px;line-height:1.5}
+.reset{display:block;margin:18px auto 0;background:transparent;border:1px solid var(--line);color:var(--muted);
+  font:inherit;font-size:.84rem;padding:10px 18px;border-radius:10px;cursor:pointer}
+.reset:hover{border-color:var(--accent);color:var(--accent)}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">Guía POLINA 2023 · SEORL-CCC</div>
+    <h1>Asistente RSCcPN</h1>
+    <p class="sub">Rinosinusitis crónica con poliposis nasal. Introduce los parámetros y obtén clasificación, gravedad, control, escalón terapéutico y elegibilidad para biológicos.</p>
+  </header>
+
+  <!-- ================= INPUTS ================= -->
+  <div class="group">Síntomas y calidad de vida</div>
+  <div class="card">
+    <div class="field">
+      <div class="flab"><span>Gravedad global <span class="hint">EVA 0–10</span></span><span class="fval"><span id="evaV">5.0</span></span></div>
+      <input type="range" id="eva" min="0" max="10" step="0.5" value="5">
+      <div class="scale"><span>Leve 0–3</span><span>Moderada &gt;3–7</span><span>Grave &gt;7</span></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>Pérdida de olfato <span class="hint">EVA 0–10</span></span><span class="fval"><span id="olfV">5.0</span></span></div>
+      <input type="range" id="olf" min="0" max="10" step="0.5" value="5">
+      <div class="scale"><span>Leve</span><span>Moderada</span><span>Anosmia</span></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>SNOT-22 <span class="hint">calidad de vida 0–110</span></span><span class="fval"><span id="snotV">30</span></span></div>
+      <input type="range" id="snot" min="0" max="110" step="1" value="30">
+      <div class="scale"><span>≤20</span><span>&gt;20–50</span><span>&gt;50</span></div>
+    </div>
+  </div>
+
+  <div class="group">Exploración endoscópica</div>
+  <div class="card">
+    <label class="tog field" id="bilatTog" data-key="bilat">
+      <span class="flab"><span>Poliposis bilateral <span class="hint">vs unilateral/localizada</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <div class="field">
+      <div class="flab"><span>Tamaño de pólipos <span class="hint">score endoscópico 0–8</span></span><span class="fval"><span id="polV">2</span></span></div>
+      <input type="range" id="pol" min="0" max="8" step="1" value="2">
+      <div class="scale"><span>≤2</span><span>3–4</span><span>≥5</span></div>
+    </div>
+  </div>
+
+  <div class="group">Tratamiento y evolución</div>
+  <div class="card">
+    <div class="field">
+      <div class="flab"><span>Ciclos de corticoide oral <span class="hint">en el último año</span></span></div>
+      <div class="seg" id="coSeg" data-key="co">
+        <button data-v="0" class="on">0</button>
+        <button data-v="1">1</button>
+        <button data-v="2">2</button>
+        <button data-v="3">≥3</button>
+      </div>
+    </div>
+    <label class="tog field" id="surgTog" data-key="surg">
+      <span class="flab"><span>Necesidad de cirugía <span class="hint">enfermedad no controlable con tto. médico</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="censTog" data-key="cens">
+      <span class="flab"><span>CENS previa <span class="hint">cirugía endoscópica &gt; 6 meses</span></span></span>
+      <span class="switch"></span>
+    </label>
+  </div>
+
+  <div class="group">Comorbilidades y biomarcadores</div>
+  <div class="card">
+    <label class="tog field" id="t2Tog" data-key="t2">
+      <span class="flab"><span>Inflamación tipo 2 <span class="hint">Eo sangre ≥300/µl · Eo tisular ≥10/campo · IgE total &gt;100 UI/ml</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="asmaTog" data-key="asma">
+      <span class="flab"><span>Asma concomitante</span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="ereaTog" data-key="erea">
+      <span class="flab"><span>EREA <span class="hint">intolerancia a AINE / aspirina</span></span></span>
+      <span class="switch"></span>
+    </label>
+  </div>
+
+  <!-- ================= RESULTS ================= -->
+  <div id="results">
+    <div class="group">Resultado</div>
+
+    <div class="verdict">
+      <div class="vbox is-accent" id="vSev"><div class="vl">Gravedad</div><div class="vv">—</div><div class="vd"></div></div>
+      <div class="vbox" id="vCtrl"><div class="vl">Control</div><div class="vv">—</div><div class="vd"></div></div>
+      <div class="vbox full is-accent" id="vPhen"><div class="vl">Clasificación / fenotipo</div><div class="vv">—</div><div class="vd"></div></div>
+    </div>
+
+    <div class="block">
+      <h3>Control de la enfermedad · criterios POLINA (Tabla 10.1)</h3>
+      <div class="body"><div class="controlbreak" id="ctrlBreak"></div></div>
+    </div>
+
+    <div class="block">
+      <h3>Escalón terapéutico recomendado</h3>
+      <div class="body">
+        <div class="tx-strong" id="stepTitle">—</div>
+        <ul class="meds" id="stepMeds"></ul>
+        <div class="note" id="stepNote"></div>
+      </div>
+    </div>
+
+    <div class="block">
+      <h3>Elegibilidad para biológicos (Figura 13.4)</h3>
+      <div class="body">
+        <div class="tx-strong" id="bioVerdict">—</div>
+        <div class="crit" id="bioCrit"></div>
+        <div class="note" id="bioNote"></div>
+      </div>
+    </div>
+
+    <div class="disc">
+      <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i>. No sustituye el juicio clínico, la exploración ni la ficha técnica vigente de cada fármaco. Los biológicos para RSCcPN son de diagnóstico hospitalario y no financiados para esta indicación.
+    </div>
+    <button class="reset" id="resetBtn">Reiniciar parámetros</button>
+  </div>
+
+  <footer>
+    Privado · no indexado · Guía POLINA. Documento de consenso sobre rinosinusitis crónica con poliposis nasal. ISBN 978-84-19069-76-4.
+  </footer>
+</div>
+
+<!-- Sticky live verdict bar -->
+<div id="bar" title="Ver resultado">
+  <div class="seg-bar">
+    <div class="pill"><div class="pl">Gravedad</div><div class="pv" id="bSev">—</div></div>
+    <div class="pill"><div class="pl">Control</div><div class="pv" id="bCtrl">—</div></div>
+    <div class="pill"><div class="pl">Escalón</div><div class="pv" id="bStep">—</div></div>
+  </div>
+  <div class="go">↑</div>
+</div>
+
+<script>
+"use strict";
+const S = { eva:5, olf:5, snot:30, pol:2, co:0, bilat:false, surg:false, cens:false, t2:false, asma:false, erea:false };
+
+/* ---------- input wiring ---------- */
+function setRange(id, key){
+  const el = document.getElementById(id);
+  const out = document.getElementById(key+"V");
+  const upd = ()=>{
+    S[key] = parseFloat(el.value);
+    out.textContent = (id==="eva"||id==="olf") ? S[key].toFixed(1) : S[key];
+    el.style.setProperty("--p",(el.value-el.min)/(el.max-el.min)*100+"%");
+    render();
+  };
+  el.addEventListener("input",upd); upd();
+}
+setRange("eva","eva"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol");
+
+document.querySelectorAll(".tog").forEach(t=>{
+  const key=t.dataset.key;
+  t.addEventListener("click",()=>{ S[key]=!S[key]; t.classList.toggle("on",S[key]); render(); });
+});
+const coSeg=document.getElementById("coSeg");
+coSeg.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  coSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); S.co=parseInt(b.dataset.v,10); render();
+});
+
+/* ---------- clinical logic ---------- */
+// per-criterion grade: 0 controlada / 1 parcial / 2 no controlada
+function grade(){
+  const g={};
+  g.grav = S.eva<=3?0 : S.eva<=7?1:2;
+  g.olf  = S.olf<=3?0 : S.olf<=7?1:2;
+  g.snot = S.snot<=20?0 : S.snot<=50?1:2;
+  g.pol  = S.pol<=2?0 : S.pol<=4?1:2;
+  g.co   = S.co===0?0 : S.co<=2?1:2;     // 0 / 1-2 / >2 ciclos
+  g.surg = S.surg?2:0;                    // "No" en controlada y parcial; "Sí" no controlada
+  return g;
+}
+function control(g){
+  const vals=Object.values(g);
+  const noc=vals.filter(v=>v===2).length;
+  if(noc>=3) return {k:2,label:"No controlada",cls:"is-red"};
+  if(vals.every(v=>v===0)) return {k:0,label:"Controlada",cls:"is-green"};
+  return {k:1,label:"Parcialmente controlada",cls:"is-amber"};
+}
+function severity(){
+  if(S.eva<=3) return {label:"Leve",cls:"is-green",d:"EVA "+S.eva.toFixed(1)+" · 0–3"};
+  if(S.eva<=7) return {label:"Moderada",cls:"is-amber",d:"EVA "+S.eva.toFixed(1)+" · >3–7"};
+  return {label:"Grave",cls:"is-red",d:"EVA "+S.eva.toFixed(1)+" · >7"};
+}
+function phenotype(){
+  const parts=[];
+  parts.push(S.bilat?"RSCcPN bilateral (difusa)":"RSCcPN unilateral / localizada");
+  let endo = S.t2 ? "Inflamación tipo 2 (eosinofílica)" : "Sin marcadores tipo 2 documentados";
+  let extra=[];
+  if(S.erea) extra.push("fenotipo EREA");
+  if(S.asma) extra.push("vía respiratoria única (asma)");
+  const d = endo + (extra.length? " · "+extra.join(" · ") : "");
+  if(!S.bilat) return {v:parts[0], d:d+". La poliposis unilateral obliga a descartar causa tumoral/micótica (valorar biopsia/TC)."};
+  return {v:parts[0], d};
+}
+// biologic criteria (Figura 13.4)
+function biologics(){
+  const sev = (S.eva>7) || (S.snot>50);
+  const base = S.bilat && sev && S.cens;
+  const add = [
+    {ok:S.t2, t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"},
+    {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 o hiposmia grave/anosmia"},
+    {ok:S.co>=2, t:"Corticoides orales ≥2 ciclos/año o contraindicación", s:"necesidad recurrente de corticoide sistémico"},
+    {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"con corticoide inhalado continuado"}
+  ];
+  const addOk = add.some(a=>a.ok);
+  return {sev, base, eligible: base && addOk, add};
+}
+
+/* ---------- treatment ladder (Figura 13.5) ---------- */
+function ladder(ctrl, bio){
+  const baseMeds=[
+    {h:"Corticoide intranasal",t:" — mometasona o fluticasona furoato, 2 pulv./fosa/día (escalable según respuesta)"},
+    {h:"Lavados nasales",t:" — solución salina isotónica a diario"}
+  ];
+  // Controlada
+  if(ctrl.k===0){
+    return {step:"Escalón 1 — Tratamiento médico de mantenimiento", cls:"green",
+      meds:baseMeds,
+      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral solo para exacerbaciones."};
+  }
+  // Parcial o no controlada
+  if(bio.eligible){
+    return {step:"Escalón 4 — Tratamiento biológico", cls:"red",
+      meds:[
+        ...baseMeds,
+        {h:"Añadir biológico anti-tipo 2",t:" — dupilumab (Dupixent®), omalizumab (Xolair®) o mepolizumab (Nucala®)"},
+        {h:"Reevaluar a 6 y 12 meses",t:" — Tabla 10.1; suspender si no controlada a los 6 meses"}
+      ],
+      note: bioHint(bio)};
+  }
+  if(!S.cens){
+    return {step:"Escalón 2–3 — Optimizar tto. médico y valorar CENS", cls:"amber",
+      meds:[
+        ...baseMeds,
+        {h:"Tanda corta de corticoide oral",t:" — prednisona 0,5–1 mg/kg/día, 5–21 días (máx. 1–2 ciclos/año)"},
+        {h:"Valorar cirugía endoscópica nasosinusal (CENS)",t:" — si persiste parcial/no controlada pese a tto. médico óptimo"}
+      ],
+      note:"Aún <b>sin CENS previa</b>: el biológico todavía no está indicado. Optimizar corticoide intranasal/oral y, si no se controla, indicar CENS con apertura de senos afectados."};
+  }
+  // CENS previa pero no cumple criterios de biológico
+  return {step:"Escalón 3 — CENS de revisión / reevaluar criterios", cls:"amber",
+    meds:[
+      ...baseMeds,
+      {h:"Tanda corta de corticoide oral",t:" — prednisona 0,5–1 mg/kg/día, 5–21 días"},
+      {h:"Valorar CENS de revisión",t:" — apertura de senos afectados"},
+      {h:"Completar fenoendotipado",t:" — biopsia/analítica para documentar inflamación tipo 2 (Eo, IgE)"}
+    ],
+    note:"Con CENS previa pero <b>sin cumplir el mínimo de criterios</b> para biológico ("+bioMissing(bio)+"). Confirmar gravedad (EVA>7 y/o SNOT-22>50) e inflamación tipo 2 antes de indicar biológico."};
+}
+function bioHint(bio){
+  let h="Candidato a biológico (RSCcPN bilateral grave, con CENS previa y ≥1 criterio adicional). ";
+  if(S.erea) h+="En <b>EREA</b>, dupilumab/omalizumab muestran buen perfil. ";
+  else if(S.asma) h+="Con <b>asma</b>, elegir el biológico que cubra ambas patologías (vía respiratoria única). ";
+  else h+="Las comparaciones indirectas sitúan a <b>dupilumab</b> como el más eficaz en RSCcPN grave. ";
+  h+="Reevaluar respuesta a los 6 meses (Figura 13.6).";
+  return h;
+}
+function bioMissing(bio){
+  const m=[];
+  if(!S.bilat) m.push("no bilateral");
+  if(!bio.sev) m.push("no grave (EVA>7 y/o SNOT-22>50)");
+  if(!S.cens) m.push("sin CENS previa");
+  if(!bio.add.some(a=>a.ok)) m.push("ningún criterio adicional");
+  return m.join(", ")||"criterios incompletos";
+}
+
+/* ---------- render ---------- */
+function setBox(id,cls,v,d){
+  const el=document.getElementById(id);
+  el.className="vbox"+(id==="vPhen"?" full":"")+(id==="vSev"||id==="vPhen"?" "+(cls||"is-accent"):" "+cls);
+  if(id==="vCtrl") el.className="vbox "+cls;
+  el.querySelector(".vv").textContent=v;
+  el.querySelector(".vd").textContent=d||"";
+}
+function render(){
+  const g=grade(), ctrl=control(g), sev=severity(), phen=phenotype(), bio=biologics();
+
+  // verdict boxes
+  const sv=document.getElementById("vSev"); sv.className="vbox "+sev.cls;
+  sv.querySelector(".vv").textContent=sev.label; sv.querySelector(".vd").textContent=sev.d;
+  const cv=document.getElementById("vCtrl"); cv.className="vbox "+ctrl.cls;
+  cv.querySelector(".vv").textContent=ctrl.label;
+  cv.querySelector(".vd").textContent = ctrl.k===2?"≥3 criterios alterados": ctrl.k===0?"todos los criterios controlados":"criterios intermedios";
+  const pv=document.getElementById("vPhen"); pv.className="vbox full is-accent";
+  pv.querySelector(".vv").textContent=phen.v; pv.querySelector(".vd").textContent=phen.d;
+
+  // control breakdown
+  const labels={grav:"Gravedad (EVA)",olf:"Pérdida de olfato (EVA)",snot:"Calidad de vida (SNOT-22)",pol:"Tamaño de pólipos",co:"Corticoides orales/año",surg:"Necesidad de cirugía"};
+  const stTxt=["Controlada","Parcial","No controlada"], stDot=["g","a","r"];
+  const cb=document.getElementById("ctrlBreak"); cb.innerHTML="";
+  Object.keys(labels).forEach(k=>{
+    const v=g[k];
+    cb.insertAdjacentHTML("beforeend",
+      `<div class="cb"><span class="dot ${stDot[v]}"></span><span class="lbl">${labels[k]}</span><span class="st" style="color:var(--${v===0?'green':v===1?'amber':'red'})">${stTxt[v]}</span></div>`);
+  });
+
+  // ladder
+  const L=ladder(ctrl,bio);
+  const st=document.getElementById("stepTitle"); st.textContent=L.step; st.className="tx-strong "+L.cls;
+  document.getElementById("stepMeds").innerHTML=L.meds.map(m=>`<li><span><b>${m.h}</b><small>${m.t}</small></span></li>`).join("");
+  document.getElementById("stepNote").innerHTML=L.note;
+
+  // biologics
+  const bv=document.getElementById("bioVerdict");
+  bv.textContent = bio.eligible?"Cumple criterios para biológico":"No cumple (todavía) criterios";
+  bv.className="tx-strong "+(bio.eligible?"green":"amber");
+  const reqs=[
+    {ok:S.bilat,t:"RSCcPN bilateral grave",s:"EVA>7 y/o SNOT-22>50 — "+(bio.sev?"gravedad cumplida":"gravedad NO cumplida")},
+    {ok:S.cens,t:"Intervenida previamente (CENS >6 meses)",s:"cirugía endoscópica con apertura de senos"}
+  ];
+  const bc=document.getElementById("bioCrit"); bc.innerHTML="";
+  // base requirements (bilateral counts with severity)
+  bc.insertAdjacentHTML("beforeend",critRow(S.bilat&&bio.sev,"RSCcPN bilateral GRAVE","EVA>7 y/o SNOT-22>50"));
+  bc.insertAdjacentHTML("beforeend",critRow(S.cens,"CENS previa (>6 meses)","cirugía endoscópica nasosinusal"));
+  bc.insertAdjacentHTML("beforeend",`<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥1 criterio adicional:</div></div>`);
+  bio.add.forEach(a=>bc.insertAdjacentHTML("beforeend",critRow(a.ok,a.t,a.s)));
+  document.getElementById("bioNote").innerHTML = bio.eligible
+    ? bioHint(bio)
+    : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave ya operada con ≥1 criterio adicional.";
+
+  // sticky bar
+  document.getElementById("bSev").textContent=sev.label;
+  document.getElementById("bCtrl").textContent=ctrl.label.replace("Parcialmente","Parcial");
+  document.getElementById("bStep").textContent=L.step.split("—")[0].trim();
+  const bar=document.getElementById("bar");
+  bar.querySelectorAll(".pill")[1].style.borderColor = ctrl.k===2?"#6e2722":ctrl.k===0?"#1d5a3a":"#6a5320";
+  document.getElementById("bCtrl").style.color = "var(--"+(ctrl.k===0?"green":ctrl.k===1?"amber":"red")+")";
+  document.getElementById("bSev").style.color = "var(--"+(sev.cls==="is-green"?"green":sev.cls==="is-amber"?"amber":"red")+")";
+}
+function critRow(ok,t,s){
+  return `<div class="row"><div class="mk ${ok?'yes':'no'}">${ok?'✓':'·'}</div><div class="ct">${t}<small>${s}</small></div></div>`;
+}
+
+document.getElementById("bar").addEventListener("click",()=>document.getElementById("results").scrollIntoView({behavior:"smooth"}));
+document.getElementById("resetBtn").addEventListener("click",()=>location.reload());
+
+render();
+</script>
+</body>
+</html>
