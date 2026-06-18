@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>English Platform</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- Assessment overlay (full-screen, shown before app) -->
+<div id="assessment-overlay" class="assessment-overlay hidden">
+  <div id="assessment-container"></div>
+</div>
+
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <span class="logo-icon">&#127468;&#127463;</span>
+      <span class="logo-text">EnglishPro</span>
+    </div>
+
+    <div class="sidebar-level" id="sidebar-level" style="display:none"></div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-btn" data-section="daily">
+        <span class="nav-icon">&#128197;</span>
+        <span>Daily Task</span>
+      </button>
+      <button class="nav-btn active" data-section="dashboard">
+        <span class="nav-icon">&#9776;</span>
+        <span>Dashboard</span>
+      </button>
+      <button class="nav-btn" data-section="grammar">
+        <span class="nav-icon">&#9998;</span>
+        <span>Grammar</span>
+      </button>
+      <button class="nav-btn" data-section="reading">
+        <span class="nav-icon">&#128214;</span>
+        <span>Reading</span>
+      </button>
+      <button class="nav-btn" data-section="listening">
+        <span class="nav-icon">&#127911;</span>
+        <span>Listening</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-bottom">
+      <button class="nav-btn" id="retake-btn" style="display:none" onclick="showAssessment(true)">
+        <span class="nav-icon">&#128260;</span>
+        <span>Retake test</span>
+      </button>
+      <div class="sidebar-streak">
+        <span class="streak-flame">&#128293;</span>
+        <span id="sidebar-streak">0</span>
+        <span class="streak-label">day streak</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main content -->
+  <main class="main-content">
+
+    <!-- Daily Task -->
+    <section id="section-daily" class="section">
+      <div id="daily-content"></div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="section-dashboard" class="section active">
+      <header class="section-header">
+        <div>
+          <h1>Dashboard</h1>
+          <p class="section-subtitle" id="dash-date"></p>
+        </div>
+        <div class="header-streak" id="header-streak-badge"></div>
+      </header>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value" id="stat-total">—</div>
+          <div class="stat-label">Exercises done</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-correct">—</div>
+          <div class="stat-label">Correct answers</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="stat-accuracy">—</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+      </div>
+
+      <h2 class="section-subheading">Progress by module</h2>
+      <div class="module-cards">
+        <div class="module-card" data-goto="grammar">
+          <div class="module-card-icon">&#9998;</div>
+          <div class="module-card-info">
+            <div class="module-card-title">Grammar</div>
+            <div class="module-card-sub">Multiple choice &amp; fill-in-blank</div>
+          </div>
+          <div class="module-card-stat" id="mod-grammar">Start</div>
+        </div>
+        <div class="module-card" data-goto="reading">
+          <div class="module-card-icon">&#128214;</div>
+          <div class="module-card-info">
+            <div class="module-card-title">Reading</div>
+            <div class="module-card-sub">Texts &amp; comprehension</div>
+          </div>
+          <div class="module-card-stat" id="mod-reading">Start</div>
+        </div>
+        <div class="module-card" data-goto="listening">
+          <div class="module-card-icon">&#127911;</div>
+          <div class="module-card-info">
+            <div class="module-card-title">Listening</div>
+            <div class="module-card-sub">TTS dictation &amp; gap-fill</div>
+          </div>
+          <div class="module-card-stat" id="mod-listening">Start</div>
+        </div>
+      </div>
+
+      <h2 class="section-subheading">Recent activity</h2>
+      <div class="activity-list" id="activity-list">
+        <p class="empty-state">No activity yet. Start a daily task to track your progress.</p>
+      </div>
+    </section>
+
+    <!-- Grammar -->
+    <section id="section-grammar" class="section">
+      <header class="section-header">
+        <h1>Grammar</h1>
+        <div id="grammar-progress-label" class="progress-label"></div>
+      </header>
+      <div class="progress-bar-wrap" id="grammar-progress-bar-wrap" style="display:none">
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="grammar-progress-fill"></div>
+        </div>
+      </div>
+      <div id="grammar-content"></div>
+    </section>
+
+    <!-- Reading -->
+    <section id="section-reading" class="section">
+      <div id="reading-content"></div>
+    </section>
+
+    <!-- Listening -->
+    <section id="section-listening" class="section">
+      <div id="listening-content"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="js/api-shim.js"></script>
+<script src="js/app.js"></script>
+<script src="js/grammar.js"></script>
+<script src="js/reading.js"></script>
+<script src="js/listening.js"></script>
+<script src="js/assessment.js"></script>
+<script src="js/daily.js"></script>
+</body>
+</html>

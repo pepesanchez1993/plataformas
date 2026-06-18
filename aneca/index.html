@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Evaluación ANECA · Profesor Ayudante Doctor</title>
+<style>
+:root{
+  --paper:#f6f3ec;
+  --paper-2:#fffdf8;
+  --ink:#1c1a25;
+  --ink-soft:#4a4658;
+  --muted:#7a7589;
+  --line:#e2dccf;
+  --line-2:#d2cabb;
+  --plum:#4a2c52;
+  --plum-2:#6c3d77;
+  --accent:#a8324a;
+  --accent-soft:#c9536b;
+  --gold:#b8862b;
+  --green:#2f7d54;
+  --green-soft:#e3f1e8;
+  --amber:#b8862b;
+  --amber-soft:#f6eccf;
+  --shadow:0 1px 2px rgba(28,26,37,.06),0 8px 28px rgba(28,26,37,.07);
+  --shadow-lg:0 18px 60px rgba(28,26,37,.14);
+  --radius:14px;
+  --radius-s:9px;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;font-family:var(--sans);color:var(--ink);
+  background:
+    radial-gradient(1200px 600px at 110% -10%,rgba(108,61,119,.10),transparent 60%),
+    radial-gradient(900px 500px at -10% 0%,rgba(168,50,74,.07),transparent 55%),
+    var(--paper);
+  line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+
+/* Header */
+header.site{padding:34px 0 8px}
+.brand{display:flex;align-items:flex-start;gap:16px;flex-wrap:wrap}
+.crest{
+  flex:0 0 auto;width:54px;height:54px;border-radius:13px;
+  background:linear-gradient(150deg,var(--plum),var(--plum-2));
+  color:#fff;display:grid;place-items:center;font-family:var(--serif);
+  font-size:26px;font-weight:600;box-shadow:var(--shadow);letter-spacing:-1px;
+}
+.brand h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.5rem,1rem+2.2vw,2.3rem);
+  margin:0;letter-spacing:-.5px;line-height:1.05}
+.brand .sub{color:var(--ink-soft);margin:4px 0 0;font-size:.98rem;max-width:62ch}
+.flag{height:3px;border-radius:3px;margin-top:2px;width:64px;
+  background:linear-gradient(90deg,var(--accent) 0 50%,var(--gold) 50% 100%)}
+
+.notice{
+  margin:20px 0 4px;padding:13px 16px;border-radius:var(--radius-s);
+  background:var(--amber-soft);border:1px solid #ecd9a8;color:#6a4f12;
+  font-size:.9rem;display:flex;gap:10px;align-items:flex-start}
+.notice b{color:#4a370b}
+
+/* Tabs */
+nav.tabs{position:sticky;top:0;z-index:30;background:rgba(246,243,236,.82);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);margin-top:18px}
+.tabs-inner{display:flex;gap:4px;max-width:1080px;margin:0 auto;padding:8px 16px;
+  overflow-x:auto;scrollbar-width:none}
+.tabs-inner::-webkit-scrollbar{display:none}
+.tab{appearance:none;border:0;background:transparent;font:inherit;cursor:pointer;
+  padding:10px 16px;border-radius:10px;color:var(--ink-soft);font-weight:600;
+  font-size:.94rem;white-space:nowrap;display:flex;align-items:center;gap:8px;
+  transition:background .15s,color .15s}
+.tab:hover{background:rgba(108,61,119,.08);color:var(--plum)}
+.tab[aria-selected="true"]{background:var(--plum);color:#fff;box-shadow:var(--shadow)}
+.tab .pill{font-size:.72rem;background:rgba(255,255,255,.22);padding:1px 8px;border-radius:20px}
+.tab[aria-selected="false"] .pill{background:rgba(108,61,119,.12);color:var(--plum)}
+
+main{padding:26px 0 90px}
+.panel{display:none;animation:rise .35s ease}
+.panel.active{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.section-head{display:flex;align-items:baseline;justify-content:space-between;gap:14px;flex-wrap:wrap;margin:6px 0 18px}
+.section-head h2{font-family:var(--serif);font-weight:600;font-size:1.5rem;margin:0;letter-spacing:-.3px}
+.section-head p{margin:4px 0 0;color:var(--muted);font-size:.92rem;max-width:64ch}
+
+/* Dashboard / score */
+.scoreboard{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;
+  background:linear-gradient(160deg,var(--paper-2),#fbf8f1);border:1px solid var(--line);
+  border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);margin-bottom:24px}
+.ring{position:relative;width:132px;height:132px;flex:0 0 auto}
+.ring svg{transform:rotate(-90deg)}
+.ring .label{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.ring .num{font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1}
+.ring .of{font-size:.72rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.verdict{font-size:.95rem}
+.verdict .tag{display:inline-flex;align-items:center;gap:7px;font-weight:700;
+  padding:5px 12px;border-radius:30px;font-size:.86rem;margin-bottom:8px}
+.tag.ok{background:var(--green-soft);color:var(--green)}
+.tag.no{background:#fbe6ea;color:var(--accent)}
+.verdict .threshold{color:var(--ink-soft)}
+.gates{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.gate{display:inline-flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;
+  padding:5px 11px;border-radius:9px;border:1px solid var(--line)}
+.gate.pass{background:var(--green-soft);color:var(--green);border-color:#cfe6d6}
+.gate.fail{background:#fbe6ea;color:var(--accent);border-color:#f0cdd5}
+.gate .ic{font-weight:800}
+.dimbars{display:grid;gap:10px;margin-top:14px}
+.dimbar{display:grid;grid-template-columns:130px 1fr auto;gap:12px;align-items:center;font-size:.85rem}
+.dimbar .track{height:9px;border-radius:6px;background:var(--line);overflow:hidden}
+.dimbar .fill{height:100%;border-radius:6px;transition:width .4s cubic-bezier(.16,1,.3,1)}
+.dimbar .v{font-variant-numeric:tabular-nums;color:var(--ink-soft);min-width:58px;text-align:right}
+
+/* Cards */
+.dim{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);
+  margin-bottom:18px;overflow:hidden;box-shadow:var(--shadow)}
+.dim > summary{list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;
+  gap:14px;user-select:none}
+.dim > summary::-webkit-details-marker{display:none}
+.dim .chip{width:38px;height:38px;border-radius:10px;flex:0 0 auto;display:grid;place-items:center;
+  color:#fff;font-weight:700;font-size:1rem}
+.dim .title{flex:1;min-width:0}
+.dim .title h3{margin:0;font-size:1.06rem;font-weight:700}
+.dim .title small{color:var(--muted);font-size:.8rem}
+.dim .dscore{font-family:var(--serif);font-size:1.15rem;font-weight:600;font-variant-numeric:tabular-nums}
+.dim .dscore small{font-size:.7rem;color:var(--muted);font-weight:400}
+.dim .caret{color:var(--muted);transition:transform .2s;font-size:.8rem}
+.dim[open] .caret{transform:rotate(90deg)}
+.dim .body{padding:4px 20px 18px;border-top:1px solid var(--line)}
+.item{display:grid;grid-template-columns:1fr auto;gap:6px 16px;padding:13px 0;border-bottom:1px dashed var(--line)}
+.item:last-child{border-bottom:0}
+.item .lab{font-size:.92rem;font-weight:600}
+.item .hint{grid-column:1;color:var(--muted);font-size:.8rem;margin-top:2px;max-width:60ch}
+.item .ctrl{grid-row:1/3;align-self:center;display:flex;align-items:center;gap:8px}
+.item input[type=number]{width:74px;padding:8px 9px;border:1px solid var(--line-2);border-radius:9px;
+  font:inherit;text-align:right;background:#fff;font-variant-numeric:tabular-nums}
+.item input[type=number]:focus{outline:2px solid var(--plum-2);outline-offset:1px;border-color:var(--plum-2)}
+.item .max{font-size:.78rem;color:var(--muted);white-space:nowrap;min-width:46px}
+
+/* Checklist */
+.cl-group{margin-bottom:22px}
+.cl-group h3{font-family:var(--serif);font-size:1.12rem;margin:0 0 4px;display:flex;align-items:center;gap:10px}
+.cl-group h3 .gp{font-size:.74rem;font-weight:600;color:var(--muted);font-family:var(--sans)}
+.cl{list-style:none;margin:8px 0 0;padding:0;display:grid;gap:8px}
+.cl li{display:flex;gap:13px;align-items:flex-start;background:var(--paper-2);border:1px solid var(--line);
+  border-radius:var(--radius-s);padding:12px 15px;transition:border-color .15s,background .15s}
+.cl li:has(input:checked){background:#f1f6f2;border-color:#cfe6d6}
+.cl input[type=checkbox]{appearance:none;width:21px;height:21px;border:2px solid var(--line-2);
+  border-radius:6px;flex:0 0 auto;margin-top:1px;cursor:pointer;position:relative;transition:.15s;background:#fff}
+.cl input[type=checkbox]:checked{background:var(--green);border-color:var(--green)}
+.cl input[type=checkbox]:checked::after{content:"";position:absolute;left:6px;top:2px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(42deg)}
+.cl .txt{font-size:.92rem}
+.cl li:has(input:checked) .txt{color:var(--muted);text-decoration:line-through}
+.cl .req{font-size:.68rem;font-weight:700;letter-spacing:.03em;padding:2px 7px;border-radius:5px;margin-left:auto;
+  white-space:nowrap;align-self:flex-start}
+.req.must{background:#fbe6ea;color:var(--accent)}
+.req.val{background:var(--amber-soft);color:var(--amber)}
+
+/* Organizador */
+.org-form{background:var(--paper-2);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;box-shadow:var(--shadow);margin-bottom:22px}
+.org-grid{display:grid;grid-template-columns:1.4fr .7fr .8fr;gap:12px}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:.78rem;font-weight:600;color:var(--ink-soft)}
+.fld input,.fld select,.fld textarea{font:inherit;padding:9px 11px;border:1px solid var(--line-2);
+  border-radius:9px;background:#fff;width:100%}
+.fld textarea{resize:vertical;min-height:42px}
+.fld input:focus,.fld select:focus,.fld textarea:focus{outline:2px solid var(--plum-2);outline-offset:1px;border-color:var(--plum-2)}
+.full{grid-column:1/-1}
+.btn{appearance:none;border:0;cursor:pointer;font:inherit;font-weight:600;border-radius:10px;
+  padding:10px 18px;transition:filter .15s,transform .05s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--plum);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{filter:brightness(1.08)}
+.btn-ghost{background:transparent;color:var(--plum);border:1px solid var(--line-2)}
+.btn-ghost:hover{background:rgba(108,61,119,.07)}
+.btn-sm{padding:6px 12px;font-size:.84rem}
+.org-list{display:grid;gap:18px}
+.org-cat h4{font-family:var(--serif);font-size:1.05rem;margin:0 0 8px;display:flex;align-items:center;gap:9px}
+.org-cat .dot{width:10px;height:10px;border-radius:50%}
+.entry{display:flex;gap:12px;align-items:flex-start;background:var(--paper-2);border:1px solid var(--line);
+  border-radius:var(--radius-s);padding:12px 14px;margin-bottom:8px}
+.entry .meta{flex:1;min-width:0}
+.entry .et{font-weight:600;font-size:.94rem}
+.entry .ed{color:var(--ink-soft);font-size:.84rem;margin-top:2px;white-space:pre-wrap}
+.entry .yr{font-variant-numeric:tabular-nums;color:var(--muted);font-size:.82rem;background:var(--paper);
+  border:1px solid var(--line);padding:2px 9px;border-radius:20px;white-space:nowrap}
+.entry .del{background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:1.1rem;line-height:1;padding:2px 6px;border-radius:6px}
+.entry .del:hover{color:var(--accent);background:#fbe6ea}
+.empty{color:var(--muted);font-size:.9rem;font-style:italic;padding:18px;text-align:center;
+  border:1px dashed var(--line-2);border-radius:var(--radius-s)}
+
+/* Toolbar */
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:26px 0 6px;padding-top:18px;border-top:1px solid var(--line)}
+.toolbar .spacer{flex:1}
+.count-note{font-size:.84rem;color:var(--muted)}
+footer{color:var(--muted);font-size:.8rem;padding:30px 0;text-align:center;border-top:1px solid var(--line);margin-top:40px}
+footer a{color:var(--plum-2)}
+
+@media(max-width:720px){
+  .scoreboard{grid-template-columns:1fr;text-align:center;justify-items:center}
+  .dimbar{grid-template-columns:90px 1fr auto}
+  .org-grid{grid-template-columns:1fr}
+  .item{grid-template-columns:1fr}
+  .item .ctrl{grid-row:auto;justify-content:flex-start}
+}
+@media print{
+  nav.tabs,.toolbar,.notice,.org-form,.del,footer .noprint{display:none!important}
+  .panel{display:block!important}
+  body{background:#fff}
+  .dim[open] .body,.dim .body{display:block}
+}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <div class="crest">A</div>
+      <div>
+        <h1>Evaluación ACSUCYL — Profesor Ayudante Doctor</h1>
+        <p class="sub">Autoevaluación de méritos para Derecho (rama Jurídica) según el baremo de ACSUCYL · Castilla y León (Tabla 2, PAD). Calculadora, checklist y organizador de méritos. Todo se guarda en tu navegador.</p>
+        <div class="flag"></div>
+      </div>
+    </div>
+    <div class="notice">
+      <span>⚠️</span>
+      <div><b>Marco aplicable:</b> en Castilla y León quien evalúa la contratación de PAD es <b>ACSUCYL</b> (no la ANECA directamente). Baremo: <b>Tabla 2 — PAD</b> con los valores de la <b>rama Jurídica</b> (libros y capítulos hasta 25 pts). Nota de paso global <b>≥ 50/100</b>, corte en investigadora <b>≥ 10</b> (de ellos <b>≥ 6</b> en aportaciones de calidad ★). Herramienta orientativa; consulta siempre la convocatoria vigente en el BOCYL.</div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Secciones">
+  <div class="tabs-inner" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-panel="calc">📊 Calculadora de baremo</button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="check">✅ Checklist de requisitos <span class="pill" id="clPill">0/0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-panel="org">📁 Organizador de méritos <span class="pill" id="orgPill">0</span></button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <!-- ============ CALCULADORA ============ -->
+  <section class="panel active" id="calc" role="tabpanel">
+    <div class="section-head">
+      <div>
+        <h2>Calculadora de baremo</h2>
+        <p>Asigna a cada mérito los puntos que estimes. Cada categoría topa en su máximo (Formación 20 · Docente 20 · Investigadora 50 · Profesional 10). Para superar: total <b>≥ 50</b>, investigadora <b>≥ 10</b> y aportaciones de calidad (★) <b>≥ 6</b>.</p>
+      </div>
+    </div>
+
+    <div class="scoreboard">
+      <div class="ring" aria-hidden="true">
+        <svg width="132" height="132" viewBox="0 0 132 132">
+          <circle cx="66" cy="66" r="58" fill="none" stroke="var(--line)" stroke-width="12"/>
+          <circle id="ringFill" cx="66" cy="66" r="58" fill="none" stroke="var(--plum-2)" stroke-width="12"
+            stroke-linecap="round" stroke-dasharray="364.4" stroke-dashoffset="364.4"/>
+        </svg>
+        <div class="label"><div class="num" id="ringNum">0</div><div class="of">/ 100</div></div>
+      </div>
+      <div class="verdict">
+        <span class="tag no" id="verdictTag">No cumples todos los mínimos</span>
+        <div class="threshold" id="verdictTxt"></div>
+        <div class="gates" id="gates"></div>
+        <div class="dimbars" id="dimbars"></div>
+      </div>
+    </div>
+
+    <div id="dims"></div>
+
+    <div class="toolbar">
+      <button class="btn btn-ghost btn-sm" id="resetCalc">↺ Reiniciar puntuaciones</button>
+      <span class="spacer"></span>
+      <button class="btn btn-ghost btn-sm" id="printAll">🖨️ Imprimir / PDF</button>
+      <button class="btn btn-primary btn-sm" id="exportJson">⬇️ Exportar datos (JSON)</button>
+      <button class="btn btn-ghost btn-sm" id="importJson">⬆️ Importar</button>
+      <input type="file" id="fileIn" accept="application/json" hidden>
+    </div>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section class="panel" id="check" role="tabpanel">
+    <div class="section-head">
+      <div>
+        <h2>Checklist de requisitos y documentación</h2>
+        <p>Méritos y documentos que conviene tener preparados. <span class="req must" style="display:inline">Imprescindible</span> = núcleo del perfil PAD · <span class="req val" style="display:inline">Valorable</span> = suma calidad.</p>
+      </div>
+    </div>
+    <div id="checklist"></div>
+    <div class="toolbar">
+      <button class="btn btn-ghost btn-sm" id="resetCheck">↺ Desmarcar todo</button>
+      <span class="count-note" id="checkNote"></span>
+    </div>
+  </section>
+
+  <!-- ============ ORGANIZADOR ============ -->
+  <section class="panel" id="org" role="tabpanel">
+    <div class="section-head">
+      <div>
+        <h2>Organizador de méritos / CV</h2>
+        <p>Registra cada aportación una vez; quedará agrupada por categoría y lista para volcar a tu currículo ANECA. Exportable en JSON.</p>
+      </div>
+    </div>
+
+    <form class="org-form" id="orgForm">
+      <div class="org-grid">
+        <div class="fld full">
+          <label for="oTitle">Título / referencia del mérito *</label>
+          <input id="oTitle" required placeholder="Ej.: «Datos de salud e IA», Revista X, vol. 12, JCR Q1">
+        </div>
+        <div class="fld">
+          <label for="oCat">Categoría</label>
+          <select id="oCat"></select>
+        </div>
+        <div class="fld">
+          <label for="oYear">Año</label>
+          <input id="oYear" inputmode="numeric" placeholder="2025">
+        </div>
+        <div class="fld">
+          <label for="oDim">Dimensión</label>
+          <select id="oDim">
+            <option value="investigacion">Investigación</option>
+            <option value="docencia">Docencia</option>
+            <option value="transferencia">Transferencia</option>
+            <option value="gestion">Gestión</option>
+          </select>
+        </div>
+        <div class="fld full">
+          <label for="oDetail">Detalle (autoría, indexación, financiación, rol…)</label>
+          <textarea id="oDetail" placeholder="Coautoría 2/4 · DOI · proyecto financiado por…"></textarea>
+        </div>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <button type="submit" class="btn btn-primary">+ Añadir mérito</button>
+        <button type="button" class="btn btn-ghost" id="orgExport">⬇️ Exportar CV (JSON)</button>
+        <button type="button" class="btn btn-ghost" id="orgPrint">🖨️ Imprimir relación</button>
+      </div>
+    </form>
+
+    <div class="org-list" id="orgList"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <p>Autoevaluación orientativa · no es un documento oficial de ACSUCYL · datos almacenados localmente en este navegador.<br>
+  Criterios de referencia: ACSUCYL, «Orientaciones sobre la evaluación previa del profesorado contratado», Tabla 2 (Profesor Ayudante Doctor), rama Jurídica.</p>
+</footer>
+
+<script>
+//============================ DATA MODEL ============================
+const DIMS = [
+  {id:"formacion",label:"Formación académica",short:"Formación",max:20,color:"#3d5a99",
+    note:"Expediente, mención del doctorado, becas, estancias, premios. Sin nota de corte.",
+    items:[
+      {id:"fa_exp",lab:"Expediente académico [nota media (1–4) × 3]",hint:"Nota media del expediente en escala 1–4 multiplicada por 3 (máx. 12).",max:12},
+      {id:"fa_doc",lab:"Doctorado Europeo / Mención Internacional / Industrial / Calidad",hint:"Menciones del título de doctor.",max:2},
+      {id:"fa_tit",lab:"Otras titulaciones adicionales",hint:"Grados, másteres u otras titulaciones extra.",max:5},
+      {id:"fa_prem",lab:"Premios extraordinarios",hint:"Premio extraordinario de licenciatura/grado/doctorado.",max:3},
+      {id:"fa_becas",lab:"Becas / contratos predoctorales y postdoctorales",hint:"FPU, FPI, Juan de la Cierva, contratos competitivos.",max:7},
+      {id:"fa_estancias",lab:"Estancias en otros centros",hint:"Movilidad en centros nacionales/internacionales.",max:6},
+      {id:"fa_cursos",lab:"Cursos de especialización y otros méritos de formación",hint:"Incluye formación en técnicas docentes.",max:4},
+    ]},
+  {id:"docencia",label:"Actividad docente",short:"Docencia",max:20,color:"#b8862b",
+    note:"Docencia reglada y méritos docentes. Para PAD no hay nota de corte.",
+    items:[
+      {id:"do_pod",lab:"Actividad docente reglada (POD)",hint:"Docencia teórica reglada según POD/hoja de servicios, por créditos. El subapartado llega a 35, pero la categoría topa en 20.",max:35},
+      {id:"do_otra",lab:"Otra actividad docente reglada (certificada)",hint:"Docencia certificada por Centro o Departamento, no recogida en POD.",max:10},
+      {id:"do_eval",lab:"Evaluación de la actividad docente",hint:"Programa Docentia u otra evaluación favorable.",max:3},
+      {id:"do_innov",lab:"Proyectos de innovación docente",hint:"Financiados en convocatorias públicas.",max:2},
+      {id:"do_mat",lab:"Publicaciones pedagógicas y material didáctico",hint:"Manuales y materiales docentes.",max:4},
+      {id:"do_tfg",lab:"Dirección de PFC, TFG y TFM",hint:"Tutorización de trabajos fin de grado/máster.",max:3},
+      {id:"do_otros",lab:"Otros méritos de la actividad docente",hint:"Ponencias en seminarios de formación docente, etc.",max:4},
+    ]},
+  {id:"investigacion",label:"Actividad investigadora",short:"Investigación",max:50,color:"#6c3d77",
+    note:"Núcleo del perfil. Corte: mínimo 10 pts, de ellos ≥ 6 en aportaciones de calidad (★).",
+    items:[
+      {id:"in_rev",lab:"★ Publicaciones científicas en revistas periódicas",hint:"Artículos indexados (JCR/SSCI, Scopus, Dialnet Métricas, sello FECYT). Cuenta para el mínimo de calidad.",max:35,cal:true},
+      {id:"in_art",lab:"★ Resultados de creatividad artística",hint:"Poco habitual en Derecho. Cuenta para el mínimo de calidad.",max:20,cal:true},
+      {id:"in_libros",lab:"★ Libros y capítulos en libros (editoriales de prestigio, SPI)",hint:"En la rama Jurídica hasta 25 pts — clave en Derecho: monografías y capítulos pesan casi como los artículos. Cuenta para el mínimo de calidad.",max:25,cal:true},
+      {id:"in_pat",lab:"★ Patentes en explotación",hint:"Cuenta para el mínimo de calidad.",max:10,cal:true},
+      {id:"in_cong",lab:"Comunicaciones a congresos",hint:"Internacionales con comité; ponencias invitadas valen más.",max:5},
+      {id:"in_proy",lab:"Participación y dirección de proyectos de I+D+i",hint:"Convocatorias competitivas; valora rol e IP.",max:8},
+      {id:"in_contr",lab:"Contratos y transferencia de resultados",hint:"Contratos art. 83 de I+D+i con entidades.",max:6},
+      {id:"in_tesis",lab:"Dirección de tesis doctorales",hint:"Dirección o codirección de tesis.",max:5},
+      {id:"in_otros",lab:"Otros méritos de la actividad investigadora",hint:"Sexenios, evaluación, redes de investigación, etc.",max:8},
+    ]},
+  {id:"profesional",label:"Experiencia profesional y otros méritos",short:"Profesional",max:10,color:"#2f7d54",
+    note:"Experiencia fuera y dentro de la Universidad y otros méritos. Sin nota de corte.",
+    items:[
+      {id:"pr_fuera",lab:"Experiencia profesional y de gestión fuera de la Universidad",hint:"Ejercicio profesional del Derecho (abogacía, asesoría jurídica, etc.).",max:10},
+      {id:"pr_gest",lab:"Experiencia de gestión en la Universidad",hint:"Cargos y comisiones universitarias.",max:3},
+      {id:"pr_otros",lab:"Otros méritos (premios; editor técnico de revistas, etc.)",hint:"Edición técnica (no científica) de revistas, premios, etc.",max:5},
+    ]},
+];
+const THRESHOLD = 50;      // nota de paso global (sobre 100)
+const INV_CORTE = 10;      // corte en actividad investigadora
+const INV_CAL_CORTE = 6;   // mínimo en aportaciones de calidad (★)
+
+const CHECKLIST = [
+  {group:"Requisito previo",items:[
+    {id:"c_doc",txt:"Título de Doctor/a obtenido (requisito imprescindible de acceso)",req:"must"},
+    {id:"c_cvn",txt:"CV en el modelo normalizado de ACSUCYL, con la fecha de inicio del cómputo investigador fijada",req:"must"},
+  ]},
+  {group:"Formación académica",items:[
+    {id:"c_exp",txt:"Certificación académica con la nota media del expediente (escala 1–4)",req:"must"},
+    {id:"c_menc",txt:"Acreditación de mención del doctorado (Internacional/Europeo/Industrial), si procede",req:"val"},
+    {id:"c_becas",txt:"Justificantes de becas/contratos pre y postdoctorales y de estancias",req:"val"},
+  ]},
+  {group:"Actividad investigadora (núcleo)",items:[
+    {id:"c_rev",txt:"Publicaciones en revistas con indicios de calidad (cuartil JCR/SSCI, Scopus, Dialnet Métricas, sello FECYT)",req:"must"},
+    {id:"c_libros",txt:"Libros/capítulos con editorial e indicio SPI (clave en Derecho: hasta 25 pts)",req:"must"},
+    {id:"c_calidad",txt:"Comprobado que sumas ≥ 10 pts en investigadora y ≥ 6 en aportaciones de calidad (★)",req:"must"},
+    {id:"c_proy",txt:"Justificantes de proyectos I+D+i competitivos y rol desempeñado",req:"val"},
+    {id:"c_orcid",txt:"Perfil ORCID / Dialnet / Scopus actualizado con identificadores",req:"val"},
+  ]},
+  {group:"Actividad docente",items:[
+    {id:"c_pod",txt:"Certificado de docencia reglada (POD/hoja de servicios) con créditos impartidos",req:"val"},
+    {id:"c_docentia",txt:"Informes de evaluación docente (Docentia) favorables, si los tienes",req:"val"},
+  ]},
+  {group:"Experiencia profesional y otros",items:[
+    {id:"c_prof",txt:"Acreditación de ejercicio profesional del Derecho y/o de gestión universitaria",req:"val"},
+  ]},
+  {group:"Antes de presentar",items:[
+    {id:"c_just",txt:"Cada mérito con su justificante digitalizado y correctamente nombrado",req:"must"},
+    {id:"c_bocyl",txt:"Convocatoria vigente y plazos comprobados en el BOCYL",req:"must"},
+    {id:"c_reg",txt:"Solicitud por el Registro Electrónico de ACSUCYL (única vía)",req:"must"},
+  ]},
+];
+
+const ORG_CATS = [
+  {id:"publicaciones",label:"Publicaciones",color:"#6c3d77"},
+  {id:"proyectos",label:"Proyectos de investigación",color:"#8a3f86"},
+  {id:"congresos",label:"Congresos y conferencias",color:"#a8324a"},
+  {id:"estancias",label:"Estancias y movilidad",color:"#c9536b"},
+  {id:"docencia",label:"Docencia",color:"#b8862b"},
+  {id:"tesis",label:"Tesis / TFM dirigidos",color:"#9a6b1f"},
+  {id:"transferencia",label:"Transferencia",color:"#2f7d54"},
+  {id:"gestion",label:"Gestión y otros",color:"#4a4658"},
+  {id:"formacion",label:"Formación académica",color:"#3d5a99"},
+];
+
+//============================ STATE ============================
+const KEY="aneca_pad_v1";
+const blank={calc:{},check:{},org:[]};
+let S=load();
+function load(){try{return Object.assign(structuredClone(blank),JSON.parse(localStorage.getItem(KEY))||{})}catch(e){return structuredClone(blank)}}
+function save(){localStorage.setItem(KEY,JSON.stringify(S))}
+
+//============================ TABS ============================
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected","false"));
+  t.setAttribute("aria-selected","true");
+  document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));
+  document.getElementById(t.dataset.panel).classList.add("active");
+  window.scrollTo({top:0,behavior:"smooth"});
+}));
+
+//============================ CALCULADORA ============================
+function clamp(v,max){v=parseFloat(v);if(isNaN(v)||v<0)return 0;return Math.min(v,max)}
+function buildDims(){
+  const host=document.getElementById("dims");host.innerHTML="";
+  DIMS.forEach((d,i)=>{
+    const det=document.createElement("details");det.className="dim";if(i<1)det.open=true;
+    det.innerHTML=`
+      <summary>
+        <div class="chip" style="background:${d.color}">${d.short[0]}</div>
+        <div class="title"><h3>${d.label}</h3><small>${d.note}</small></div>
+        <div class="dscore"><span data-ds="${d.id}">0</span><small> / ${d.max}</small></div>
+        <span class="caret">▶</span>
+      </summary>
+      <div class="body">${d.items.map(it=>`
+        <div class="item">
+          <div class="lab">${it.lab}</div>
+          <div class="hint">${it.hint}</div>
+          <div class="ctrl">
+            <input type="number" min="0" max="${it.max}" step="0.5" data-item="${it.id}"
+              data-dim="${d.id}" data-max="${it.max}" value="${S.calc[it.id]??""}" placeholder="0">
+            <span class="max">/ ${it.max} pts</span>
+          </div>
+        </div>`).join("")}
+      </div>`;
+    host.appendChild(det);
+  });
+  host.querySelectorAll("input[type=number]").forEach(inp=>{
+    inp.addEventListener("input",()=>{
+      const max=+inp.dataset.max;const v=clamp(inp.value,max);
+      if(inp.value!==""&&+inp.value>max)inp.value=max;
+      S.calc[inp.dataset.item]=inp.value===""?"":v;save();recalc();
+    });
+  });
+}
+function recalc(){
+  let total=0,invSum=0,calSum=0;
+  const dimbars=document.getElementById("dimbars");dimbars.innerHTML="";
+  DIMS.forEach(d=>{
+    let s=0;d.items.forEach(it=>{
+      const v=clamp(S.calc[it.id]||0,it.max);s+=v;
+      if(d.id==="investigacion"&&it.cal)calSum+=v;
+    });
+    s=Math.min(s,d.max);total+=s;
+    if(d.id==="investigacion")invSum=s;
+    const ds=document.querySelector(`[data-ds="${d.id}"]`);if(ds)ds.textContent=fmt(s);
+    const pct=Math.round(s/d.max*100);
+    const row=document.createElement("div");row.className="dimbar";
+    row.innerHTML=`<span>${d.short}</span>
+      <div class="track"><div class="fill" style="width:${pct}%;background:${d.color}"></div></div>
+      <span class="v">${fmt(s)}/${d.max}</span>`;
+    dimbars.appendChild(row);
+  });
+  total=Math.round(total*10)/10;calSum=Math.round(calSum*10)/10;
+  document.getElementById("ringNum").textContent=fmt(total);
+  const C=364.4;document.getElementById("ringFill").style.strokeDashoffset=C-(Math.min(total,100)/100*C);
+
+  const gG=total>=THRESHOLD, gI=invSum>=INV_CORTE, gC=calSum>=INV_CAL_CORTE;
+  const pass=gG&&gI&&gC;
+  const tag=document.getElementById("verdictTag");
+  tag.className="tag "+(pass?"ok":"no");
+  tag.textContent=pass?"✓ Cumples los mínimos de ACSUCYL":"No cumples todos los mínimos";
+  document.getElementById("ringFill").style.stroke=pass?"var(--green)":"var(--plum-2)";
+  document.getElementById("verdictTxt").innerHTML=pass
+    ? `Tu autoevaluación suma <b>${fmt(total)}</b> pts y supera los tres umbrales. Refuerza los apartados más flojos para dar margen.`
+    : `Tu autoevaluación suma <b>${fmt(total)}</b> pts. Revisa abajo los umbrales no superados; en Derecho la palanca principal es la investigadora (libros y capítulos suman hasta 25 pts).`;
+
+  document.getElementById("gates").innerHTML=[
+    {ok:gG,txt:`Total ≥ ${THRESHOLD}`,now:fmt(total)},
+    {ok:gI,txt:`Investigadora ≥ ${INV_CORTE}`,now:fmt(invSum)},
+    {ok:gC,txt:`Calidad ★ ≥ ${INV_CAL_CORTE}`,now:fmt(calSum)},
+  ].map(g=>`<span class="gate ${g.ok?"pass":"fail"}"><span class="ic">${g.ok?"✓":"✗"}</span>${g.txt} <b>(${g.now})</b></span>`).join("");
+}
+function fmt(n){return Number.isInteger(n)?n:n.toFixed(1)}
+
+//============================ CHECKLIST ============================
+function buildChecklist(){
+  const host=document.getElementById("checklist");host.innerHTML="";
+  CHECKLIST.forEach(g=>{
+    const div=document.createElement("div");div.className="cl-group";
+    div.innerHTML=`<h3>${g.group} <span class="gp">${g.items.length} ítems</span></h3>
+      <ul class="cl">${g.items.map(it=>`
+        <li><input type="checkbox" id="${it.id}" ${S.check[it.id]?"checked":""}>
+          <span class="txt">${it.txt}</span>
+          <span class="req ${it.req}">${it.req==="must"?"Imprescindible":"Valorable"}</span></li>`).join("")}</ul>`;
+    host.appendChild(div);
+  });
+  host.querySelectorAll("input[type=checkbox]").forEach(cb=>cb.addEventListener("change",()=>{
+    S.check[cb.id]=cb.checked;save();checkProgress();
+  }));
+  checkProgress();
+}
+function checkProgress(){
+  const all=CHECKLIST.flatMap(g=>g.items);
+  const done=all.filter(it=>S.check[it.id]).length;
+  const must=all.filter(it=>it.req==="must");
+  const mustDone=must.filter(it=>S.check[it.id]).length;
+  document.getElementById("clPill").textContent=`${done}/${all.length}`;
+  document.getElementById("checkNote").textContent=
+    `Imprescindibles: ${mustDone}/${must.length} · Total: ${done}/${all.length}`;
+}
+
+//============================ ORGANIZADOR ============================
+function fillCatSelect(){
+  const sel=document.getElementById("oCat");
+  sel.innerHTML=ORG_CATS.map(c=>`<option value="${c.id}">${c.label}</option>`).join("");
+}
+document.getElementById("orgForm").addEventListener("submit",e=>{
+  e.preventDefault();
+  const t=document.getElementById("oTitle").value.trim();if(!t)return;
+  S.org.push({
+    id:"e"+(S.org.reduce((m,x)=>Math.max(m,+x.id.slice(1)||0),0)+1),
+    title:t,cat:document.getElementById("oCat").value,
+    year:document.getElementById("oYear").value.trim(),
+    dim:document.getElementById("oDim").value,
+    detail:document.getElementById("oDetail").value.trim(),
+  });
+  save();e.target.reset();fillCatSelect();buildOrg();
+  document.getElementById("oTitle").focus();
+});
+function buildOrg(){
+  const host=document.getElementById("orgList");host.innerHTML="";
+  document.getElementById("orgPill").textContent=S.org.length;
+  if(!S.org.length){host.innerHTML=`<div class="empty">Aún no has añadido méritos. Usa el formulario de arriba para empezar tu relación.</div>`;return;}
+  ORG_CATS.forEach(c=>{
+    const list=S.org.filter(e=>e.cat===c.id);if(!list.length)return;
+    list.sort((a,b)=>(b.year||"").localeCompare(a.year||""));
+    const block=document.createElement("div");block.className="org-cat";
+    block.innerHTML=`<h4><span class="dot" style="background:${c.color}"></span>${c.label} <span style="color:var(--muted);font-size:.8rem;font-weight:400">(${list.length})</span></h4>`;
+    list.forEach(e=>{
+      const row=document.createElement("div");row.className="entry";
+      row.innerHTML=`<div class="meta"><div class="et"></div>${e.detail?'<div class="ed"></div>':""}</div>
+        ${e.year?`<span class="yr">${esc(e.year)}</span>`:""}
+        <button class="del" title="Eliminar" data-del="${e.id}">✕</button>`;
+      row.querySelector(".et").textContent=e.title;
+      if(e.detail)row.querySelector(".ed").textContent=e.detail;
+      block.appendChild(row);
+    });
+    host.appendChild(block);
+  });
+  host.querySelectorAll("[data-del]").forEach(b=>b.addEventListener("click",()=>{
+    S.org=S.org.filter(x=>x.id!==b.dataset.del);save();buildOrg();
+  }));
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+
+//============================ EXPORT / IMPORT ============================
+function download(name,obj){
+  const blob=new Blob([JSON.stringify(obj,null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+  a.download=name;a.click();URL.revokeObjectURL(a.href);
+}
+document.getElementById("exportJson").onclick=()=>download("evaluacion-aneca-pad.json",S);
+document.getElementById("orgExport").onclick=()=>download("cv-meritos-aneca.json",{org:S.org});
+document.getElementById("printAll").onclick=()=>window.print();
+document.getElementById("orgPrint").onclick=()=>window.print();
+document.getElementById("importJson").onclick=()=>document.getElementById("fileIn").click();
+document.getElementById("fileIn").onchange=ev=>{
+  const f=ev.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);S=Object.assign(structuredClone(blank),d);save();renderAll();
+    alert("Datos importados correctamente.");}catch(e){alert("Archivo no válido.")}};
+  r.readAsText(f);
+};
+document.getElementById("resetCalc").onclick=()=>{if(confirm("¿Reiniciar todas las puntuaciones?")){S.calc={};save();buildDims();recalc();}};
+document.getElementById("resetCheck").onclick=()=>{if(confirm("¿Desmarcar todos los ítems?")){S.check={};save();buildChecklist();}};
+
+//============================ INIT ============================
+function renderAll(){buildDims();recalc();buildChecklist();fillCatSelect();buildOrg();}
+renderAll();
+</script>
+</body>
+</html>

@@ -1,0 +1,459 @@
+{
+  "assessment": [
+    {
+      "id": 1, "level": "A1",
+      "question": "My name ___ John.",
+      "options": ["am", "is", "are", "be"],
+      "answer": 1
+    },
+    {
+      "id": 2, "level": "A1",
+      "question": "___ you like coffee?",
+      "options": ["Are", "Does", "Do", "Is"],
+      "answer": 2
+    },
+    {
+      "id": 3, "level": "A1",
+      "question": "How ___ is your sister?",
+      "options": ["age", "old", "many", "much"],
+      "answer": 1
+    },
+    {
+      "id": 4, "level": "A1",
+      "question": "I have two ___.",
+      "options": ["childs", "childrens", "children", "child"],
+      "answer": 2
+    },
+    {
+      "id": 5, "level": "A2",
+      "question": "She ___ TV when I called.",
+      "options": ["watched", "was watching", "watches", "watch"],
+      "answer": 1
+    },
+    {
+      "id": 6, "level": "A2",
+      "question": "He ___ to Paris three times.",
+      "options": ["went", "was going", "has been", "had gone"],
+      "answer": 2
+    },
+    {
+      "id": 7, "level": "A2",
+      "question": "She has worked here ___ 2018.",
+      "options": ["for", "since", "during", "ago"],
+      "answer": 1
+    },
+    {
+      "id": 8, "level": "A2",
+      "question": "There ___ a lot of people at the concert.",
+      "options": ["was", "were", "is", "are"],
+      "answer": 1
+    },
+    {
+      "id": 9, "level": "B1",
+      "question": "If I ___ you, I would study harder.",
+      "options": ["am", "were", "was", "had been"],
+      "answer": 1
+    },
+    {
+      "id": 10, "level": "B1",
+      "question": "The book ___ by Hemingway in 1940.",
+      "options": ["wrote", "was written", "has written", "is writing"],
+      "answer": 1
+    },
+    {
+      "id": 11, "level": "B1",
+      "question": "She suggested ___ to the new exhibition.",
+      "options": ["to go", "going", "go", "she goes"],
+      "answer": 1
+    },
+    {
+      "id": 12, "level": "B1",
+      "question": "By the time we arrived, they ___ all the food.",
+      "options": ["ate", "eat", "have eaten", "had eaten"],
+      "answer": 3
+    },
+    {
+      "id": 13, "level": "B1",
+      "question": "He made us ___ the whole exercise again.",
+      "options": ["to do", "doing", "do", "done"],
+      "answer": 2
+    },
+    {
+      "id": 14, "level": "B2",
+      "question": "Not only ___ to the meeting late, but he also forgot the report.",
+      "options": ["did he arrive", "he arrived", "arrived he", "he did arrive"],
+      "answer": 0
+    },
+    {
+      "id": 15, "level": "B2",
+      "question": "The results were ___ that the researchers decided to publish immediately.",
+      "options": ["so remarkable", "such remarkable", "so remarkably", "such a remarkably"],
+      "answer": 0
+    },
+    {
+      "id": 16, "level": "B2",
+      "question": "The proposal, ___ had been discussed for months, was finally rejected.",
+      "options": ["that", "which", "what", "whose"],
+      "answer": 1
+    },
+    {
+      "id": 17, "level": "B2",
+      "question": "He must ___ the keys in the car — they're nowhere else.",
+      "options": ["leave", "have left", "left", "be leaving"],
+      "answer": 1
+    },
+    {
+      "id": 18, "level": "C1",
+      "question": "___ he known about the risk, he would never have agreed.",
+      "options": ["If", "Had", "Did", "Should"],
+      "answer": 1
+    },
+    {
+      "id": 19, "level": "C1",
+      "question": "It is high time we ___ measures to tackle climate change.",
+      "options": ["take", "took", "will take", "have taken"],
+      "answer": 1
+    },
+    {
+      "id": 20, "level": "C1",
+      "question": "She is widely regarded ___ the most important linguist of her generation.",
+      "options": ["as being", "as to be", "to being", "as be"],
+      "answer": 0
+    }
+  ],
+  "grammar": [
+    {
+      "id": 1,
+      "type": "multiple_choice",
+      "level": "A2",
+      "topic": "Present Simple",
+      "question": "She ___ to the gym three times a week.",
+      "options": ["go", "goes", "going", "is go"],
+      "answer": 1,
+      "explanation": "'She' is third-person singular, so we add -s to the verb: 'goes'."
+    },
+    {
+      "id": 2,
+      "type": "multiple_choice",
+      "level": "B1",
+      "topic": "Past Simple vs Present Perfect",
+      "question": "I ___ that film last Tuesday.",
+      "options": ["have seen", "saw", "see", "was seeing"],
+      "answer": 1,
+      "explanation": "'Last Tuesday' is a finished point in the past, so we use Past Simple: 'saw'. Present Perfect is used without a specific past time."
+    },
+    {
+      "id": 3,
+      "type": "multiple_choice",
+      "level": "B1",
+      "topic": "Second Conditional",
+      "question": "If I ___ more time, I would learn Japanese.",
+      "options": ["will have", "have", "had", "would have"],
+      "answer": 2,
+      "explanation": "Second conditional: 'If + past simple, would + infinitive'. Used for hypothetical or unlikely situations."
+    },
+    {
+      "id": 4,
+      "type": "multiple_choice",
+      "level": "B2",
+      "topic": "Passive Voice",
+      "question": "The report ___ by the manager yesterday.",
+      "options": ["wrote", "was written", "is written", "has written"],
+      "answer": 1,
+      "explanation": "Past passive = 'was/were + past participle'. The agent ('by the manager') tells us who performed the action."
+    },
+    {
+      "id": 5,
+      "type": "multiple_choice",
+      "level": "A2",
+      "topic": "Modal Verbs",
+      "question": "You ___ see a doctor — that cough sounds serious.",
+      "options": ["would", "should", "shall", "may"],
+      "answer": 1,
+      "explanation": "'Should' expresses advice or recommendation. 'Would' is for hypothetical situations, 'shall' for offers/suggestions, 'may' for possibility."
+    },
+    {
+      "id": 6,
+      "type": "multiple_choice",
+      "level": "B2",
+      "topic": "Articles",
+      "question": "___ Amazon is the longest river in South America.",
+      "options": ["A", "An", "The", "(no article)"],
+      "answer": 2,
+      "explanation": "We use 'the' with rivers, mountain ranges, oceans, and unique geographical features. It is always 'the Amazon', 'the Alps', 'the Pacific'."
+    },
+    {
+      "id": 7,
+      "type": "fill_blank",
+      "level": "A2",
+      "topic": "Prepositions of Time",
+      "before": "I was born",
+      "after": "1995.",
+      "answer": "in",
+      "alternatives": ["in"],
+      "hint": "Use ___ with years, months and seasons",
+      "explanation": "Use 'in' with years ('in 1995'), months ('in July') and seasons ('in summer'). Use 'on' with dates and days. Use 'at' with clock times."
+    },
+    {
+      "id": 8,
+      "type": "fill_blank",
+      "level": "B1",
+      "topic": "Present Perfect",
+      "before": "She has lived in Madrid",
+      "after": "2010.",
+      "answer": "since",
+      "alternatives": ["since"],
+      "hint": "'For' = period of time. '___ ' = specific point in time",
+      "explanation": "Use 'since' with a specific point in time (2010, January, last year). Use 'for' with a duration (three years, a long time)."
+    },
+    {
+      "id": 9,
+      "type": "fill_blank",
+      "level": "B1",
+      "topic": "Reported Speech",
+      "before": "He said that he",
+      "after": "watching TV when she called.",
+      "answer": "was",
+      "alternatives": ["was"],
+      "hint": "Backshift: 'is watching' → '___'",
+      "explanation": "In reported speech, verbs shift back one tense. 'is watching' (present continuous) → 'was watching' (past continuous)."
+    },
+    {
+      "id": 10,
+      "type": "fill_blank",
+      "level": "B2",
+      "topic": "Relative Clauses",
+      "before": "The woman",
+      "after": "I met at the conference turned out to be a famous author.",
+      "answer": "who",
+      "alternatives": ["who", "that"],
+      "hint": "Use a relative pronoun for people",
+      "explanation": "'Who' (or 'that') introduces a relative clause referring to a person. 'Which' refers to things. In this clause 'who' is the object, so it can be omitted in informal speech."
+    },
+    {
+      "id": 11,
+      "type": "multiple_choice",
+      "level": "B2",
+      "topic": "Third Conditional",
+      "question": "If she ___ harder, she would have passed the exam.",
+      "options": ["studied", "had studied", "would study", "has studied"],
+      "answer": 1,
+      "explanation": "Third conditional: 'If + past perfect, would have + past participle'. Used for imaginary situations in the past."
+    },
+    {
+      "id": 12,
+      "type": "fill_blank",
+      "level": "A2",
+      "topic": "Comparatives",
+      "before": "The new office is much",
+      "after": "than the old one.",
+      "answer": "bigger",
+      "alternatives": ["bigger", "more big"],
+      "hint": "Comparative of 'big'",
+      "explanation": "One-syllable adjectives ending in consonant-vowel-consonant double the final consonant and add -er: big → bigger, hot → hotter, thin → thinner."
+    }
+  ],
+  "readings": [
+    {
+      "id": 1,
+      "title": "The History of Coffee",
+      "level": "A2",
+      "readTime": "3 min",
+      "text": "Coffee is one of the most popular drinks in the world. People drink more than two billion cups of coffee every day. But where did coffee come from?\n\nThe story of coffee begins in Ethiopia, in East Africa. According to legend, a goat herder named Kaldi noticed that his goats were very energetic after eating berries from a certain tree. Those berries were coffee beans.\n\nFrom Ethiopia, coffee spread to Arabia, where people started to make a drink from the beans. By the 1400s, coffee was very popular in the Arabian Peninsula. People enjoyed it in special places called 'qahveh khaneh', which means 'coffee houses'. These were important social places where people talked, listened to music, and played chess.\n\nIn the 1600s, coffee arrived in Europe. At first, some people were worried about coffee and thought it was a dangerous drink. However, it quickly became popular, and coffee houses opened in many European cities. These became important meeting places for businessmen and writers.\n\nToday, Brazil produces the most coffee in the world. Other important coffee-producing countries are Vietnam, Colombia, and Indonesia.",
+      "vocabulary": [
+        { "word": "popular", "definition": "liked or enjoyed by many people" },
+        { "word": "legend", "definition": "an old story that may or may not be true" },
+        { "word": "herder", "definition": "a person who takes care of a group of animals" },
+        { "word": "energetic", "definition": "having a lot of energy; very active" },
+        { "word": "peninsula", "definition": "a piece of land almost completely surrounded by water" },
+        { "word": "social", "definition": "relating to meeting and spending time with other people" },
+        { "word": "produces", "definition": "makes or grows something in large quantities" }
+      ],
+      "questions": [
+        {
+          "question": "How many cups of coffee do people drink every day?",
+          "options": ["One billion", "Two billion", "Three billion", "Four billion"],
+          "answer": 1
+        },
+        {
+          "question": "Where did coffee originally come from?",
+          "options": ["Arabia", "Brazil", "Ethiopia", "Colombia"],
+          "answer": 2
+        },
+        {
+          "question": "What were 'qahveh khaneh'?",
+          "options": ["Coffee farms", "Coffee houses", "Coffee factories", "Coffee ships"],
+          "answer": 1
+        },
+        {
+          "question": "When did coffee arrive in Europe?",
+          "options": ["In the 1400s", "In the 1500s", "In the 1600s", "In the 1700s"],
+          "answer": 2
+        },
+        {
+          "question": "Which country produces the most coffee today?",
+          "options": ["Colombia", "Vietnam", "Ethiopia", "Brazil"],
+          "answer": 3
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Artificial Intelligence in Everyday Life",
+      "level": "B1",
+      "readTime": "5 min",
+      "text": "Artificial Intelligence, or AI, is becoming an increasingly important part of our daily lives. Although many people associate AI with science-fiction robots, the technology is actually all around us, quietly improving the way we work, communicate, and live.\n\nOne of the most common uses of AI is in our smartphones. Virtual assistants like Siri and Google Assistant use AI to understand and respond to our questions. These systems learn from our behaviour over time, becoming more accurate and personalised the more we use them.\n\nAI is also transforming healthcare. Doctors can now use AI-powered software to analyse medical images and detect diseases such as cancer at earlier stages than ever before. This technology can identify patterns that might be invisible to the human eye, potentially saving millions of lives.\n\nIn the world of entertainment, AI algorithms decide what music, films, and videos to recommend to us. Netflix, Spotify, and YouTube all use sophisticated AI systems to analyse our habits, ensuring that we always have something new to discover.\n\nHowever, AI also raises important questions. As machines become capable of performing more tasks, there are concerns about job displacement. Moreover, questions about privacy arise when AI systems collect and analyse vast amounts of personal data.\n\nDespite these challenges, most experts agree that AI will continue to advance rapidly. Learning to work alongside AI will be one of the most important skills for the generations to come.",
+      "vocabulary": [
+        { "word": "increasingly", "definition": "more and more as time passes" },
+        { "word": "associate", "definition": "to connect one thing with another in your mind" },
+        { "word": "personalised", "definition": "adapted or changed for a specific person" },
+        { "word": "transforming", "definition": "changing something completely" },
+        { "word": "sophisticated", "definition": "complex, advanced, and clever" },
+        { "word": "displacement", "definition": "being moved away from a usual place or job" },
+        { "word": "vast", "definition": "very large in size or amount" }
+      ],
+      "questions": [
+        {
+          "question": "According to the text, where do we most commonly encounter AI?",
+          "options": ["In hospitals", "In our smartphones", "In factories", "In schools"],
+          "answer": 1
+        },
+        {
+          "question": "How does AI help in healthcare?",
+          "options": [
+            "It replaces doctors completely",
+            "It analyses medical images to detect diseases earlier",
+            "It manufactures medicines",
+            "It schedules appointments automatically"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "What do Netflix, Spotify, and YouTube have in common according to the text?",
+          "options": [
+            "They were all founded in the same year",
+            "They are owned by the same company",
+            "They all use AI to recommend content",
+            "They all offer the same type of content"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "What concern about AI is mentioned in the text?",
+          "options": [
+            "AI is too expensive for most companies",
+            "AI makes devices run slower",
+            "AI may displace workers from their jobs",
+            "AI does not work in cold climates"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "What does the text suggest about the future of AI?",
+          "options": [
+            "AI will stop advancing soon",
+            "AI will be banned in many countries",
+            "AI will continue to advance rapidly",
+            "AI will only be used in hospitals"
+          ],
+          "answer": 2
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "The Benefits of Learning a Second Language",
+      "level": "B2",
+      "readTime": "6 min",
+      "text": "In an increasingly interconnected world, the ability to speak more than one language has never been more valuable. While the practical benefits of bilingualism are well documented — better job prospects, easier travel, access to foreign media — the cognitive advantages are perhaps even more remarkable.\n\nResearch conducted over the past two decades has consistently shown that bilingual individuals develop what neuroscientists call 'cognitive reserve': a mental resilience that can delay the onset of dementia and other age-related cognitive decline by up to five years. The constant mental workout of managing two language systems appears to strengthen the brain's executive functions — the set of mental skills that includes working memory, flexible thinking, and self-control.\n\nBeyond neurology, learning a second language fundamentally changes how we perceive the world. Languages do not simply translate reality; they shape it. The Japanese word 'komorebi', for instance, describes the interplay of light and leaves when sunlight filters through trees — a concept for which English has no single equivalent. Acquiring such vocabulary gives us new ways of noticing and articulating experiences we might otherwise overlook.\n\nThe social benefits are equally profound. Language is culture's primary vessel. When you learn French, you are not merely memorising vocabulary and grammar rules; you are gaining access to centuries of literature, philosophy, cuisine, and social customs. This cultural immersion fosters empathy and reduces the kind of misunderstanding that so often underlies international conflict.\n\nCritics sometimes argue that English's status as a global lingua franca makes learning other languages unnecessary. However, this view overlooks the nuances of cross-cultural communication. Native speakers invariably communicate with subtlety, humour, and cultural reference that non-native speakers miss entirely.\n\nWhether you choose Spanish, Mandarin, Arabic, or any other language, the investment pays dividends — cognitive, cultural, and professional — that last a lifetime.",
+      "vocabulary": [
+        { "word": "interconnected", "definition": "linked or related to one another" },
+        { "word": "bilingualism", "definition": "the ability to speak two languages fluently" },
+        { "word": "cognitive", "definition": "relating to mental processes such as thinking and memory" },
+        { "word": "resilience", "definition": "the ability to recover from difficulties or adverse conditions" },
+        { "word": "dementia", "definition": "a brain disease causing progressive memory loss and cognitive decline" },
+        { "word": "articulating", "definition": "expressing thoughts or feelings clearly in words" },
+        { "word": "lingua franca", "definition": "a language used as a common means of communication between speakers of different native languages" },
+        { "word": "invariably", "definition": "always; without exception" },
+        { "word": "dividends", "definition": "benefits or returns gained from an investment of effort or money" }
+      ],
+      "questions": [
+        {
+          "question": "According to the text, what is 'cognitive reserve'?",
+          "options": [
+            "A type of memory loss common in older adults",
+            "A mental resilience that can delay cognitive decline",
+            "A brain region responsible for language processing",
+            "A technique for memorising vocabulary more efficiently"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "What does the Japanese word 'komorebi' describe?",
+          "options": [
+            "A type of traditional Japanese food",
+            "A feeling of peaceful loneliness",
+            "The interplay of light and leaves when sunlight filters through trees",
+            "A traditional Japanese tea ceremony"
+          ],
+          "answer": 2
+        },
+        {
+          "question": "How does the author describe language in relation to culture?",
+          "options": [
+            "Language is culture's primary vessel",
+            "Language and culture are completely independent",
+            "Language is less important than cultural customs",
+            "Language prevents true cultural understanding"
+          ],
+          "answer": 0
+        },
+        {
+          "question": "How does the author respond to the argument that English as a lingua franca makes other languages unnecessary?",
+          "options": [
+            "The author agrees that English is sufficient",
+            "The author argues that true fluency goes beyond basic communication",
+            "The author suggests focusing on dead languages instead",
+            "The author avoids addressing this argument"
+          ],
+          "answer": 1
+        },
+        {
+          "question": "The word 'dividends' in the final paragraph most closely means:",
+          "options": ["costs and sacrifices", "problems and obstacles", "returns and benefits", "languages and cultures"],
+          "answer": 2
+        }
+      ]
+    }
+  ],
+  "listening": [
+    {
+      "id": 1,
+      "title": "A Morning Routine",
+      "level": "A2",
+      "type": "gap_fill",
+      "instructions": "Click Play to listen. Fill in the missing words as you listen.",
+      "full_text": "Every morning, I wake up at seven o'clock. First, I take a shower and brush my teeth. Then I get dressed and go downstairs to make breakfast. I usually have cereal with milk and a cup of coffee. After breakfast, I read the news on my phone for about ten minutes. Then I put on my coat and walk to the bus stop. The bus takes about twenty minutes to reach my office.",
+      "display_text": "Every morning, I wake up at [BLANK] o'clock. First, I take a [BLANK] and brush my teeth. Then I get dressed and go downstairs to make [BLANK]. I usually have cereal with milk and a cup of [BLANK]. After breakfast, I read the news on my phone for about ten minutes. Then I put on my coat and walk to the bus stop. The bus takes about [BLANK] minutes to reach my office.",
+      "answers": ["seven", "shower", "breakfast", "coffee", "twenty"]
+    },
+    {
+      "id": 2,
+      "title": "At the Doctor's",
+      "level": "B1",
+      "type": "gap_fill",
+      "instructions": "Click Play to listen to the phone conversation. Fill in the missing words.",
+      "full_text": "Hello, this is Dr Martinez's office. How can I help you? Hi, I'd like to make an appointment for a check-up, please. Of course. Are you a new patient? No, I have been coming here for about three years. Could I ask your name? Certainly. It's Thompson, Sarah Thompson. And what's a convenient time for you? I'm free on Thursday afternoon or Friday morning. We have an opening on Thursday at half past two. Does that work for you? That's perfect. Thank you very much.",
+      "display_text": "Hello, this is Dr Martinez's office. How can I help you? Hi, I'd like to make an [BLANK] for a check-up, please. Of course. Are you a new [BLANK]? No, I have been coming here for about [BLANK] years. Could I ask your name? Certainly. It's Thompson, Sarah Thompson. And what's a convenient time for you? I'm free on [BLANK] afternoon or Friday morning. We have an opening on Thursday at half past two. Does that work for you? That's [BLANK]. Thank you very much.",
+      "answers": ["appointment", "patient", "three", "Thursday", "perfect"]
+    },
+    {
+      "id": 3,
+      "title": "Climate Change Facts",
+      "level": "B2",
+      "type": "dictation",
+      "instructions": "Click Play to listen. Type exactly what you hear in the box below. You can listen as many times as you need.",
+      "full_text": "The global average temperature has risen by approximately one point one degrees Celsius since pre-industrial times. Scientists agree that this warming is primarily caused by human activities, particularly the burning of fossil fuels such as coal, oil, and natural gas. The consequences include rising sea levels, more frequent extreme weather events, and the disruption of ecosystems worldwide. To limit warming to one point five degrees, global carbon emissions must reach net zero by two thousand and fifty."
+    }
+  ]
+}

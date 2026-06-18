@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Calculadora de hipoteca · España (junio 2026)</title>
+<style>
+  :root {
+    --bg: oklch(98.5% 0.005 240);
+    --surface: oklch(100% 0 0);
+    --ink: oklch(22% 0.02 250);
+    --muted: oklch(52% 0.02 250);
+    --line: oklch(90% 0.01 250);
+    --brand: oklch(55% 0.16 250);
+    --brand-soft: oklch(95% 0.04 250);
+    --accent: oklch(62% 0.17 155);
+    --warn: oklch(60% 0.16 35);
+    --radius: 14px;
+    --shadow: 0 1px 2px oklch(20% 0.05 250 / 0.06), 0 12px 30px oklch(20% 0.05 250 / 0.08);
+    --space: clamp(1rem, 0.6rem + 1.5vw, 2rem);
+    color-scheme: light;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(120% 80% at 100% 0%, var(--brand-soft), transparent 55%),
+      var(--bg);
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: var(--space); }
+  header.top { padding: clamp(1.5rem, 1rem + 3vw, 3.5rem) 0 1rem; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--brand);
+  }
+  .pill { background: var(--accent); color: oklch(99% 0 0); padding: 0.15rem 0.55rem; border-radius: 99px; font-size: 0.68rem; letter-spacing: 0.04em; }
+  h1 { font-size: clamp(1.8rem, 1.2rem + 3vw, 3rem); line-height: 1.05; margin: 0.4rem 0 0.5rem; letter-spacing: -0.02em; }
+  .sub { color: var(--muted); max-width: 56ch; margin: 0; }
+
+  .grid { display: grid; gap: var(--space); grid-template-columns: 1fr; }
+  @media (min-width: 880px) { .grid { grid-template-columns: 0.95fr 1.05fr; align-items: start; } }
+
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: var(--space); }
+  .card h2 { font-size: 1.05rem; margin: 0 0 1rem; letter-spacing: -0.01em; }
+
+  .field { margin-bottom: 1.05rem; }
+  .field > label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 0.35rem; }
+  .field .hint { font-size: 0.74rem; color: var(--muted); font-weight: 400; }
+  .input-euro, .input-pct { position: relative; }
+  .input-euro::after, .input-pct::after {
+    position: absolute; right: 0.85rem; top: 50%; transform: translateY(-50%);
+    color: var(--muted); font-weight: 600; pointer-events: none;
+  }
+  .input-euro::after { content: "€"; }
+  .input-pct::after { content: "%"; }
+  input[type="number"], select {
+    width: 100%; padding: 0.7rem 0.85rem; font-size: 1rem; color: var(--ink);
+    background: oklch(99% 0.003 250); border: 1px solid var(--line);
+    border-radius: 10px; transition: border-color 150ms, box-shadow 150ms;
+  }
+  input:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 3px var(--brand-soft); }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+
+  .seg { display: flex; background: oklch(96% 0.006 250); border: 1px solid var(--line); border-radius: 10px; padding: 3px; gap: 2px; }
+  .seg button { flex: 1; border: 0; background: transparent; padding: 0.5rem 0.6rem; font: inherit; font-weight: 600; color: var(--muted); border-radius: 8px; cursor: pointer; transition: all 150ms; }
+  .seg button[aria-pressed="true"] { background: var(--surface); color: var(--brand); box-shadow: var(--shadow); }
+
+  .product-panel { background: oklch(98% 0.006 250); border: 1px solid var(--line); border-radius: 12px; padding: 0.9rem; margin-top: 0.75rem; }
+
+  details.adv { margin-top: 0.5rem; border-top: 1px dashed var(--line); padding-top: 0.85rem; }
+  details.adv summary { cursor: pointer; font-weight: 600; font-size: 0.9rem; color: var(--brand); }
+  details.adv[open] summary { margin-bottom: 0.85rem; }
+
+  .hero-figure { background: linear-gradient(135deg, oklch(30% 0.08 255), oklch(45% 0.15 255)); color: oklch(98% 0 0); border-radius: var(--radius); padding: 1.4rem var(--space); box-shadow: var(--shadow); position: relative; overflow: hidden; }
+  .hero-figure::before { content: ""; position: absolute; inset: auto -20% -60% auto; width: 320px; height: 320px; background: radial-gradient(circle, oklch(70% 0.18 200 / 0.5), transparent 70%); }
+  .hero-figure .k { font-size: 0.8rem; opacity: 0.85; letter-spacing: 0.03em; position: relative; }
+  .hero-figure .v { font-size: clamp(2.1rem, 1.4rem + 3vw, 3.1rem); font-weight: 700; letter-spacing: -0.02em; position: relative; }
+  .hero-figure .v small { font-size: 1rem; font-weight: 500; opacity: 0.85; }
+  .hero-figure .tae { position: relative; margin-top: 0.5rem; font-size: 0.86rem; opacity: 0.95; }
+  .hero-figure .tae b { background: oklch(100% 0 0 / 0.18); padding: 0.1rem 0.5rem; border-radius: 99px; }
+  .hero-figure .pvary { position: relative; margin-top: 0.5rem; font-size: 0.82rem; opacity: 0.9; }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; margin-top: var(--space); }
+  @media (min-width: 520px) { .stats { grid-template-columns: repeat(3, 1fr); } }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 0.85rem 0.95rem; }
+  .stat .k { font-size: 0.72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .stat .v { font-size: 1.15rem; font-weight: 700; margin-top: 0.15rem; letter-spacing: -0.01em; }
+  .stat.accent .v { color: var(--accent); }
+  .stat.warn .v { color: var(--warn); }
+
+  .bar { height: 10px; border-radius: 99px; background: var(--brand-soft); overflow: hidden; margin-top: 0.35rem; display: flex; }
+  .bar i { display: block; height: 100%; }
+  .bar .b-principal { background: var(--brand); }
+  .bar .b-interest { background: var(--warn); }
+  .legend { display: flex; gap: 1rem; font-size: 0.78rem; color: var(--muted); margin-top: 0.5rem; flex-wrap: wrap; }
+  .legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .dot { width: 10px; height: 10px; border-radius: 3px; }
+
+  .costs-list { list-style: none; padding: 0; margin: 0.5rem 0 0; }
+  .costs-list li { display: flex; justify-content: space-between; padding: 0.4rem 0; border-bottom: 1px solid var(--line); font-size: 0.92rem; }
+  .costs-list li:last-child { border-bottom: 0; font-weight: 700; }
+
+  table.sched { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-top: 0.5rem; }
+  table.sched th, table.sched td { padding: 0.45rem 0.5rem; text-align: right; border-bottom: 1px solid var(--line); }
+  table.sched th { color: var(--muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; position: sticky; top: 0; background: var(--surface); }
+  table.sched th:first-child, table.sched td:first-child { text-align: left; }
+  .sched-scroll { max-height: 360px; overflow: auto; border: 1px solid var(--line); border-radius: 10px; }
+  .btn { border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-weight: 600; padding: 0.55rem 1rem; border-radius: 10px; cursor: pointer; transition: all 150ms; margin-top: 0.85rem; }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .note { font-size: 0.76rem; color: var(--muted); margin-top: var(--space); }
+  .note a { color: var(--brand); }
+  footer { padding: 2rem 0; text-align: center; color: var(--muted); font-size: 0.8rem; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">Hipoteca · España <span class="pill" id="refPill">Euríbor 2,80% · jun 2026</span></div>
+    <h1>Calculadora de hipoteca</h1>
+    <p class="sub">Ajustada al mercado de junio 2026: tipo <strong>fijo, variable o mixto</strong> con el Euríbor real, <strong>cuota y TAE</strong>, gastos de compraventa por <strong>comunidad autónoma</strong> y cuadro de amortización.</p>
+  </header>
+
+  <div class="grid">
+    <!-- ENTRADA -->
+    <form class="card" id="form" autocomplete="off">
+      <h2>Datos de la operación</h2>
+
+      <div class="field">
+        <label for="price">Precio de la vivienda</label>
+        <div class="input-euro"><input type="number" id="price" value="250000" min="0" step="1000" /></div>
+      </div>
+
+      <div class="field">
+        <label for="down">Entrada (ahorro aportado) <span class="hint">— lo habitual es ≥ 20%</span></label>
+        <div class="input-euro"><input type="number" id="down" value="50000" min="0" step="1000" /></div>
+      </div>
+
+      <div class="field">
+        <label for="years">Plazo <span class="hint">(años)</span></label>
+        <input type="number" id="years" value="30" min="1" max="40" step="1" />
+      </div>
+
+      <!-- PRODUCTO -->
+      <div class="field">
+        <label>Tipo de hipoteca</label>
+        <div class="seg" role="group" aria-label="Tipo de hipoteca">
+          <button type="button" data-prod="fija" aria-pressed="true">Fija</button>
+          <button type="button" data-prod="variable" aria-pressed="false">Variable</button>
+          <button type="button" data-prod="mixta" aria-pressed="false">Mixta</button>
+        </div>
+
+        <!-- FIJA -->
+        <div class="product-panel" id="panel-fija">
+          <div class="field" style="margin:0;">
+            <label for="fixedRate">TIN fijo <span class="hint">— ofertas jun 2026: 2,0%–2,5%</span></label>
+            <div class="input-pct"><input type="number" id="fixedRate" value="2.5" min="0" step="0.05" /></div>
+          </div>
+        </div>
+
+        <!-- VARIABLE -->
+        <div class="product-panel" id="panel-variable" hidden>
+          <div class="row">
+            <div class="field" style="margin:0;">
+              <label for="euribor">Euríbor 12M</label>
+              <div class="input-pct"><input type="number" id="euribor" value="2.80" min="0" step="0.01" /></div>
+            </div>
+            <div class="field" style="margin:0;">
+              <label for="diff">Diferencial</label>
+              <div class="input-pct"><input type="number" id="diff" value="0.75" min="0" step="0.05" /></div>
+            </div>
+          </div>
+          <div class="field" style="margin:0.75rem 0 0;">
+            <label for="promo">Tipo bonificado 1.er año <span class="hint">— opcional, déjalo vacío si no aplica</span></label>
+            <div class="input-pct"><input type="number" id="promo" placeholder="—" min="0" step="0.05" /></div>
+          </div>
+          <p class="hint" style="margin:0.6rem 0 0;">Tipo aplicado tras el primer año: <strong id="varRate">3,55%</strong> (Euríbor + diferencial). La cuota se recalcula en cada revisión.</p>
+        </div>
+
+        <!-- MIXTA -->
+        <div class="product-panel" id="panel-mixta" hidden>
+          <div class="row">
+            <div class="field" style="margin:0;">
+              <label for="mixYears">Años tramo fijo</label>
+              <input type="number" id="mixYears" value="10" min="1" max="30" step="1" />
+            </div>
+            <div class="field" style="margin:0;">
+              <label for="mixRate">TIN tramo fijo</label>
+              <div class="input-pct"><input type="number" id="mixRate" value="2.3" min="0" step="0.05" /></div>
+            </div>
+          </div>
+          <div class="row" style="margin-top:0.75rem;">
+            <div class="field" style="margin:0;">
+              <label for="euribor2">Euríbor 12M</label>
+              <div class="input-pct"><input type="number" id="euribor2" value="2.80" min="0" step="0.01" /></div>
+            </div>
+            <div class="field" style="margin:0;">
+              <label for="diff2">Diferencial</label>
+              <div class="input-pct"><input type="number" id="diff2" value="0.60" min="0" step="0.05" /></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIVIENDA + CCAA -->
+      <div class="field">
+        <label>Tipo de vivienda <span class="hint">— determina el impuesto</span></label>
+        <div class="seg" role="group" aria-label="Tipo de vivienda">
+          <button type="button" id="typeUsada" aria-pressed="true">Usada (ITP)</button>
+          <button type="button" id="typeNueva" aria-pressed="false">Nueva (IVA+AJD)</button>
+        </div>
+      </div>
+
+      <div class="field" id="ccaaWrap">
+        <label for="ccaa">Comunidad autónoma <span class="hint">— fija el ITP</span></label>
+        <select id="ccaa"></select>
+      </div>
+
+      <details class="adv">
+        <summary>Ajustar impuestos, vinculaciones y gastos</summary>
+        <div class="row">
+          <div class="field" id="itpWrap"><label for="itp">ITP <span class="hint">(%)</span></label><div class="input-pct"><input type="number" id="itp" value="8" min="0" step="0.5" /></div></div>
+          <div class="field" id="ivaWrap" hidden><label for="iva">IVA <span class="hint">(%)</span></label><div class="input-pct"><input type="number" id="iva" value="10" min="0" step="0.5" /></div></div>
+          <div class="field" id="ajdWrap" hidden><label for="ajd">AJD <span class="hint">(%)</span></label><div class="input-pct"><input type="number" id="ajd" value="1.5" min="0" step="0.1" /></div></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="opening">Comisión apertura <span class="hint">(%)</span></label><div class="input-pct"><input type="number" id="opening" value="0" min="0" step="0.1" /></div></div>
+          <div class="field"><label for="bundle">Vinculaciones <span class="hint">(€/mes: seguros…)</span></label><div class="input-euro"><input type="number" id="bundle" value="30" min="0" step="5" /></div></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="notary">Notaría</label><div class="input-euro"><input type="number" id="notary" placeholder="auto" min="0" step="50" /></div></div>
+          <div class="field"><label for="registry">Registro</label><div class="input-euro"><input type="number" id="registry" placeholder="auto" min="0" step="50" /></div></div>
+        </div>
+        <div class="row">
+          <div class="field"><label for="agency">Gestoría</label><div class="input-euro"><input type="number" id="agency" value="350" min="0" step="50" /></div></div>
+          <div class="field"><label for="appraisal">Tasación</label><div class="input-euro"><input type="number" id="appraisal" value="350" min="0" step="50" /></div></div>
+        </div>
+        <p class="hint">Comisión de apertura y vinculaciones afectan a la <strong>TAE</strong>. Notaría y registro se estiman por el precio si los dejas vacíos.</p>
+      </details>
+    </form>
+
+    <!-- RESULTADO -->
+    <div>
+      <div class="hero-figure">
+        <div class="k" id="payLabel">Cuota mensual</div>
+        <div class="v" id="rPayment">— <small>/mes</small></div>
+        <div class="tae">TAE estimada <b id="rTae">—</b></div>
+        <div class="pvary" id="rVary" hidden></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><div class="k">Importe del préstamo</div><div class="v" id="rLoan">—</div></div>
+        <div class="stat"><div class="k">Financiación (LTV)</div><div class="v" id="rLtv">—</div></div>
+        <div class="stat accent"><div class="k">Ahorro inicial necesario</div><div class="v" id="rUpfront">—</div></div>
+        <div class="stat warn"><div class="k">Intereses totales</div><div class="v" id="rInterest">—</div></div>
+        <div class="stat"><div class="k">Total a devolver</div><div class="v" id="rTotal">—</div></div>
+        <div class="stat"><div class="k">Coste compraventa</div><div class="v" id="rCosts">—</div></div>
+      </div>
+
+      <div class="card" style="margin-top: var(--space);">
+        <h2>Reparto del coste del préstamo</h2>
+        <div class="bar"><i class="b-principal" id="barPrincipal"></i><i class="b-interest" id="barInterest"></i></div>
+        <div class="legend">
+          <span><i class="dot" style="background:var(--brand)"></i> Capital <b id="legPrincipal" style="margin-left:.25rem"></b></span>
+          <span><i class="dot" style="background:var(--warn)"></i> Intereses <b id="legInterest" style="margin-left:.25rem"></b></span>
+        </div>
+
+        <h2 style="margin-top:1.4rem;">Gastos de compraventa</h2>
+        <ul class="costs-list" id="costsList"></ul>
+
+        <button type="button" class="btn" id="toggleSched">Ver cuadro de amortización</button>
+        <div class="sched-scroll" id="schedWrap" hidden>
+          <table class="sched">
+            <thead><tr><th>Año</th><th>TIN</th><th>Cuota anual</th><th>Intereses</th><th>Capital</th><th>Pendiente</th></tr></thead>
+            <tbody id="schedBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="note">Cálculo orientativo (junio 2026). La cuota de los tramos variables asume que el Euríbor se mantiene; en la realidad fluctúa. La TAE incluye comisión de apertura y vinculaciones, pero el coste real depende de cada oferta. El ITP/AJD lo fija cada comunidad autónoma (tipo general orientativo; existen tipos reducidos por edad, familia numerosa, etc.). Verifica siempre con tu banco y tu CCAA.</p>
+    </div>
+  </div>
+
+  <footer>Hecho para España · sistema francés · Euríbor 12M ≈ 2,80% (jun 2026) · cálculos verificados con 25 tests</footer>
+</div>
+
+<script src="mortgage.js"></script>
+<script>
+  const $ = (id) => document.getElementById(id);
+  const eur = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
+  const eur2 = new Intl.NumberFormat('es-ES', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const pct1 = new Intl.NumberFormat('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  const pctn = (x) => pct1.format(x) + ' %';
+
+  let product = 'fija';
+  let housingType = 'usada';
+
+  // Rellenar selector de CCAA con tipos de ITP 2026
+  const ccaaSel = $('ccaa');
+  Object.keys(Mortgage.ITP_BY_CCAA).forEach((name) => {
+    const o = document.createElement('option');
+    o.value = name;
+    o.textContent = `${name} (${pct1.format(Mortgage.ITP_BY_CCAA[name])}%)`;
+    ccaaSel.appendChild(o);
+  });
+  ccaaSel.value = 'Castilla y León';
+  $('itp').value = Mortgage.ITP_BY_CCAA['Castilla y León'];
+
+  ccaaSel.addEventListener('change', () => {
+    $('itp').value = Mortgage.ITP_BY_CCAA[ccaaSel.value];
+    recalc();
+  });
+
+  function num(id, fallback = 0) {
+    const v = parseFloat($(id).value);
+    return Number.isFinite(v) ? v : fallback;
+  }
+
+  function buildProduct() {
+    if (product === 'variable') {
+      const cfg = { product: 'variable', euribor: num('euribor', Mortgage.EURIBOR_REF), differentialPct: num('diff', 0.75) };
+      if ($('promo').value !== '') cfg.firstYearRatePct = num('promo');
+      return cfg;
+    }
+    if (product === 'mixta') {
+      return { product: 'mixta', mixedFixedYears: Math.max(1, num('mixYears', 10)), mixedFixedRatePct: num('mixRate', 2.3), euribor: num('euribor2', Mortgage.EURIBOR_REF), differentialPct: num('diff2', 0.6) };
+    }
+    return { product: 'fija', fixedRatePct: num('fixedRate', 2.5) };
+  }
+
+  function costOverrides() {
+    const o = { type: housingType, itpPct: num('itp', 8), ivaPct: num('iva', 10), ajdPct: num('ajd', 1.5), agency: num('agency', 350), appraisal: num('appraisal', 350) };
+    if ($('notary').value !== '') o.notary = num('notary');
+    if ($('registry').value !== '') o.registry = num('registry');
+    return o;
+  }
+
+  function recalc() {
+    // Tipo variable mostrado
+    $('varRate').textContent = pctn(num('euribor', Mortgage.EURIBOR_REF) + num('diff', 0.75));
+
+    const years = Math.max(1, num('years', 1));
+    let s;
+    try {
+      s = Mortgage.summarize({
+        price: num('price'),
+        downPayment: num('down'),
+        years,
+        type: housingType,
+        product: buildProduct(),
+        openingCommissionPct: num('opening', 0),
+        monthlyExtraCost: num('bundle', 0),
+        costOverrides: costOverrides(),
+      });
+    } catch (e) { return; }
+
+    $('payLabel').textContent = s.paymentVaries ? 'Cuota inicial' : 'Cuota mensual';
+    $('rPayment').innerHTML = eur2.format(s.monthlyPayment) + ' <small>/mes</small>';
+    $('rTae').textContent = pctn(s.tae);
+
+    if (s.paymentVaries) {
+      $('rVary').hidden = false;
+      $('rVary').innerHTML = `Cuota a lo largo del préstamo: <strong>${eur2.format(s.minPayment)}</strong> – <strong>${eur2.format(s.maxPayment)}</strong>/mes`;
+    } else {
+      $('rVary').hidden = true;
+    }
+
+    $('rLoan').textContent = eur.format(s.loanAmount);
+    $('rLtv').textContent = pct1.format(s.ltv) + ' %';
+    $('rUpfront').textContent = eur.format(s.upfrontCash);
+    $('rInterest').textContent = eur.format(s.totalInterest);
+    $('rTotal').textContent = eur.format(s.totalPaid);
+    $('rCosts').textContent = eur.format(s.costs.total);
+
+    const principal = s.loanAmount, interest = s.totalInterest, tot = principal + interest || 1;
+    $('barPrincipal').style.width = (principal / tot * 100) + '%';
+    $('barInterest').style.width = (interest / tot * 100) + '%';
+    $('legPrincipal').textContent = eur.format(principal);
+    $('legInterest').textContent = eur.format(interest);
+
+    $('costsList').innerHTML =
+      s.costs.items.map((it) => `<li><span>${it.label}</span><span>${eur.format(it.amount)}</span></li>`).join('') +
+      `<li><span>Total gastos e impuestos</span><span>${eur.format(s.costs.total)}</span></li>`;
+
+    renderSchedule(s.schedule);
+  }
+
+  function renderSchedule(schedule) {
+    const rows = [];
+    for (let y = 0; y * 12 < schedule.length; y++) {
+      const slice = schedule.slice(y * 12, y * 12 + 12);
+      const cuota = slice.reduce((a, r) => a + r.payment, 0);
+      const interes = slice.reduce((a, r) => a + r.interest, 0);
+      const capital = slice.reduce((a, r) => a + r.principalPart, 0);
+      const pendiente = slice[slice.length - 1].balance;
+      const tin = slice[slice.length - 1].rate;
+      rows.push(`<tr><td>${y + 1}</td><td>${pct1.format(tin)}%</td><td>${eur.format(cuota)}</td><td>${eur.format(interes)}</td><td>${eur.format(capital)}</td><td>${eur.format(pendiente)}</td></tr>`);
+    }
+    $('schedBody').innerHTML = rows.join('');
+  }
+
+  // Selector de producto
+  document.querySelectorAll('[data-prod]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      product = btn.dataset.prod;
+      document.querySelectorAll('[data-prod]').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      $('panel-fija').hidden = product !== 'fija';
+      $('panel-variable').hidden = product !== 'variable';
+      $('panel-mixta').hidden = product !== 'mixta';
+      recalc();
+    });
+  });
+
+  // Tipo de vivienda
+  function setType(t) {
+    housingType = t;
+    $('typeUsada').setAttribute('aria-pressed', String(t === 'usada'));
+    $('typeNueva').setAttribute('aria-pressed', String(t === 'nueva'));
+    $('itpWrap').hidden = t !== 'usada';
+    $('ivaWrap').hidden = t !== 'nueva';
+    $('ajdWrap').hidden = t !== 'nueva';
+    $('ccaaWrap').hidden = t !== 'usada';
+    recalc();
+  }
+  $('typeUsada').addEventListener('click', () => setType('usada'));
+  $('typeNueva').addEventListener('click', () => setType('nueva'));
+
+  $('toggleSched').addEventListener('click', () => {
+    const w = $('schedWrap');
+    w.hidden = !w.hidden;
+    $('toggleSched').textContent = w.hidden ? 'Ver cuadro de amortización' : 'Ocultar cuadro de amortización';
+  });
+
+  $('form').addEventListener('input', recalc);
+  recalc();
+</script>
+</body>
+</html>

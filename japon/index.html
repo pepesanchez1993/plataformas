@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#c0392b">
+<link rel="apple-touch-icon" href="../icon.png">
+<title>Japón 2027 · Plataforma de viaje</title>
+<style>
+:root{
+  --washi:#f4efe6; --panel:#fbf8f2; --panel2:#f0e9dc; --ink:#211f1b; --muted:#6f695d;
+  --line:#e0d7c6; --line2:#cfc4ad;
+  --red:#c0392b; --redd:#922a20; --indigo:#2c3e50; --gold:#b8893b;
+  --osaka:#c0392b; --nara:#2e8b57; --kioto:#2980b9; --takayama:#e67e22; --kanazawa:#8e44ad; --tokyo:#5d4e8c; --vuelo:#34495e;
+  --radius:14px; --shadow:0 1px 0 #fff inset, 0 6px 22px -14px rgba(40,30,15,.35);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+html[data-theme="dark"]{
+  --washi:#16140f; --panel:#211e18; --panel2:#2a261e; --ink:#f3ece0; --muted:#a89f8d;
+  --line:#332e25; --line2:#473f31;
+  --shadow:0 1px 0 rgba(255,255,255,.03) inset, 0 8px 26px -16px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--washi);color:var(--ink);line-height:1.6;
+  background-image:radial-gradient(circle at 1px 1px, rgba(120,90,40,.05) 1px, transparent 0);background-size:22px 22px;}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important;animation:none!important}}
+
+/* ---------- top bar ---------- */
+header{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--washi) 88%,transparent);
+  backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
+.bar{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:18px;padding:12px 22px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:11px;font-family:var(--serif)}
+.kanji{width:42px;height:42px;border-radius:11px;background:var(--red);color:#fff;display:grid;place-items:center;
+  font-size:22px;font-weight:700;box-shadow:var(--shadow);letter-spacing:-1px}
+.brand h1{font-size:19px;font-weight:600;letter-spacing:.2px;line-height:1.1}
+.brand small{display:block;font-family:var(--sans);font-size:11.5px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+nav{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+.tab{border:0;background:transparent;color:var(--muted);font:inherit;font-size:13.5px;padding:8px 13px;border-radius:9px;cursor:pointer;transition:.18s;white-space:nowrap}
+.tab:hover{background:var(--panel2);color:var(--ink)}
+.tab.on{background:var(--ink);color:var(--washi)}
+.tcfg{border:1px solid var(--line2);background:var(--panel);color:var(--ink);width:38px;height:38px;border-radius:10px;cursor:pointer;font-size:16px;display:grid;place-items:center}
+
+/* ---------- shell ---------- */
+main{max-width:1180px;margin:0 auto;padding:30px 22px 90px}
+.view{display:none;animation:fade .35s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.eyebrow{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:var(--red);font-weight:600;margin-bottom:6px}
+h2.title{font-family:var(--serif);font-size:30px;font-weight:600;letter-spacing:-.3px;margin-bottom:4px}
+.lead{color:var(--muted);font-size:15px;max-width:62ch;margin-bottom:26px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+
+/* ---------- overview ---------- */
+.hero{background:var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden;margin-bottom:24px}
+.hero-top{padding:26px 28px 20px;border-bottom:1px solid var(--line);position:relative}
+.hero-top:before{content:"日本";position:absolute;right:24px;top:8px;font-family:var(--serif);font-size:78px;color:var(--red);opacity:.08;font-weight:700}
+.hero h2{font-family:var(--serif);font-size:clamp(30px,5vw,46px);font-weight:600;letter-spacing:-1px;line-height:1.02}
+.hero .sub{color:var(--muted);font-size:15px;margin-top:7px}
+.hero .pax{display:inline-flex;align-items:center;gap:7px;margin-top:14px;background:var(--red);color:#fff;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line)}
+.metric{background:var(--panel);padding:18px 20px}
+.metric .k{font-size:11.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.metric .v{font-family:var(--serif);font-size:27px;font-weight:600;margin-top:3px;letter-spacing:-.5px}
+.metric .v small{font-size:14px;color:var(--muted);font-family:var(--sans);font-weight:400}
+.routestrip{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 8px}
+.rc{flex:1;min-width:120px;border-radius:12px;padding:13px 15px;color:#fff;position:relative;overflow:hidden}
+.rc b{font-size:15px;letter-spacing:.3px;display:block}
+.rc span{font-size:12px;opacity:.9}
+.rc i{position:absolute;right:10px;top:8px;font-style:normal;font-family:var(--serif);font-size:30px;opacity:.25;font-weight:700}
+.grid2{display:grid;grid-template-columns:1.4fr 1fr;gap:18px;margin-top:6px}
+@media(max-width:820px){.grid2{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(2,1fr)}nav{width:100%;order:5}}
+.panelpad{padding:20px 22px}
+.panelpad h3{font-family:var(--serif);font-size:19px;font-weight:600;margin-bottom:12px;display:flex;align-items:center;gap:9px}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--red);display:inline-block}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.kv:last-child{border:0}
+.kv span:first-child{color:var(--muted)}
+.kv b{font-weight:600}
+.note{background:var(--panel2);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 15px;font-size:13px;color:var(--ink);margin-top:14px}
+.note b{color:var(--redd)}
+
+/* ---------- calendar ---------- */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
+.cal .h{text-align:center;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);padding-bottom:2px;font-weight:600}
+.cell{aspect-ratio:1/1;border-radius:11px;background:var(--panel);border:1px solid var(--line);padding:8px;display:flex;flex-direction:column;min-height:74px;transition:.15s}
+.cell.empty{background:transparent;border:1px dashed var(--line);box-shadow:none}
+.cell.act{box-shadow:var(--shadow);cursor:default}
+.cell .d{font-size:12px;font-weight:700;color:var(--muted)}
+.cell .c{margin-top:auto;font-size:11.5px;font-weight:600;line-height:1.25}
+.cell .day{font-size:10px;color:var(--muted)}
+.cell .flag{font-size:9px;color:var(--gold);font-weight:700;letter-spacing:.3px}
+.legend{display:flex;flex-wrap:wrap;gap:7px 14px;margin-top:18px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.sw{width:13px;height:13px;border-radius:4px;display:inline-block}
+@media(max-width:680px){.cal{gap:4px}.cell{min-height:56px;padding:5px}.cell .c{font-size:10px}}
+
+/* ---------- route timeline ---------- */
+.tl{position:relative;padding-left:34px}
+.tl:before{content:"";position:absolute;left:13px;top:6px;bottom:6px;width:2px;background:var(--line2)}
+.stop{position:relative;margin-bottom:14px}
+.stop .pin{position:absolute;left:-34px;top:2px;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;box-shadow:var(--shadow);border:3px solid var(--washi)}
+.stop .box{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:14px 17px}
+.stop .box h4{font-family:var(--serif);font-size:17px;font-weight:600;display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.stop .box .meta{font-size:12.5px;color:var(--muted);margin-top:2px}
+.pill{font-size:11px;font-weight:600;padding:2px 9px;border-radius:20px;color:#fff}
+.transit{font-size:12.5px;color:var(--muted);padding:5px 0 5px 4px;display:flex;align-items:center;gap:8px}
+.transit:before{content:"↓";font-weight:700;color:var(--line2)}
+
+/* ---------- itinerary ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:20px}
+.fp{border:1px solid var(--line2);background:var(--panel);color:var(--ink);font:inherit;font-size:13px;padding:6px 13px;border-radius:20px;cursor:pointer;transition:.15s;display:inline-flex;align-items:center;gap:7px}
+.fp .sw{width:10px;height:10px}
+.fp.on{background:var(--ink);color:var(--washi);border-color:var(--ink)}
+.fp.on .sw{outline:2px solid var(--washi)}
+.day{background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin-bottom:13px;overflow:hidden;border-left:5px solid var(--c)}
+.day-h{display:flex;align-items:center;gap:14px;padding:15px 18px;cursor:pointer;user-select:none}
+.daynum{flex:0 0 auto;width:54px;text-align:center}
+.daynum b{display:block;font-family:var(--serif);font-size:21px;font-weight:700;line-height:1;color:var(--c)}
+.daynum span{font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.day-h .info{flex:1;min-width:0}
+.day-h .dt{font-size:12px;color:var(--muted)}
+.day-h .ct{font-family:var(--serif);font-size:17px;font-weight:600;line-height:1.2}
+.day-h .flagx{font-size:10.5px;color:#fff;background:var(--gold);padding:1px 8px;border-radius:12px;font-weight:600;white-space:nowrap}
+.chev{transition:.25s;color:var(--muted);font-size:18px}
+.day.open .chev{transform:rotate(180deg)}
+.day-b{display:none;padding:0 18px 16px 18px}
+.day.open .day-b{display:block;animation:fade .3s}
+.day-b .intro{font-size:13.5px;color:var(--muted);background:var(--panel2);border-radius:10px;padding:11px 14px;margin-bottom:13px}
+.att{display:flex;gap:12px;padding:11px 4px;border-bottom:1px dashed var(--line)}
+.att:last-child{border:0}
+.att .bullet{flex:0 0 auto;width:8px;height:8px;border-radius:50%;background:var(--c);margin-top:7px}
+.att .body{flex:1;min-width:0}
+.att .nm{font-weight:600;font-size:14.5px}
+.att .ds{font-size:12.5px;color:var(--muted);margin-top:1px}
+.att .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.tg{font-size:11px;padding:2px 9px;border-radius:14px;background:var(--panel2);color:var(--muted);font-weight:600}
+.tg.price{background:rgba(192,57,43,.12);color:var(--redd)}
+.tg.free{background:rgba(46,139,87,.14);color:#1e6b40}
+.tg.hour{background:rgba(41,128,185,.12);color:#1f6391}
+
+/* ---------- hotels ---------- */
+.hsec{margin-bottom:26px}
+.hsec h3{font-family:var(--serif);font-size:20px;font-weight:600;display:flex;align-items:center;gap:10px;margin-bottom:3px;border-left:4px solid var(--c);padding-left:11px}
+.hsec .hmeta{font-size:13px;color:var(--muted);margin:0 0 13px 15px}
+.hgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.hcard{background:var(--panel);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);padding:15px 16px;position:relative;border-top:4px solid var(--c)}
+.hcard.orig{border:1px solid var(--c);border-top:4px solid var(--c);background:color-mix(in srgb,var(--panel) 92%,var(--c))}
+.hcard .badge{position:absolute;top:-9px;right:13px;background:var(--c);color:#fff;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:12px}
+.hcard h4{font-size:14.5px;font-weight:600;line-height:1.25;margin-bottom:8px;padding-right:8px}
+.hcard .row{display:flex;justify-content:space-between;font-size:12.5px;padding:3px 0;color:var(--muted)}
+.hcard .row b{color:var(--ink);font-weight:600}
+.hcard .tot{margin-top:9px;padding-top:9px;border-top:1px dashed var(--line);font-family:var(--serif);font-size:18px;font-weight:700;color:var(--c)}
+.hcard .info{font-size:11px;color:var(--muted);margin-top:6px}
+
+/* ---------- generic table ---------- */
+.tbl{width:100%;border-collapse:collapse;font-size:13px;background:var(--panel);border-radius:13px;overflow:hidden;box-shadow:var(--shadow);border:1px solid var(--line)}
+.tbl th{background:var(--ink);color:var(--washi);text-align:left;padding:11px 13px;font-size:12px;font-weight:600;letter-spacing:.3px}
+.tbl td{padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.tbl tr:last-child td{border:0}
+.tbl tr:nth-child(even) td{background:color-mix(in srgb,var(--panel2) 50%,transparent)}
+.tbl .hl td{background:rgba(184,137,59,.13)!important;font-weight:600}
+.tbl .recommend td{background:rgba(46,139,87,.12)!important}
+.money{font-family:var(--serif);font-weight:700;white-space:nowrap}
+.subhead{font-family:var(--serif);font-size:18px;font-weight:600;margin:26px 0 11px;display:flex;align-items:center;gap:9px}
+
+/* ---------- budget ---------- */
+.budgrid{display:grid;grid-template-columns:300px 1fr;gap:26px;align-items:start}
+@media(max-width:780px){.budgrid{grid-template-columns:1fr}}
+.donut-wrap{background:var(--panel);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px;text-align:center}
+.donut{position:relative;width:220px;height:220px;margin:0 auto}
+.donut .ctr{position:absolute;inset:0;display:grid;place-content:center;text-align:center}
+.donut .ctr .big{font-family:var(--serif);font-size:30px;font-weight:700;line-height:1}
+.donut .ctr .lbl{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-top:3px}
+.pp{margin-top:16px;background:var(--panel2);border-radius:11px;padding:12px}
+.pp .v{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--red)}
+.pp .l{font-size:12px;color:var(--muted)}
+.bars{display:flex;flex-direction:column;gap:13px}
+.brow .top{display:flex;justify-content:space-between;align-items:baseline;font-size:13.5px;margin-bottom:5px}
+.brow .top b{font-weight:600}
+.brow .top .amt{font-family:var(--serif);font-weight:700}
+.track{height:13px;border-radius:8px;background:var(--panel2);overflow:hidden}
+.fill{height:100%;border-radius:8px;width:0;transition:width 1s cubic-bezier(.16,1,.3,1)}
+.brow .sub{font-size:11.5px;color:var(--muted);margin-top:3px}
+.toggle{display:inline-flex;border:1px solid var(--line2);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.toggle button{border:0;background:var(--panel);color:var(--muted);font:inherit;font-size:13px;padding:7px 16px;cursor:pointer}
+.toggle button.on{background:var(--ink);color:var(--washi)}
+footer{max-width:1180px;margin:0 auto;padding:24px 22px 40px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);text-align:center}
+
+/* ---------- comparador ---------- */
+.cmp{margin-bottom:28px}
+.cmp-h{font-family:var(--serif);font-size:19px;font-weight:600;border-left:4px solid var(--c);padding-left:11px}
+.cmp-sub{font-size:13px;color:var(--muted);margin:1px 0 13px 15px}
+.cmp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:12px}
+.opt{background:var(--panel);border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);padding:16px 17px;position:relative}
+.opt.win{border:1.5px solid var(--c);background:color-mix(in srgb,var(--panel) 92%,var(--c))}
+.opt .pick{position:absolute;top:-9px;right:13px;background:var(--c);color:#fff;font-size:10px;font-weight:700;letter-spacing:.5px;padding:3px 10px;border-radius:12px}
+.opt h5{font-size:14.5px;font-weight:600;line-height:1.25;padding-right:8px}
+.opt .pr{font-family:var(--serif);font-size:22px;font-weight:700;margin:7px 0 11px}
+.opt .pr small{font-size:12px;color:var(--muted);font-weight:400;font-family:var(--sans)}
+.opt ul{list-style:none;font-size:12.5px}
+.opt li{padding:3px 0 3px 19px;position:relative;color:var(--muted);line-height:1.35}
+.opt li.y:before{content:"✓";position:absolute;left:0;color:#1e6b40;font-weight:700}
+.opt li.n:before{content:"✕";position:absolute;left:1px;color:var(--red);font-weight:700}
+
+/* ---------- booking timeline ---------- */
+.bk{position:relative;padding-left:30px;max-width:760px}
+.bk:before{content:"";position:absolute;left:9px;top:10px;bottom:10px;width:2px;background:var(--line2)}
+.bkrow{position:relative;margin-bottom:13px}
+.bkrow .pin{position:absolute;left:-30px;top:5px;width:20px;height:20px;border-radius:50%;border:3px solid var(--washi);box-shadow:var(--shadow);background:var(--c)}
+.bkbox{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:13px 17px;border-left:4px solid var(--c)}
+.bkbox .when{font-size:11px;letter-spacing:1.1px;text-transform:uppercase;font-weight:700;color:var(--c)}
+.bkbox h4{font-family:var(--serif);font-size:16px;font-weight:600;margin:2px 0 2px}
+.bkbox ul{list-style:none;font-size:13px;margin-top:7px}
+.bkbox li{padding:3px 0 3px 16px;position:relative;line-height:1.45}
+.bkbox li:before{content:"›";position:absolute;left:3px;color:var(--c);font-weight:700}
+.urg{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:11px;margin-left:8px;vertical-align:middle}
+.urg.hi{background:rgba(192,57,43,.15);color:var(--redd)}
+.urg.mid{background:rgba(184,137,59,.18);color:#9a7320}
+.urg.lo{background:rgba(46,139,87,.15);color:#1e6b40}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">
+      <div class="kanji">旅</div>
+      <div><h1>Japón 2027</h1><small>18 Sep — 4 Oct · 16 días</small></div>
+    </div>
+    <nav id="nav">
+      <button class="tab on" data-v="resumen">Resumen</button>
+      <button class="tab" data-v="calendario">Calendario</button>
+      <button class="tab" data-v="ruta">Ruta</button>
+      <button class="tab" data-v="itinerario">Itinerario</button>
+      <button class="tab" data-v="hoteles">Hoteles</button>
+      <button class="tab" data-v="transporte">Transporte</button>
+      <button class="tab" data-v="experiencias">Experiencias</button>
+      <button class="tab" data-v="presupuesto">Presupuesto</button>
+      <button class="tab" data-v="comparador">Comparador</button>
+      <button class="tab" data-v="reservas">Cuándo reservar</button>
+    </nav>
+    <button class="tcfg" id="theme" title="Cambiar tema" aria-label="Cambiar tema">☾</button>
+  </div>
+</header>
+
+<main>
+<!-- ============ RESUMEN ============ -->
+<section class="view on" id="resumen">
+  <div class="hero">
+    <div class="hero-top">
+      <h2>Un viaje a Japón</h2>
+      <div class="sub">Osaka · Nara · Kioto · Takayama · Shirakawa-go · Kanazawa · Tokyo</div>
+      <div class="pax">👤👤 &nbsp;2 personas · 15 noches</div>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="k">Duración</div><div class="v">16 <small>días</small></div></div>
+      <div class="metric"><div class="k">Ciudades</div><div class="v">6 <small>+ excursiones</small></div></div>
+      <div class="metric"><div class="k">Por persona</div><div class="v">2.785<small>€</small></div></div>
+      <div class="metric"><div class="k">Total 2 pax</div><div class="v">5.570<small>€</small></div></div>
+    </div>
+  </div>
+
+  <div class="routestrip" id="rstrip"></div>
+
+  <div class="grid2">
+    <div class="card panelpad">
+      <h3><span class="dot"></span>Resumen del viaje</h3>
+      <div class="kv"><span>Salida</span><b>Sáb 18 sep 2027 · Madrid (MAD) → Osaka (KIX)</b></div>
+      <div class="kv"><span>Regreso</span><b>Lun 4 oct 2027 · Tokyo (HND) → Madrid (MAD)</b></div>
+      <div class="kv"><span>Configuración</span><b>1 habitación doble por ciudad</b></div>
+      <div class="kv"><span>JR Pass</span><b>No compensa — pase regional + sueltos (ahorro ~245 €/pax)</b></div>
+      <div class="kv"><span>Conectividad</span><b>eSIM Holafly datos ilimitados</b></div>
+      <div class="note"><b>Vas de cero.</b> Precios medios verificados jun 2026. Los vuelos de sep 2027 se abren a la venta ~ene-feb 2027 (reservar en cuanto salgan). Hoteles y teamLab: 4-6 meses antes. Seguro con cobertura de tifón (septiembre es temporada).</div>
+    </div>
+    <div class="card panelpad">
+      <h3><span class="dot"></span>Coste por bloque</h3>
+      <div id="ovbudget"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CALENDARIO ============ -->
+<section class="view" id="calendario">
+  <div class="eyebrow">Septiembre — Octubre 2027</div>
+  <h2 class="title">Calendario</h2>
+  <p class="lead">Cada día coloreado por ciudad. Dos festivos nacionales caen en ruta: madruga esos días.</p>
+  <div class="cal" id="calgrid"></div>
+  <div class="legend" id="callegend"></div>
+  <div class="note" style="max-width:640px"><b>(*) Festivos:</b> 20 sep = Keiro no Hi (Respeto a los Mayores) en Nara · 23 sep = Shubun no Hi (Equinoccio de Otoño) en Kioto. Atracciones abiertas pero más concurridas.</div>
+</section>
+
+<!-- ============ RUTA ============ -->
+<section class="view" id="ruta">
+  <div class="eyebrow">Recorrido</div>
+  <h2 class="title">La ruta, paso a paso</h2>
+  <p class="lead">De Kansai a Kanto cruzando los Alpes japoneses. Trenes bala, un Limited Express de montaña y un día en coche por Shirakawa-go.</p>
+  <div class="tl" id="timeline"></div>
+</section>
+
+<!-- ============ ITINERARIO ============ -->
+<section class="view" id="itinerario">
+  <div class="eyebrow">Día a día</div>
+  <h2 class="title">Itinerario completo</h2>
+  <p class="lead">16 días con todas las visitas, horarios y precios de entrada. Pulsa un día para desplegarlo; filtra por ciudad.</p>
+  <div class="filters" id="filters"></div>
+  <div id="days"></div>
+</section>
+
+<!-- ============ HOTELES ============ -->
+<section class="view" id="hoteles">
+  <div class="eyebrow">Alojamiento · 2 personas</div>
+  <h2 class="title">Hoteles propuestos</h2>
+  <p class="lead">1 habitación doble por ciudad. Marcado <b>ORIGINAL</b> el que eligió el plan de tu amigo (sin reservar por ti); debajo, 3 alternativas con precio total por estancia.</p>
+  <div id="hotels"></div>
+  <div class="note" style="max-width:680px"><b>Total alojamiento 2 pax (medio verificado):</b> Osaka ~190 € + Kioto ~315 € + Takayama ~150 € + Kanazawa ~70 € + Tokyo ~775 € = <b>~1.500 €</b> (~750 €/persona). Precios 3-4★ jun 2026. Reserva 4-6 meses antes: en septiembre los ryokan de Takayama y los machiya de Kanazawa vuelan.</div>
+</section>
+
+<!-- ============ TRANSPORTE ============ -->
+<section class="view" id="transporte">
+  <div class="eyebrow">Trenes · coche · datos</div>
+  <h2 class="title">Transporte</h2>
+  <p class="lead">Para esta ruta el JR Pass nacional de 14 días (~485 €/pax) no compensa. Pase regional + billetes sueltos: ~238 €/pax.</p>
+  <div class="subhead"><span class="dot"></span>Trenes y traslados</div>
+  <table class="tbl" id="traintbl"></table>
+  <div class="note">El <b>Takayama-Hokuriku Area Tourist Pass</b> (¥19.800 ≈ <b>120 €</b>, 5 días · precio verificado jun 2026) cubre Osaka↔Kanazawa vía Hokuriku, Nagoya↔Takayama↔Toyama y el bus a Shirakawa-go. Solo turistas extranjeros — comprar online (touristpass.jp) o en agencias JTB/HIS antes del viaje.</div>
+  <div class="subhead"><span class="dot"></span>Coche · Takayama → Shirakawa-go → Kanazawa (sáb 25 sep)</div>
+  <table class="tbl" id="cartbl"></table>
+  <div class="subhead"><span class="dot"></span>eSIM / datos (15-16 días)</div>
+  <table class="tbl" id="simtbl"></table>
+</section>
+
+<!-- ============ EXPERIENCIAS ============ -->
+<section class="view" id="experiencias">
+  <div class="eyebrow">Tours y entradas</div>
+  <h2 class="title">Experiencias</h2>
+  <p class="lead">Free tours, paseo guiado por Shirakawa-go, ceremonia del té en Kanazawa y los imprescindibles de Tokyo (reserva previa).</p>
+  <div class="subhead"><span class="dot"></span>Excursiones y actividades</div>
+  <table class="tbl" id="extbl"></table>
+  <div class="note"><b>Reservar con antelación:</b> ceremonia del té en Kanazawa (antes del tren de las 13:50) y TeamLab Planets en Tokyo (se agota 2-3 meses antes).</div>
+  <div class="subhead"><span class="dot"></span>Entradas culturales por ciudad (orientativo / persona)</div>
+  <table class="tbl" id="enttbl"></table>
+</section>
+
+<!-- ============ PRESUPUESTO ============ -->
+<section class="view" id="presupuesto">
+  <div class="eyebrow">Costes · 2 personas · 15 noches</div>
+  <h2 class="title">Presupuesto</h2>
+  <p class="lead">Estimación detallada. Cambia entre total para 2 personas y coste por persona.</p>
+  <div class="toggle" id="budtoggle">
+    <button class="on" data-mode="group">Total 2 personas</button>
+    <button data-mode="pp">Por persona</button>
+  </div>
+  <div class="budgrid">
+    <div class="donut-wrap">
+      <div class="donut" id="donut"></div>
+      <div class="pp"><div class="v" id="ppval">5.570 €</div><div class="l" id="pplbl">total · 2 personas · 16 días</div></div>
+    </div>
+    <div class="bars" id="bars"></div>
+  </div>
+  <div class="subhead"><span class="dot"></span>Desglose completo</div>
+  <table class="tbl" id="costtbl"></table>
+  <div class="note">(1) Vuelos: rango medio open-jaw verificado jun 2026; las tarifas de sep 2027 se abren ~ene-feb 2027. (2) Hoteles: precio medio 3-4★ verificado; Tokyo puede subir 10-20%. (3) Cambio: 1 € ≈ 165 ¥ (jun 2026). (4) Comida: ~30 €/día/persona gama media. <b>Total realista 2 pax: ~5.570 € (rango 4.250–6.900 €).</b></div>
+</section>
+
+<!-- ============ COMPARADOR ============ -->
+<section class="view" id="comparador">
+  <div class="eyebrow">Decisiones clave</div>
+  <h2 class="title">Comparador</h2>
+  <p class="lead">Las elecciones donde de verdad hay que decidir. La opción marcada <b>RECOMENDADO</b> es la mejor relación precio/comodidad para esta ruta concreta (2 personas, septiembre, partiendo de cero).</p>
+  <div id="cmp"></div>
+  <div class="subhead"><span class="dot"></span>Presupuesto: 3 escenarios enfrentados</div>
+  <table class="tbl" id="scentbl"></table>
+  <div class="note">El escenario <b>Medio ★</b> es el que está cargado en el resto de la plataforma (~5.570 €). El <b>Ajustado</b> exige cazar ofertas de vuelo y dormir en hostels/APA Hotel; el <b>Holgado</b> da margen para tifones, hoteles 4★ y ryokan con cena kaiseki.</div>
+</section>
+
+<!-- ============ RESERVAS ============ -->
+<section class="view" id="reservas">
+  <div class="eyebrow">Calendario de reservas · jun 2026 → sep 2027</div>
+  <h2 class="title">Mejores momentos para reservar</h2>
+  <p class="lead">Qué reservar y cuándo, en orden. Reservar demasiado pronto encarece (hoteles flexibles) o es imposible (vuelos); demasiado tarde, se agota o sube. Esta es la ventana óptima de cada cosa.</p>
+  <div class="bk" id="booking"></div>
+  <div class="note"><b>Regla de oro:</b> los vuelos mandan. En cuanto se abran (~ene-feb 2027) cómpralos; todo lo demás se cuelga de esa fecha. Pon hoy mismo una alerta de precio en Google Flights para MAD→KIX y HND→MAD.</div>
+</section>
+</main>
+
+<footer>Plataforma generada jun 2026 · precios medios verificados jun 2026 · 1 € ≈ 165 ¥ · partes de cero: verifica cada precio al reservar en Booking, GetYourGuide y aerolíneas.</footer>
+
+<script>
+const C={osaka:'#c0392b',nara:'#2e8b57',kioto:'#2980b9',takayama:'#e67e22',kanazawa:'#8e44ad',tokyo:'#5d4e8c',vuelo:'#34495e'};
+
+/* ---- route ---- */
+const ROUTE=[
+ {c:'osaka',n:'Osaka',d:'2 noches',k:'大'},
+ {c:'nara',n:'Nara',d:'1 día',k:'奈'},
+ {c:'kioto',n:'Kioto',d:'3 noches',k:'京'},
+ {c:'takayama',n:'Takayama',d:'1 noche',k:'高'},
+ {c:'kanazawa',n:'Kanazawa',d:'1 noche',k:'金'},
+ {c:'tokyo',n:'Tokyo',d:'7 noches',k:'東'},
+];
+document.getElementById('rstrip').innerHTML=ROUTE.map(r=>
+ `<div class="rc" style="background:${C[r.c]}"><i>${r.k}</i><b>${r.n}</b><span>${r.d}</span></div>`).join('');
+
+/* ---- timeline ---- */
+const STOPS=[
+ {c:'vuelo',n:'Vuelo Madrid → Osaka',meta:'Sáb 18 sep · escala ~14-18 h · llegada dom 19',transit:'Haruka Express KIX → Osaka (75 min)'},
+ {c:'osaka',n:'Osaka',meta:'2 noches · castillo, Dotonbori, Shinsekai',transit:'JR Yamatoji a Nara · JR Hikari a Kioto'},
+ {c:'nara',n:'Nara (excursión)',meta:'Lun 20 sep · Todai-ji, ciervos · festivo Keiro no Hi',transit:''},
+ {c:'kioto',n:'Kioto',meta:'3 noches · Higashiyama, Fushimi Inari, Arashiyama',transit:'Shinkansen + Hida Ltd Express (Takayama-Hokuriku Pass)'},
+ {c:'takayama',n:'Takayama',meta:'1 noche · casco Edo, ryokan con desayuno',transit:'Coche: Takayama → Shirakawa-go → Kanazawa'},
+ {c:'kanazawa',n:'Kanazawa',meta:'1 noche · Kenroku-en, barrio samurái, ceremonia té',transit:'Hokuriku Shinkansen Kagayaki (2h30)'},
+ {c:'tokyo',n:'Tokyo',meta:'7 noches · Asakusa, Shibuya, Tsukiji, Odaiba',transit:''},
+ {c:'vuelo',n:'Vuelo Tokyo → Madrid',meta:'Lun 4 oct · Haneda (HND) → Madrid',transit:''},
+];
+document.getElementById('timeline').innerHTML=STOPS.map(s=>{
+ const k={vuelo:'✈',osaka:'大',nara:'奈',kioto:'京',takayama:'高',kanazawa:'金',tokyo:'東'}[s.c];
+ return `<div class="stop"><div class="pin" style="background:${C[s.c]}">${k}</div>
+   <div class="box"><h4>${s.n}</h4><div class="meta">${s.meta}</div></div>
+   ${s.transit?`<div class="transit">${s.transit}</div>`:''}</div>`;
+}).join('');
+
+/* ---- calendar ---- */
+const CAL=[
+ null,null,null,null,null,
+ {n:18,c:'vuelo',t:'Vuelo',s:'Madrid'},
+ {n:19,c:'osaka',t:'Osaka',s:'Día 1'},
+ {n:20,c:'nara',t:'Nara',s:'Día 2',f:'(*)'},
+ {n:21,c:'kioto',t:'Kioto',s:'Día 3'},
+ {n:22,c:'kioto',t:'Kioto',s:'Día 4'},
+ {n:23,c:'kioto',t:'Kioto',s:'Día 5',f:'(*)'},
+ {n:24,c:'takayama',t:'Takayama',s:'Día 6'},
+ {n:25,c:'kanazawa',t:'Shirakawa→Kanazawa',s:'Día 7'},
+ {n:26,c:'tokyo',t:'Kanazawa→Tokyo',s:'Día 8'},
+ {n:27,c:'tokyo',t:'Tokyo',s:'Día 9'},
+ {n:28,c:'tokyo',t:'Tokyo',s:'Día 10'},
+ {n:29,c:'tokyo',t:'Tokyo',s:'Día 11'},
+ {n:30,c:'tokyo',t:'Tokyo',s:'Día 12'},
+ {n:'1 oct',c:'tokyo',t:'Tokyo',s:'Día 13'},
+ {n:'2 oct',c:'tokyo',t:'Tokyo',s:'Día 14'},
+ {n:'3 oct',c:'tokyo',t:'Tokyo',s:'Día 15'},
+ {n:'4 oct',c:'vuelo',t:'Vuelo',s:'Madrid'},
+ null,null,null,null,null,null,
+];
+const H=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+let cg=H.map(h=>`<div class="h">${h}</div>`).join('');
+CAL.forEach(d=>{
+ if(!d){cg+='<div class="cell empty"></div>';return;}
+ const col=C[d.c];const light=d.c==='vuelo'?'#34495e':col;
+ cg+=`<div class="cell act" style="background:color-mix(in srgb,${light} 15%, var(--panel));border-color:${light}">
+   <div class="d">${d.n}${d.f?` <span class="flag">${d.f}</span>`:''}</div>
+   <div class="c" style="color:${light}">${d.t}<div class="day">${d.s}</div></div></div>`;
+});
+document.getElementById('calgrid').innerHTML=cg;
+document.getElementById('callegend').innerHTML=ROUTE.concat([{c:'vuelo',n:'Vuelo'}])
+ .map(r=>`<span><i class="sw" style="background:${C[r.c]}"></i>${r.n}</span>`).join('');
+
+/* ---- itinerary data ---- */
+const F='Gratis';
+const DAYS=[
+ {n:'0',date:'Sábado 18 septiembre',city:'Vuelo Madrid (MAD) → Osaka (KIX)',c:'vuelo',
+  intro:'Vuelo con escala ~14-18 h según aerolínea. Llegada domingo 19. Tren Haruka Express desde KIX a Osaka (75 min, ¥1.900). Check-in desde las 16:00; consigna si llegas antes.',att:[]},
+ {n:'1',date:'Domingo 19 septiembre',city:'Osaka · Llegada y ciudad',c:'osaka',
+  intro:'Castillo → Shitennoji → Shinsekai → Dotonbori. 28-31 °C. Ropa ligera y agua.',att:[
+   ['Castillo de Osaka','600¥ (~4€)','9:00-17:00','Parque libre. Interior reconstruido con museo de 8 plantas.'],
+   ['Templo Shitennoji','300¥ (~2€)','8:30-16:30','El templo budista más antiguo de Japón (593 d.C.).'],
+   ['Shinsekai + Torre Tsutenkaku','800¥ (~5€)','Tarde','Barrio retro. Comer kushikatsu.'],
+   ['Santuario Namba Yasaka',F,'Todo el día','La enorme cabeza de león. Muy fotogénico.'],
+   ['Dotonbori',F,'Noche','Neones, Glico Man, tarta Rikuro. Cena en Namba.'],
+ ]},
+ {n:'2',date:'Lunes 20 sep',city:'Nara + Osaka',c:'nara',flag:'Festivo · Keiro no Hi',
+  intro:'Festivo nacional, más gente. Salir a las 8:00 para ver los ciervos tranquilos. JR Yamatoji desde Osaka-Namba (~45 min, ¥730).',att:[
+   ['Kofuku-ji','300¥ (~2€)','9:00-17:00','Pagoda de 5 pisos, UNESCO. Junto a la estación.'],
+   ['Nandaimon (puerta Todai-ji)',F,'8:00-18:00','Dos enormes guardianes Nio.'],
+   ['Todai-ji · Gran Buda','600¥ (~4€)','7:30-17:30','Buda de bronce en el mayor edificio de madera del mundo.'],
+   ['Nigatsu-do',F,'Todo el día','Panorámica de Nara, subida corta.'],
+   ['Kasuga Taisha',F,'6:00-18:00','Miles de linternas de piedra y bronce.'],
+   ['Parque Nara · ciervos',F,'Todo el día','Galletas de ciervo (~¥200). ¡Cuidado, pueden empujar!'],
+ ]},
+ {n:'3',date:'Martes 21 septiembre',city:'Kioto · Higashiyama Norte',c:'kioto',
+  intro:'Osaka→Kioto: Shinkansen Hikari (16 min) o JR Biwako (75 min). Check-in Rinn Miyagawacho desde 16:00. Ruta: Nanzen-ji → Heian → Ginkakuji → Camino del Filósofo → Eikando.',att:[
+   ['Nanzen-ji','Gratis / 400-600¥','8:40-17:00','Templo zen con acueducto. Puerta Sanmon con vistas.'],
+   ['Heian Jingu','Gratis / 600¥ jardines','6:00-17:30','Gran torii naranja. Jardines con estanques.'],
+   ['Ginkaku-ji (Pabellón de Plata)','500¥ (~3€)','8:30-17:00','Estilo wabi-sabi. Jardín de musgo y arena.'],
+   ['Camino del Filósofo',F,'Todo el día','2 km junto al canal, cafés tranquilos.'],
+   ['Templo Eikando','600¥ (~4€)','9:00-17:00','El Buda que mira atrás. En sept aún verde.'],
+ ]},
+ {n:'4',date:'Miércoles 22 septiembre',city:'Kioto · Higashiyama Sur, Gion y Fushimi',c:'kioto',
+  intro:'Kiyomizudera → Ninenzaka → Yasaka → Gion → Fushimi Inari → Sanjusangendo.',att:[
+   ['Kiyomizudera','400¥ (~3€)','6:00-18:00','Ir a las 6:00 casi solo. Manantial Otawa.'],
+   ['Sannenzaka + Ninenzaka',F,'Todo el día','Calles empedradas medievales, té matcha, mochi.'],
+   ['Yasaka + barrio Gion',F,'Todo el día','Buscar maikos por Hanamikoji al atardecer.'],
+   ['Fushimi Inari-taisha',F,'24 h','Los mil torii rojos. 7:00 o tras 17:30. 2-3 h.'],
+   ['Sanjusangendo','600¥ (~4€)','9:00-17:00','1.001 estatuas de Kannon en 120 m.'],
+   ['Templo Chion-in','600¥ (~4€)','8:00-17:00','Puerta Sanmon y campana de 74 t. Opcional.'],
+ ]},
+ {n:'5',date:'Jueves 23 sep',city:'Kioto · Arashiyama, Kinkakuji y Nijo',c:'kioto',flag:'Festivo · Shubun no Hi',
+  intro:'Equinoccio: familias en templos. Arashiyama a las 8:30 antes que llegue la gente. Tarde: Kinkakuji → Nijo → Nishiki → Pontocho → Ryoanji.',att:[
+   ['Bosque de bambú de Arashiyama',F,'24 h','Ir a las 8:30 máx. Luz verde intensa, sin turistas.'],
+   ['Templo Tenryu-ji','500¥ + 300¥','8:30-17:30','Jardín UNESCO del s.XIV, junto al bambú.'],
+   ['Kinkaku-ji (Pabellón Dorado)','500¥ (~3€)','9:00-17:00','El templo de oro reflejado en el estanque.'],
+   ['Castillo Nijo','1.030¥ (~6€)','8:45-17:00','Suelos "ruiseñor" y pinturas doradas.'],
+   ['Mercado Nishiki',F,'9:00-18:00','La cocina de Kioto: tamagoyaki, wagashi, pulpo.'],
+   ['Pontocho',F,'Tarde/noche','Cena con terraza sobre el río Kamogawa.'],
+   ['Ryoan-ji','500¥ (~3€)','8:00-17:00','Jardín zen de 15 piedras.'],
+ ]},
+ {n:'6',date:'Viernes 24 septiembre',city:'Takayama · Viaje y tarde',c:'takayama',
+  intro:'Trenes (Takayama-Hokuriku Pass): Kioto→Nagoya Shinkansen (35 min) + Nagoya→Takayama Hida Ltd Express (2h25). Salida ~8:21, llegada ~11:30. Check-in ryokan 14:00-19:00. Desayuno día 7 incluido.',att:[
+   ['Sanmachi Suji (casco histórico)',F,'Todo el día','Tres calles Edo: destilerías de sake, casas de té.'],
+   ['Puente Nakabashi (rojo)',F,'Todo el día','Símbolo de Takayama sobre el río Miyagawa.'],
+   ['Santuario Sakurayama Hachiman',F,'Todo el día','Cedros centenarios. Museo de carrozas del festival.'],
+   ['Ruta Templos Higashiyama',F,'Tarde','13 templos por sendero arbolado (3,5 km).'],
+   ['Hida Kokubunji','300¥ (~2€)','9:00-16:00','El templo más antiguo de Hida. Ginkgo milenario.'],
+   ['Hida no Sato (museo al aire libre)','700¥ (~4€)','8:30-17:00','Aldea de casas gassho-zukuri, entorno verde.'],
+ ]},
+ {n:'7',date:'Sábado 25 septiembre',city:'Shirakawa-go → Kanazawa (en coche)',c:'kanazawa',
+  intro:'Desayuno 7:30 · recoger coche en Takayama Station 9:00 · Takayama→Shirakawa-go (~50 min)→Kanazawa (~70 min) · entregar coche Kanazawa West Exit 17:00.',att:[
+   ['Aldea Shirakawa-go (UNESCO)','600¥ tasa (~4€)','9:00-17:00','Casas gassho-zukuri. Tour guiado 2 h desde las 10:00 (~22€).'],
+   ['Mirador Shiroyama',F,'9:00-17:00','La mejor panorámica, 15 min a pie.'],
+   ['Kenroku-en (Kanazawa)','320¥ (~2€)','7:00-18:00','Uno de los 3 jardines más bellos de Japón.'],
+   ['Castillo de Kanazawa',F,'7:00-18:00','Recinto samurái del clan Maeda.'],
+   ['Nagamachi (barrio samurái)',F,'Todo el día','Calles empedradas y muros de barro Edo.'],
+   ['Casa Nomura','550¥ (~3€)','8:30-17:30','Casa samurái mejor conservada, jardín exquisito.'],
+   ['Higashi Chaya District',F,'Tarde','Barrio geishas, atmósfera mágica al atardecer.'],
+ ]},
+ {n:'8',date:'Domingo 26 septiembre',city:'Kanazawa mañana → Tokyo tarde',c:'tokyo',
+  intro:'Hokuriku Shinkansen Kagayaki 13:50 → Tokyo 16:20 (~¥14.040/pax). Check-in APA Hotel Kanda desde 15:00.',att:[
+   ['Ceremonia del té en Kenroku-en','~35€/pax','10:00-11:00','Reservar (GetYourGuide). +¥320 entrada jardín. 1 h con maestro.'],
+   ['Myouryuji · Templo Ninja','1.200¥ (~8€)','9:00-16:30','Reserva previa. Pasajes secretos y trampas.'],
+   ['Mercado Omicho',F,'9:00-17:00','Mercado de 300 años, marisco del Mar de Japón.'],
+ ]},
+ {n:'9',date:'Lunes 27 septiembre',city:'Tokyo · Asakusa, Ueno y Shinjuku',c:'tokyo',
+  intro:'Hotel APA zona Akihabara/Kanda. Metro con tarjeta Suica.',att:[
+   ['Senso-ji + Kaminarimon',F,'6:00-17:00','Bazar Nakamise. Sushi en la primera arcada.'],
+   ['Tokyo Skytree','2.100¥ (~13€)','8:00-22:00','634 m. Reservar online o ver desde abajo gratis.'],
+   ['Calle Ameyoko (Ueno)',F,'10:00-20:00','Mercado callejero, street food, segunda mano.'],
+   ['Free Tour Shinjuku','~12€ tip','18:30 (90 min)','Mirador del Gobierno, Kabukicho, Golden Gai, Godzilla.'],
+ ]},
+ {n:'10',date:'Martes 28 septiembre',city:'Tokyo · Tsukiji, Ginza y Torre',c:'tokyo',
+  intro:'Madrugar para el sushi de Tsukiji.',att:[
+   ['Mercado Tsukiji','~1.500¥ comida','5:00-12:00','El mejor sushi. Llegar a las 7:00.'],
+   ['Reloj Ghibli (NHK)',F,'12:00 y 15:00','El reloj mecánico más espectacular. Solo a esas horas.'],
+   ['Barrio de Ginza',F,'Tarde','Zona comercial más lujosa, arquitectura impresionante.'],
+   ['Torre de Tokyo + Zojoji','1.200¥ (~8€)','9:00-23:00','Vista clásica y templo con cementerio Tokugawa.'],
+ ]},
+ {n:'11',date:'Miércoles 29 septiembre',city:'Tokyo · Shibuya y Harajuku',c:'tokyo',
+  intro:'',att:[
+   ['Templo Meiji (bosque Yoyogi)',F,'5:00-18:00','Gran santuario sintoísta en bosque urbano.'],
+   ['Takeshita Dori (Harajuku)',F,'Todo el día','Moda alternativa, crepes, cosplay.'],
+   ['Cruce de Shibuya',F,'Todo el día','El cruce más transitado. Vista desde MAGNET 109.'],
+   ['Shibuya Sky','2.000¥ (~13€)','10:00-22:30','Mejores vistas, ir al atardecer.'],
+   ['Estatua de Hachiko',F,'Todo el día','Punto de encuentro clásico junto a la estación.'],
+ ]},
+ {n:'12-15',date:'Jue 30 sep — Dom 3 oct',city:'Tokyo · Días libres y extras',c:'tokyo',
+  intro:'Cuatro días flexibles para repetir favoritos, compras y reservar lo que se agota.',att:[
+   ['Odaiba (isla artificial)','Monorail 320¥','Todo el día','Estatua libertad, vistas al skyline, TeamLab.'],
+   ['TeamLab Planets','3.200¥ (~20€)','Variable','Arte digital inmersivo. Reservar con meses.'],
+   ['Roppongi Hills · Tokyo City View','1.800¥ (~11€)','10:00-23:00','Vistas nocturnas increíbles.'],
+   ['Akihabara (noche)',F,'10:00-21:00','Super Potato, Mandarake, Don Quijote, figuras.'],
+   ['Santuario Kanda Myojin',F,'Todo el día','Junto al hotel. Tablillas ema con anime.'],
+ ]},
+ {n:'16',date:'Lunes 4 octubre',city:'Vuelo Tokyo (HND) → Madrid (MAD)',c:'vuelo',
+  intro:'Última mañana para compras de last-minute en estación. Traslado a Haneda y vuelo de regreso a casa.',att:[]},
+];
+
+function tag(p,h){
+ let t='';
+ if(p) t+= p===F?`<span class="tg free">Gratis</span>`:`<span class="tg price">${p}</span>`;
+ if(h) t+=`<span class="tg hour">${h}</span>`;
+ return t;
+}
+function renderDays(filter){
+ document.getElementById('days').innerHTML=DAYS.filter(d=>!filter||d.c===filter).map(d=>{
+  const col=C[d.c];
+  const atts=d.att.map(a=>`<div class="att" style="--c:${col}"><span class="bullet"></span>
+    <div class="body"><div class="nm">${a[0]}</div><div class="ds">${a[3]}</div>
+    <div class="tags">${tag(a[1],a[2])}</div></div></div>`).join('');
+  return `<div class="day" style="--c:${col}">
+   <div class="day-h" onclick="this.parentNode.classList.toggle('open')">
+    <div class="daynum"><b>${d.n}</b><span>Día</span></div>
+    <div class="info"><div class="dt">${d.date}</div><div class="ct">${d.city}</div></div>
+    ${d.flag?`<span class="flagx">${d.flag}</span>`:''}
+    <span class="chev">⌄</span>
+   </div>
+   <div class="day-b">${d.intro?`<div class="intro">${d.intro}</div>`:''}${atts||'<div class="ds" style="color:var(--muted);font-size:13px">Día de tránsito — sin visitas programadas.</div>'}</div>
+  </div>`;
+ }).join('');
+}
+renderDays(null);
+const REG=[['Todo',null],['Osaka','osaka'],['Nara','nara'],['Kioto','kioto'],['Takayama','takayama'],['Kanazawa','kanazawa'],['Tokyo','tokyo'],['Vuelos','vuelo']];
+document.getElementById('filters').innerHTML=REG.map((r,i)=>
+ `<button class="fp ${i===0?'on':''}" data-f="${r[1]||''}">${r[1]?`<i class="sw" style="background:${C[r[1]]}"></i>`:''}${r[0]}</button>`).join('');
+document.getElementById('filters').addEventListener('click',e=>{
+ const b=e.target.closest('.fp');if(!b)return;
+ document.querySelectorAll('.fp').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ renderDays(b.dataset.f||null);
+});
+
+/* ---- hotels ---- */
+const HOTELS=[
+ {city:'Osaka',c:'osaka',nights:'2 noches · dom 19 – mar 21 sep',cfg:'1 habitación doble · zona Shinsaibashi/Namba',h:[
+  {n:'Apartment Hotel 11 Shinsaibashi II',orig:1,pn:'90-110€',tot:'180-220€',i:'Elección del plan previo'},
+  {n:'Sotetsu Grand Fresa Osaka-Namba',pn:'80-100€',tot:'160-200€',i:'booking.com'},
+  {n:'Cross Hotel Osaka',pn:'95-115€',tot:'190-230€',i:'booking.com'},
+  {n:'Dormy Inn Premium Namba',pn:'100-130€',tot:'200-260€',i:'con onsen'},
+ ]},
+ {city:'Kioto',c:'kioto',nights:'3 noches · mar 21 – vie 24 sep',cfg:'1 habitación doble · Higashiyama/Miyagawacho',h:[
+  {n:'Rinn Hostel Miyagawacho',orig:1,pn:'80-100€',tot:'240-300€',i:'Elección del plan previo'},
+  {n:'Rinn Miyagawacho Grande',pn:'90-120€',tot:'270-360€',i:'mismo grupo Rinn'},
+  {n:'Minn Kyoto Shijo',pn:'85-105€',tot:'255-315€',i:'booking.com'},
+  {n:"K's House Kyoto (hostel)",pn:'60-80€',tot:'180-240€',i:'opción económica'},
+ ]},
+ {city:'Takayama',c:'takayama',nights:'1 noche · vie 24 – sáb 25 sep',cfg:'Habitación japonesa 2 pax · desayuno incluido',h:[
+  {n:'Ryokan Asunaro',orig:1,pn:'120-170€',tot:'120-170€',i:'Plan previo · con desayuno'},
+  {n:'Ryokan Kaminaka',pn:'110-150€',tot:'110-150€',i:'tatami · desayuno'},
+  {n:'Oyado Koto no Yume',pn:'200-280€',tot:'200-280€',i:'lujo · desayuno + cena'},
+  {n:'Hida Tensho-ji (templo)',pn:'130-180€',tot:'130-180€',i:'experiencia en templo'},
+ ]},
+ {city:'Kanazawa',c:'kanazawa',nights:'1 noche · sáb 25 – dom 26 sep',cfg:'Habitación doble o machiya pequeña',h:[
+  {n:'Hashiba-an',orig:1,pn:'100-140€',tot:'100-140€',i:'Elección del plan previo'},
+  {n:'Machiya Kanazawa Kikunoya',pn:'90-130€',tot:'90-130€',i:'machiya · muy valorado'},
+  {n:'Machiya Guest House Carta',pn:'80-120€',tot:'80-120€',i:'machiya + tatami'},
+  {n:'Kanazawa Machiya Inn',pn:'100-140€',tot:'100-140€',i:'casa vacacional'},
+ ]},
+ {city:'Tokyo',c:'tokyo',nights:'7 noches · dom 26 sep – dom 3 oct',cfg:'1 habitación doble · Akihabara/Kanda',h:[
+  {n:'APA Hotel Kanda Sakumacho',orig:1,pn:'70-90€',tot:'490-630€',i:'Elección del plan previo'},
+  {n:'APA Hotel Akihabara Ekimae',pn:'65-85€',tot:'455-595€',i:'Akihabara'},
+  {n:'Super Hotel Akihabara',pn:'70-90€',tot:'490-630€',i:'booking.com'},
+  {n:'Richmond Hotel Premier Asakusa',pn:'90-120€',tot:'630-840€',i:'opción superior'},
+ ]},
+];
+document.getElementById('hotels').innerHTML=HOTELS.map(s=>`
+ <div class="hsec" style="--c:${C[s.c]}">
+  <h3>${s.city}</h3><div class="hmeta">${s.nights} · ${s.cfg}</div>
+  <div class="hgrid">${s.h.map(x=>`
+   <div class="hcard ${x.orig?'orig':''}" style="--c:${C[s.c]}">
+    ${x.orig?'<span class="badge">ORIGINAL</span>':''}
+    <h4>${x.n}</h4>
+    <div class="row"><span>Precio/noche</span><b>${x.pn}</b></div>
+    <div class="row"><span>Total estancia</span><b>${x.tot}</b></div>
+    <div class="tot">${x.tot}</div>
+    <div class="info">${x.i}</div>
+   </div>`).join('')}</div>
+ </div>`).join('');
+
+/* ---- transport tables ---- */
+function table(el,head,rows,opts={}){
+ let h=`<tr>${head.map(x=>`<th>${x}</th>`).join('')}</tr>`;
+ let b=rows.map((r,i)=>`<tr class="${opts.hl&&opts.hl.includes(i)?'hl':''} ${opts.rec&&opts.rec.includes(i)?'recommend':''}">${r.map((c,j)=>`<td${j>=head.length-2?' class="money"':''}>${c}</td>`).join('')}</tr>`).join('');
+ document.getElementById(el).innerHTML=h+b;
+}
+table('traintbl',['Trayecto','Fecha','Billete / Pass','€/pax','Total 2 pax'],[
+ ['Osaka → Nara (i/v)','Lun 20 sep','JR Yamatoji (no cubierto por el pass)','9€','18€'],
+ ['Osaka → Kioto','Mar 21 sep','Incluido en el Pass','—','—'],
+ ['Kioto → Nagoya → Takayama','Vie 24 sep','Incluido en el Pass','—','—'],
+ ['Takayama-Hokuriku Pass (5 días)','21-25 sep','Osaka·Kioto·Takayama·Kanazawa + bus Shirakawa','120€','240€'],
+ ['Kanazawa → Tokyo','Dom 26 sep','Kagayaki (tramo fuera del pass)','75€','150€'],
+ ['Metro Tokyo (Suica)','27 sep – 4 oct','IC card recargable, 7 días','35€','70€'],
+ ['TOTAL TRANSPORTE','','sin JR Pass nacional','~238€/pax','~475€'],
+],{hl:[6]});
+table('cartbl',['Concepto','Detalle','Precio'],[
+ ['Empresa','Toyota Rent a Car vía Rakuten',''],
+ ['Recogida','Takayama Station · sáb 25 sep 9:00',''],
+ ['Entrega','Kanazawa Sta. West Exit · 17:00',''],
+ ['Vehículo','Toyota Yaris/Aqua compacto (2 pax + maletas)','110-150€'],
+ ['Por persona','Cargo one-way incluido','55-75€/pax'],
+]);
+table('simtbl',['Opción','Tipo','Duración','€/pax','Compra'],[
+ ['Holafly eSIM ★','Datos ilimitados','15-30 días','40-45€','holafly.com antes de viajar'],
+ ['Sakura Mobile','SIM física ilimitada','15 días','38-42€','sakuramobile.jp'],
+ ['IIJmio','SIM física 15 GB','30 días','25-30€','Aeropuerto KIX'],
+],{rec:[0]});
+
+/* ---- experiences ---- */
+table('extbl',['Actividad','Ciudad','Cuándo','€/pax','Total 2 pax'],[
+ ['Free Tour: Higashiyama y Gion','Kioto','Día 3','~12€ tip','~24€'],
+ ['Free Tour: Arashiyama','Kioto','Día 5','~12€ tip','~24€'],
+ ['Walking guiado Shirakawa-go (2 h)','Shirakawa','Día 7','~22€','~44€'],
+ ['Ceremonia del té · Kenroku-en','Kanazawa','Día 8','~35€','~70€'],
+ ['Free Tour Shinjuku nocturno','Tokyo','Día 9','~12€ tip','~24€'],
+ ['TeamLab Planets (opcional)','Tokyo','Cualquier día','~20€','~40€'],
+ ['Tokyo Skytree (opcional)','Tokyo','Cualquier día','~13€','~26€'],
+ ['Shibuya Sky (opcional)','Tokyo','Cualquier día','~13€','~26€'],
+]);
+table('enttbl',['Ciudad','Principales entradas de pago','Total/pax'],[
+ ['Osaka','Castillo (¥600) · Shitennoji (¥300) · Tsutenkaku (¥800)','~11€'],
+ ['Nara','Todai-ji (¥600) · Kofukuji tesoro (¥300) · galletas ciervos','~8€'],
+ ['Kioto','Ginkakuji, Kinkakuji, Nijo, Kiyomizu, Eikando, Ryoanji, Tenryuji','~42€'],
+ ['Takayama','Hida no Sato (¥700) · Hida Kokubunji (¥300)','~7€'],
+ ['Shirakawa','Tasa turística pueblo (¥600)','~4€'],
+ ['Kanazawa','Kenroku-en (¥320) · Templo Ninja (¥1.200) · Casa Nomura (¥550)','~13€'],
+ ['Tokyo','Senso-ji y Meiji gratis · Skytree/TeamLab opcionales','~20-50€'],
+ ['TOTAL ENTRADAS','incluida ceremonia del té de Kanazawa','~140-170€/pax'],
+],{hl:[7]});
+
+/* ---- budget ---- */
+const BUD=[
+ {k:'Vuelos',g:1950,p:975,c:'#c0392b',d:'MAD↔KIX/HND open-jaw · ref. Qatar/Turkish'},
+ {k:'Alojamiento',g:1500,p:750,c:'#8e44ad',d:'1 hab doble · 14 noches · 3-4★'},
+ {k:'Comida',g:950,p:475,c:'#e67e22',d:'~30€/día/persona'},
+ {k:'Transporte',g:600,p:300,c:'#2980b9',d:'Pase regional + Kagayaki + coche'},
+ {k:'Experiencias + entradas',g:290,p:145,c:'#2e8b57',d:'Tours, ceremonia, templos, teamLab'},
+ {k:'eSIM + seguro + varios',g:280,p:140,c:'#b8893b',d:'eSIM 102€ + seguro 110€ + extras'},
+];
+const TOTG=BUD.reduce((s,b)=>s+b.g,0), TOTP=BUD.reduce((s,b)=>s+b.p,0);
+let MODE='group';
+function fmt(n){return n.toLocaleString('es-ES')+' €';}
+function renderBars(){
+ const tot=MODE==='group'?TOTG:TOTP, key=MODE==='group'?'g':'p', max=Math.max(...BUD.map(b=>b[key]));
+ document.getElementById('bars').innerHTML=BUD.map(b=>{
+  const pct=Math.round(b[key]/tot*100);
+  return `<div class="brow"><div class="top"><b style="display:inline-flex;align-items:center;gap:8px"><span class="sw" style="background:${b.c}"></span>${b.k}</b>
+   <span class="amt">${fmt(b[key])} <span style="color:var(--muted);font-weight:400;font-size:12px">· ${pct}%</span></span></div>
+   <div class="track"><div class="fill" data-w="${Math.round(b[key]/max*100)}" style="background:${b.c}"></div></div>
+   <div class="sub">${b.d}</div></div>`;
+ }).join('');
+ requestAnimationFrame(()=>document.querySelectorAll('.fill').forEach(f=>f.style.width=f.dataset.w+'%'));
+}
+function renderDonut(){
+ const tot=MODE==='group'?TOTG:TOTP, key=MODE==='group'?'g':'p';
+ const r=80, cx=110, cy=110, circ=2*Math.PI*r; let off=0;
+ const segs=BUD.map(b=>{
+  const frac=b[key]/tot, len=frac*circ;
+  const s=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${b.c}" stroke-width="34"
+    stroke-dasharray="${len} ${circ-len}" stroke-dashoffset="${-off}" transform="rotate(-90 ${cx} ${cy})"/>`;
+  off+=len; return s;
+ }).join('');
+ document.getElementById('donut').innerHTML=
+  `<svg viewBox="0 0 220 220" width="220" height="220">${segs}</svg>
+   <div class="ctr"><div class="big">${fmt(tot)}</div><div class="lbl">${MODE==='group'?'2 personas':'por persona'}</div></div>`;
+}
+function renderCostTable(){
+ const rows=[
+  ['Vuelos i/v','MAD→KIX + HND→MAD open-jaw','~1.950€','~975€'],
+  ['Hoteles Osaka (2n)','1 hab doble','~190€','~95€'],
+  ['Hoteles Kioto (3n)','1 hab doble','~315€','~158€'],
+  ['Ryokan Takayama (1n)','Hab. japonesa + desayuno','~150€','~75€'],
+  ['Aloj. Kanazawa (1n)','Hab. doble / machiya','~70€','~35€'],
+  ['Hotel Tokyo (7n)','1 hab doble','~775€','~388€'],
+  ['Trenes (sin JR Pass)','Pase regional + sueltos','~475€','~238€'],
+  ['Coche alquiler','Compacto 1 día + peajes','~125€','~63€'],
+  ['eSIM datos (15 días)','Holafly ilimitado','~102€','~51€'],
+  ['Excursiones (tours)','Free tours, ceremonia té…','~150€','~75€'],
+  ['Entradas culturales','Templos, castillos, museos','~140€','~70€'],
+  ['Comida (16 días)','~30€/día/persona','~950€','~475€'],
+  ['Seguro de viaje','Cobertura tifón (obligatorio)','~110€','~55€'],
+  ['Gastos varios','Souvenirs, lavandería, taxis','~70€','~35€'],
+  ['TOTAL ESTIMADO','2 personas · medio realista','~5.570€','~2.785€'],
+ ];
+ table('costtbl',['Concepto','Detalle','Total 2 pax','Por persona'],rows,{hl:[14]});
+}
+function renderBudget(){
+ renderBars();renderDonut();renderCostTable();
+ document.getElementById('ppval').textContent=MODE==='group'?'5.570 €':'2.785 €';
+ document.getElementById('pplbl').textContent=MODE==='group'?'total · 2 personas · 16 días':'por persona · 16 días';
+}
+document.getElementById('budtoggle').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ document.querySelectorAll('#budtoggle button').forEach(x=>x.classList.remove('on'));b.classList.add('on');
+ MODE=b.dataset.mode;renderBudget();
+});
+
+/* ---- overview mini budget ---- */
+document.getElementById('ovbudget').innerHTML=BUD.map(b=>{
+ const pct=Math.round(b.g/TOTG*100);
+ return `<div style="margin-bottom:11px"><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px">
+  <span style="display:inline-flex;align-items:center;gap:7px"><span class="sw" style="background:${b.c}"></span>${b.k}</span>
+  <b style="font-family:var(--serif)">${fmt(b.g)}</b></div>
+  <div class="track" style="height:9px"><div style="height:100%;border-radius:8px;width:${pct}%;background:${b.c}"></div></div></div>`;
+}).join('')+`<div class="kv" style="margin-top:8px;border-top:1px solid var(--line);padding-top:11px"><span>Total 2 personas</span><b style="font-family:var(--serif);font-size:16px;color:var(--red)">${fmt(TOTG)}</b></div>`;
+
+/* ---- comparador ---- */
+const CMP=[
+ {t:'Transporte interurbano',c:'#2980b9',sub:'Cómo moverte entre las 6 ciudades en 16 días',o:[
+   {n:'JR Pass nacional 14 días',pr:'~485 €',u:'/persona',li:[['n','Demasiado caro para esta ruta'],['n','Solo trenes JR'],['y','Viajes ilimitados']]},
+   {n:'Pase regional + sueltos',pr:'~238 €',u:'/persona',win:1,li:[['y','Cubre el núcleo Osaka-Kioto-Takayama-Kanazawa'],['y','Incluye el bus a Shirakawa-go'],['y','Mitad de precio que el JR Pass']]},
+   {n:'Todo billete suelto',pr:'~270 €',u:'/persona',li:[['y','Sin compromiso'],['n','Comprar en cada estación'],['n','Sin descuento de pase']]},
+ ]},
+ {t:'Takayama → Shirakawa-go → Kanazawa',c:'#e67e22',sub:'El tramo de montaña del sábado 25 sep',o:[
+   {n:'Coche de alquiler (1 día)',pr:'~125 €',u:'/2 pax',win:1,li:[['y','Paras donde quieras'],['y','Miradores y aldeas a tu ritmo'],['n','Conducir por la izquierda']]},
+   {n:'Bus Nohi (incluido en el pase)',pr:'0 €',u:'ya cubierto',li:[['y','Sin conducir'],['y','Ya pagado dentro del pase'],['n','Horarios fijos, sin paradas extra']]},
+ ]},
+ {t:'Datos / eSIM (16 días)',c:'#8e44ad',sub:'Internet en el móvil durante el viaje',o:[
+   {n:'Holafly ilimitado',pr:'~51 €',u:'/persona',li:[['y','Datos sin límite'],['y','Instalación muy fácil'],['n','El más caro']]},
+   {n:'Airalo / Ubigi',pr:'~28 €',u:'/persona',win:1,li:[['y','Mejor precio'],['y','10-20 GB de sobra para 2 sem'],['n','No es ilimitado']]},
+   {n:'SIM física (aeropuerto KIX)',pr:'~38 €',u:'/persona',li:[['y','Datos ilimitados'],['n','Recoger al aterrizar'],['n','Hay que cambiar la SIM']]},
+ ]},
+ {t:'Vuelos España ↔ Japón',c:'#34495e',sub:'Open-jaw: entra por Osaka (KIX), sal por Tokio (HND/NRT)',o:[
+   {n:'Económico (escala asiática)',pr:'~1.500 €',u:'/2 pax',li:[['y','Lo más barato'],['n','Escalas largas (10-18 h)'],['n','China Eastern / Air China']]},
+   {n:'Medio (1 escala)',pr:'~2.000 €',u:'/2 pax',win:1,li:[['y','Qatar / Turkish Airlines'],['y','1 escala cómoda'],['y','Buena franquicia de equipaje']]},
+   {n:'Premium (menos horas)',pr:'~2.600 €',u:'/2 pax',li:[['y','JAL / Emirates / KLM'],['y','Trayecto más corto'],['n','Caro']]},
+ ]},
+ {t:'Seguro de viaje (16 d, 2 pax)',c:'#2e8b57',sub:'Imprescindible con cobertura de tifón',o:[
+   {n:'Heymondo',pr:'~105 €',u:'/2 pax',win:1,li:[['y','Médico hasta 1M €'],['y','App con chat médico 24 h'],['y','5% descuento habitual']]},
+   {n:'IATI Estándar',pr:'~123 €',u:'/2 pax',li:[['y','Marca muy conocida'],['y','Cancelación incluida'],['n','Algo más caro']]},
+   {n:'Intermundial',pr:'~111 €',u:'/2 pax',li:[['y','Cancelación 100%'],['y','Cobertura amplia'],['n','Web menos ágil']]},
+ ]},
+];
+document.getElementById('cmp').innerHTML=CMP.map(b=>`
+ <div class="cmp" style="--c:${b.c}">
+  <div class="cmp-h">${b.t}</div>
+  <div class="cmp-sub">${b.sub}</div>
+  <div class="cmp-grid">${b.o.map(o=>`
+   <div class="opt ${o.win?'win':''}" style="--c:${b.c}">${o.win?'<span class="pick">RECOMENDADO</span>':''}
+    <h5>${o.n}</h5>
+    <div class="pr" style="color:${b.c}">${o.pr} <small>${o.u}</small></div>
+    <ul>${o.li.map(l=>`<li class="${l[0]}">${l[1]}</li>`).join('')}</ul>
+   </div>`).join('')}</div>
+ </div>`).join('');
+table('scentbl',['Partida','Ajustado','Medio ★','Holgado'],[
+ ['Vuelos (2 pax)','1.500€','1.950€','2.600€'],
+ ['Alojamiento (14 noches)','1.180€','1.500€','1.850€'],
+ ['Comida (16 días)','800€','950€','1.280€'],
+ ['Transporte (trenes+coche)','450€','600€','680€'],
+ ['Experiencias + entradas','160€','290€','420€'],
+ ['eSIM + seguro + varios','160€','280€','370€'],
+ ['TOTAL 2 personas','~4.250€','~5.570€','~7.200€'],
+ ['Por persona','~2.125€','~2.785€','~3.600€'],
+],{hl:[6,7]});
+
+/* ---- booking timeline ---- */
+const BOOK=[
+ {w:'Ahora · jun–ago 2026',c:'#2e8b57',u:['lo','Sin prisa'],h:'Preparar y vigilar',li:[
+   'Fija las fechas exactas y la ciudad de salida (Madrid vs Barcelona).',
+   'Crea una alerta de precio en Google Flights para MAD→KIX y HND→MAD.',
+   'Comprueba el pasaporte: válido al menos hasta oct 2027 (Japón no exige visado para estancias &lt;90 días).',
+ ]},
+ {w:'Otoño 2026 · sep–dic',c:'#2980b9',u:['lo','Opcional'],h:'Bloquear hoteles flexibles',li:[
+   'Reserva hoteles con cancelación gratis en Booking para fijar precio sin pagar nada.',
+   'Apunta los ryokan de Takayama y los machiya de Kanazawa que te gusten: se agotan pronto.',
+ ]},
+ {w:'Ene–feb 2027',c:'#c0392b',u:['hi','¡Clave!'],h:'COMPRAR LOS VUELOS',li:[
+   'Aquí se abren a la venta las tarifas de sep 2027: compra en cuanto salgan, mejor precio.',
+   'Open-jaw en Qatar/Turkish, ~2.000 €/2 pax. Entra por Osaka, sal por Tokio.',
+   'Con los vuelos cerrados, ancla el resto del calendario a esas fechas.',
+ ]},
+ {w:'Primavera 2027 · mar–may',c:'#8e44ad',u:['mid','Recomendado'],h:'Confirmar alojamiento y coche',li:[
+   'Convierte los hoteles flexibles en reservas firmes.',
+   'Reserva el coche del tramo Takayama→Kanazawa (Toyota Rent a Car vía Rakuten Travel).',
+ ]},
+ {w:'Jun–jul 2027 · 2-3 meses antes',c:'#e67e22',u:['hi','Se agotan'],h:'Experiencias con cupo limitado',li:[
+   'teamLab Planets: reserva en cuanto abra la ventana (~2 meses antes), vuela rapidísimo.',
+   'Ceremonia del té en Kanazawa y tours guiados de pago (GetYourGuide).',
+   'Confirma definitivamente el ryokan de Takayama si aún no lo cerraste.',
+ ]},
+ {w:'Agosto 2027 · 3-4 semanas antes',c:'#b8893b',u:['mid','Antes del tifón'],h:'Pases, datos y seguro',li:[
+   'Compra el Takayama-Hokuriku Pass online (touristpass.jp) y la eSIM (Holafly/Airalo).',
+   'Contrata el seguro AHORA: si esperas a que se anuncie un tifón, ya no cubrirá ese evento.',
+   'Reserva asiento del Shinkansen Kagayaki (Kanazawa→Tokio) si quieres ventanilla.',
+ ]},
+ {w:'Días antes · sep 2027',c:'#34495e',u:['lo','Último'],h:'Preparativos finales',li:[
+   'Check-in online de los vuelos; descarga Google Maps offline y la app Japan Travel.',
+   'Saca algo de yenes en efectivo (templos y puestos pequeños no siempre aceptan tarjeta).',
+   'Añade la Welcome Suica al móvil (Apple/Google Wallet) para el metro de Tokio.',
+ ]},
+];
+document.getElementById('booking').innerHTML=BOOK.map(b=>`
+ <div class="bkrow" style="--c:${b.c}">
+  <div class="pin"></div>
+  <div class="bkbox">
+   <div class="when">${b.w}<span class="urg ${b.u[0]}">${b.u[1]}</span></div>
+   <h4>${b.h}</h4>
+   <ul>${b.li.map(x=>`<li>${x}</li>`).join('')}</ul>
+  </div>
+ </div>`).join('');
+
+/* ---- nav ---- */
+document.getElementById('nav').addEventListener('click',e=>{
+ const b=e.target.closest('.tab');if(!b)return;
+ document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));b.classList.add('on');
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+ document.getElementById(b.dataset.v).classList.add('on');
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(b.dataset.v==='presupuesto')renderBudget();
+});
+
+/* ---- theme ---- */
+const tbtn=document.getElementById('theme');
+tbtn.addEventListener('click',()=>{
+ const d=document.documentElement.getAttribute('data-theme')==='dark';
+ document.documentElement.setAttribute('data-theme',d?'light':'dark');
+ tbtn.textContent=d?'☾':'☀';
+});
+
+renderBudget();
+</script>
+</body>
+</html>
