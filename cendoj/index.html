@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#7c1d2b">
+<title>CENDOJ · Buscador de jurisprudencia</title>
+<style>
+:root{
+  --bg:#f4f1ea; --paper:#fffdf9; --paper2:#faf6ee;
+  --ink:#1d1a16; --muted:#6c6457; --faint:#938a79;
+  --line:#e4ddcd; --line2:#d8cfba;
+  --garnet:#7c1d2b; --garnet-d:#5e1320; --garnet-l:#9a3140;
+  --garnet-tint:rgba(124,29,43,.07);
+  --gold:#9a7b3f; --ok:#2e6b46; --err:#9a2222;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --shadow:0 14px 38px -22px rgba(40,20,20,.45);
+  --radius:14px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100dvh;line-height:1.5;
+  background-image:radial-gradient(circle at 1px 1px,rgba(124,29,43,.05) 1px,transparent 0);background-size:24px 24px;}
+.wrap{width:100%;max-width:920px;margin:0 auto;padding:0 18px 64px}
+a{color:var(--garnet)}
+
+/* Header */
+.top{background:linear-gradient(160deg,var(--garnet),var(--garnet-d));color:#fdf6f0;
+  margin:0 -18px 26px;padding:30px 18px 26px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.top::after{content:"";position:absolute;inset:0;
+  background:radial-gradient(circle at 88% -10%,rgba(255,255,255,.14),transparent 42%);pointer-events:none}
+.top-in{max-width:884px;margin:0 auto;display:flex;align-items:center;gap:18px}
+.crest{flex:0 0 auto;width:56px;height:56px;border-radius:14px;display:grid;place-items:center;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.25)}
+.crest svg{width:32px;height:32px;stroke:#fdf6f0;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.top h1{font-family:var(--serif);font-size:clamp(1.7rem,5vw,2.3rem);font-weight:600;letter-spacing:.01em;line-height:1.05}
+.top .kicker{font-size:.66rem;letter-spacing:.3em;text-transform:uppercase;color:rgba(253,246,240,.72);font-weight:600;margin-bottom:.25em}
+.top p.sub{color:rgba(253,246,240,.82);font-size:.92rem;margin-top:.2em}
+.home{position:absolute;top:14px;right:18px;color:rgba(253,246,240,.85);text-decoration:none;font-size:.8rem;
+  border:1px solid rgba(255,255,255,.3);padding:5px 11px;border-radius:999px;transition:background .2s}
+.home:hover{background:rgba(255,255,255,.14)}
+
+/* Panels */
+.panel{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);margin-bottom:20px}
+.panel-h{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);
+  font-family:var(--serif);font-size:1.05rem;font-weight:600}
+.panel-h .n{flex:0 0 auto;width:24px;height:24px;border-radius:7px;background:var(--garnet);color:#fff;
+  display:grid;place-items:center;font-family:var(--sans);font-size:.78rem;font-weight:700}
+.panel-b{padding:18px}
+
+/* Config */
+details.cfg{margin-bottom:20px;background:var(--paper2);border:1px solid var(--line);border-radius:var(--radius)}
+details.cfg>summary{list-style:none;cursor:pointer;padding:13px 18px;display:flex;align-items:center;gap:10px;
+  font-weight:600;font-size:.92rem}
+details.cfg>summary::-webkit-details-marker{display:none}
+.dot{width:9px;height:9px;border-radius:50%;background:var(--err);flex:0 0 auto;box-shadow:0 0 0 3px rgba(154,34,34,.12)}
+.dot.ok{background:var(--ok);box-shadow:0 0 0 3px rgba(46,107,70,.14)}
+.cfg .body{padding:0 18px 18px}
+.cfg label{display:block;font-size:.82rem;font-weight:600;color:var(--muted);margin:0 0 6px}
+.token-row{display:flex;gap:8px;flex-wrap:wrap}
+.token-row input{flex:1 1 240px}
+.note{font-size:.78rem;color:var(--faint);margin-top:10px;line-height:1.55}
+.note b{color:var(--muted)}
+
+/* Form grid */
+.fgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.field.full{grid-column:1 / -1}
+.field label{display:block;font-size:.8rem;font-weight:600;color:var(--muted);margin:0 0 5px;letter-spacing:.01em}
+input,select,textarea{width:100%;font:inherit;font-size:.92rem;color:var(--ink);background:var(--paper2);
+  border:1px solid var(--line2);border-radius:10px;padding:10px 12px;transition:border-color .18s,box-shadow .18s}
+textarea{resize:vertical;min-height:46px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--garnet);box-shadow:0 0 0 3px var(--garnet-tint)}
+select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'><path d='M2 4l4 4 4-4' stroke='%237c1d2b' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.hint{font-size:.74rem;color:var(--faint);margin-top:5px}
+details.adv{grid-column:1 / -1;margin-top:2px}
+details.adv summary{cursor:pointer;font-size:.84rem;font-weight:600;color:var(--garnet);list-style:none}
+details.adv summary::-webkit-details-marker{display:none}
+details.adv summary::before{content:"▸ ";font-size:.7rem}
+details.adv[open] summary::before{content:"▾ "}
+.adv-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:14px}
+
+/* Buttons */
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.btn{font:inherit;font-weight:600;font-size:.92rem;border:1px solid transparent;border-radius:10px;
+  padding:11px 20px;cursor:pointer;transition:transform .15s,background .18s,box-shadow .18s,border-color .18s}
+.btn:active{transform:translateY(1px)}
+.btn.primary{background:var(--garnet);color:#fff;box-shadow:0 10px 22px -12px rgba(124,29,43,.7)}
+.btn.primary:hover{background:var(--garnet-d)}
+.btn.primary:disabled{opacity:.55;cursor:not-allowed;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--garnet);border-color:var(--line2)}
+.btn.ghost:hover{border-color:var(--garnet);background:var(--garnet-tint)}
+.btn.sm{padding:7px 13px;font-size:.82rem}
+
+/* Status / results */
+#status{margin:6px 0 18px;font-size:.9rem;display:none}
+#status.show{display:block}
+#status .box{border-radius:12px;padding:13px 16px;border:1px solid}
+#status .box.load{background:#fff;border-color:var(--line2);color:var(--muted);display:flex;align-items:center;gap:12px}
+#status .box.bad{background:#fdf0f0;border-color:#e7c4c4;color:var(--err)}
+#status .box.empty{background:var(--paper2);border-color:var(--line2);color:var(--muted)}
+.spin{width:18px;height:18px;border:2.5px solid var(--line2);border-top-color:var(--garnet);border-radius:50%;
+  animation:sp .8s linear infinite;flex:0 0 auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+.res-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.res-bar .count{font-family:var(--serif);font-size:1.15rem;font-weight:600}
+.res-bar .count b{color:var(--garnet)}
+.exports{display:flex;gap:8px}
+
+.cards{display:grid;gap:14px}
+.r{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;
+  box-shadow:0 8px 24px -20px rgba(40,20,20,.5);position:relative;border-left:4px solid var(--garnet)}
+.r-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.date{background:var(--garnet);color:#fff;font-size:.74rem;font-weight:700;letter-spacing:.02em;
+  padding:3px 9px;border-radius:7px;font-variant-numeric:tabular-nums}
+.organo{font-size:.8rem;color:var(--muted);font-weight:600}
+.jtag{margin-left:auto;font-size:.64rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;
+  color:var(--gold);background:rgba(154,123,63,.12);padding:3px 9px;border-radius:999px}
+.r h3{font-family:var(--serif);font-size:1.06rem;font-weight:600;line-height:1.3;margin:2px 0 6px}
+.r .summary{font-size:.9rem;color:var(--ink);opacity:.86;margin-bottom:10px}
+.r .meta{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:.8rem;color:var(--muted);margin-bottom:12px}
+.r .meta span b{color:var(--ink);font-weight:600}
+.r .para{background:var(--paper2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  font-size:.84rem;color:var(--muted);margin-bottom:12px;white-space:pre-wrap;max-height:240px;overflow:auto}
+.r-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pdf{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-weight:600;font-size:.84rem;
+  color:var(--garnet);border:1px solid var(--line2);border-radius:9px;padding:7px 13px;transition:.18s}
+.pdf:hover{border-color:var(--garnet);background:var(--garnet-tint)}
+.copy{font:inherit;font-weight:600;font-size:.84rem;color:var(--muted);background:transparent;
+  border:1px solid var(--line2);border-radius:9px;padding:7px 13px;cursor:pointer;transition:.18s}
+.copy:hover{border-color:var(--garnet);color:var(--garnet)}
+
+footer{text-align:center;color:var(--faint);font-size:.76rem;margin-top:30px;line-height:1.7}
+footer a{color:var(--muted)}
+
+@media(max-width:640px){
+  .fgrid,.adv-grid{grid-template-columns:1fr}
+  .top-in{gap:14px}
+  .home{position:static;display:inline-block;margin-top:14px}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="home" href="../">← Plataformas</a>
+  <div class="top-in">
+    <div class="crest" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 3v18M5 21h14M12 6l-7 2 7-2 7 2-7-2M5 8l-2.5 5a2.5 2.5 0 0 0 5 0L5 8zm14 0l-2.5 5a2.5 2.5 0 0 0 5 0L19 8z"/></svg>
+    </div>
+    <div>
+      <div class="kicker">Centro de Documentación Judicial</div>
+      <h1>Buscador de jurisprudencia</h1>
+      <p class="sub">Tribunal Supremo y demás órganos · datos oficiales del CENDOJ</p>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Configuración / token -->
+  <details class="cfg" id="cfg">
+    <summary><span class="dot" id="dot"></span><span id="cfgLabel">Configuración · falta el token de Apify</span></summary>
+    <div class="body">
+      <label for="token">Token personal de Apify</label>
+      <div class="token-row">
+        <input type="password" id="token" autocomplete="off" spellcheck="false" placeholder="apify_api_••••••••••••••••">
+        <button class="btn primary sm" id="saveTok" type="button">Guardar</button>
+        <button class="btn ghost sm" id="clearTok" type="button">Borrar</button>
+      </div>
+      <p class="note">
+        Se guarda <b>solo en este navegador</b> (localStorage) y se envía directamente a la API de Apify. No se sube a ningún servidor ni al repositorio.
+        Consíguelo gratis en <a href="https://console.apify.com/settings/integrations" target="_blank" rel="noopener">Apify → Settings → API &amp; Integrations</a>.
+        El actor <b>legaltech/cendoj</b> usa proxy residencial español; el plan gratuito incluye créditos mensuales suficientes para uso personal.
+      </p>
+    </div>
+  </details>
+
+  <!-- Búsqueda -->
+  <section class="panel">
+    <div class="panel-h"><span class="n">1</span> Criterios de búsqueda</div>
+    <div class="panel-b">
+      <form id="form">
+        <div class="fgrid">
+          <div class="field full">
+            <label for="terms">Términos de búsqueda</label>
+            <textarea id="terms" placeholder="p. ej.  gastos hipotecarios   ·   custodia compartida   ·   protección de datos Y sanidad"></textarea>
+            <div class="hint">Operadores: <b>Y/O/NO</b> y <b>PROXn</b> (proximidad). Una búsqueda por línea para lanzar varios términos a la vez.</div>
+          </div>
+
+          <div class="field">
+            <label for="organo">Órgano judicial</label>
+            <select id="organo">
+              <option value="">Todos los órganos</option>
+              <optgroup label="Tribunal Supremo">
+                <option value="11|12|13|14|15|16">Tribunal Supremo (todas las salas)</option>
+                <option value="11">TS · Sala de lo Civil</option>
+                <option value="12">TS · Sala de lo Penal</option>
+                <option value="13">TS · Sala de lo Contencioso</option>
+                <option value="14">TS · Sala de lo Social</option>
+                <option value="15">TS · Sala de lo Militar</option>
+                <option value="16">TS · Sala de lo Especial (art. 61 LOPJ)</option>
+              </optgroup>
+              <optgroup label="Audiencia Nacional">
+                <option value="22|2264|23|24|25|26|27|28|29">Audiencia Nacional (todas)</option>
+                <option value="22">AN · Sala de lo Penal</option>
+                <option value="2264">AN · Sala de Apelación</option>
+                <option value="23">AN · Sala de lo Contencioso</option>
+                <option value="24">AN · Sala de lo Social</option>
+                <option value="28">AN · Juzgados Centrales de lo Penal</option>
+                <option value="29">AN · Juzgados Centrales de lo Contencioso</option>
+                <option value="27">AN · Juzgados Centrales de Instrucción</option>
+                <option value="26">AN · Juzgado Central de Menores</option>
+                <option value="25">AN · Juzg. Central de Vigilancia Penitenciaria</option>
+              </optgroup>
+              <optgroup label="Tribunal Superior de Justicia">
+                <option value="31|31201202|33|34">Tribunal Superior de Justicia (todas)</option>
+                <option value="31">TSJ · Sala de lo Civil y Penal</option>
+                <option value="31201202">TSJ · Sección de Apelación Penal</option>
+                <option value="33">TSJ · Sala de lo Contencioso</option>
+                <option value="34">TSJ · Sala de lo Social</option>
+              </optgroup>
+              <optgroup label="Audiencias">
+                <option value="37">Audiencia Provincial</option>
+                <option value="38">Audiencia Provincial · Tribunal del Jurado</option>
+                <option value="36">Audiencia Territorial</option>
+              </optgroup>
+              <optgroup label="Juzgados">
+                <option value="42">Juzgado de Primera Instancia</option>
+                <option value="43">Juzgado de Instrucción</option>
+                <option value="41">Juzgado de 1ª Instancia e Instrucción</option>
+                <option value="51">Juzgado de lo Penal</option>
+                <option value="45">Juzgado de lo Contencioso-Administrativo</option>
+                <option value="44">Juzgado de lo Social</option>
+                <option value="47">Juzgado de lo Mercantil</option>
+                <option value="48">Juzgado de Violencia sobre la Mujer</option>
+                <option value="53">Juzgado de Menores</option>
+                <option value="52">Juzgado de Vigilancia Penitenciaria</option>
+              </optgroup>
+              <optgroup label="Marca de la UE">
+                <option value="1001">Tribunal de Marca de la UE</option>
+                <option value="1002">Juzgados de Marca de la UE</option>
+              </optgroup>
+              <optgroup label="Jurisdicción militar">
+                <option value="83">Tribunal Militar Territorial</option>
+                <option value="85">Tribunal Militar Central</option>
+                <option value="75">Consejo Supremo de Justicia Militar</option>
+              </optgroup>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="jur">Jurisdicción</label>
+            <select id="jur">
+              <option value="">Todas</option>
+              <option value="CIVIL">Civil</option>
+              <option value="PENAL">Penal</option>
+              <option value="CONTENCIOSO">Contencioso-administrativo</option>
+              <option value="SOCIAL">Social</option>
+              <option value="MILITAR">Militar</option>
+              <option value="ESPECIAL">Especial</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="restype">Tipo de resolución</label>
+            <select id="restype">
+              <option value="">Todas</option>
+              <option value="SENTENCIA">Sentencia</option>
+              <option value="AUTO">Auto</option>
+              <option value="ACUERDO">Acuerdo</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="sort">Ordenar por</label>
+            <select id="sort">
+              <option value="IN_FECHARESOLUCION:decreasing" selected>Fecha de resolución (recientes primero)</option>
+              <option value="IN_FECHARESOLUCION:increasing">Fecha de resolución (antiguas primero)</option>
+              <option value="IN_FECHAENTRADA:numberdecreasing">Lo más nuevo (fecha de entrada)</option>
+              <option value="Relevance">Coincidencia / relevancia</option>
+              <option value="IP_TIPOORGANO:alphabetical">Órgano (A–Z)</option>
+              <option value="IP_TIPOORGANO:reversealphabetical">Órgano (Z–A)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="dfrom">Fecha desde</label>
+            <input type="date" id="dfrom">
+          </div>
+          <div class="field">
+            <label for="dto">Fecha hasta</label>
+            <input type="date" id="dto">
+          </div>
+
+          <div class="field">
+            <label for="max">Nº máximo de resultados</label>
+            <input type="number" id="max" min="1" max="200" value="25">
+            <div class="hint">Entre 1 y 200 (se pagina de 50 en 50).</div>
+          </div>
+
+          <div class="field">
+            <label for="ccaa">Comunidad Autónoma</label>
+            <select id="ccaa">
+              <option value="">Todas</option>
+              <option value="ANDALUCÍA">Andalucía</option>
+              <option value="ARAGÓN">Aragón</option>
+              <option value="ASTURIAS">Asturias</option>
+              <option value="BALEARES">Baleares</option>
+              <option value="CANARIAS">Canarias</option>
+              <option value="CANTABRIA">Cantabria</option>
+              <option value="CASTILLA LA MANCHA">Castilla-La Mancha</option>
+              <option value="CASTILLA Y LEÓN">Castilla y León</option>
+              <option value="CATALUÑA">Cataluña</option>
+              <option value="CEUTA">Ceuta</option>
+              <option value="COMUNIDAD VALENCIANA">Comunidad Valenciana</option>
+              <option value="EXTREMADURA">Extremadura</option>
+              <option value="GALICIA">Galicia</option>
+              <option value="LA RIOJA">La Rioja</option>
+              <option value="MADRID">Madrid</option>
+              <option value="MELILLA">Melilla</option>
+              <option value="MURCIA">Murcia</option>
+              <option value="NAVARRA">Navarra</option>
+              <option value="PAÍS VASCO">País Vasco</option>
+            </select>
+          </div>
+
+          <details class="adv">
+            <summary>Opciones avanzadas (extracción de texto)</summary>
+            <div class="adv-grid">
+              <div class="field">
+                <label for="paras">Modo pasajes clave (nº de párrafos)</label>
+                <input type="number" id="paras" min="0" max="20" value="0">
+                <div class="hint">0 = solo listado (rápido). 1–20 = extrae los párrafos relevantes de cada PDF (más lento y consume más créditos).</div>
+              </div>
+              <div class="field">
+                <label for="parasTerms">Términos para localizar los pasajes</label>
+                <input type="text" id="parasTerms" placeholder="(opcional; por defecto, el término de búsqueda)">
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div class="actions">
+          <button class="btn primary" id="go" type="submit">Buscar en CENDOJ</button>
+          <button class="btn ghost" id="reset" type="button">Limpiar</button>
+        </div>
+      </form>
+    </div>
+  </section>
+
+  <div id="status"></div>
+
+  <section class="panel" id="resPanel" style="display:none">
+    <div class="panel-h"><span class="n">2</span> Resultados</div>
+    <div class="panel-b">
+      <div class="res-bar">
+        <div class="count" id="count"></div>
+        <div class="exports">
+          <button class="btn ghost sm" id="csv" type="button">Descargar CSV</button>
+          <button class="btn ghost sm" id="json" type="button">Descargar JSON</button>
+        </div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <footer>
+    Datos: <a href="https://www.poderjudicial.es/search/indexAN.jsp" target="_blank" rel="noopener">CENDOJ · Poder Judicial</a> ·
+    motor: actor <a href="https://apify.com/legaltech/cendoj" target="_blank" rel="noopener">legaltech/cendoj</a> en Apify.<br>
+    Uso personal de consulta e investigación. Las resoluciones judiciales son de dominio público (art. 13 TRLPI).
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var TOKEN_KEY = "cendoj_apify_token";
+  var ACTOR = "legaltech~cendoj";
+  var ENDPOINT = "https://api.apify.com/v2/acts/" + ACTOR +
+    "/run-sync-get-dataset-items?clean=true&format=json&timeout=300";
+
+  var $ = function(id){ return document.getElementById(id); };
+  var lastResults = [];
+
+  /* ---------- Token handling ---------- */
+  function getToken(){ try { return localStorage.getItem(TOKEN_KEY) || ""; } catch(e){ return ""; } }
+  function refreshTokenUI(){
+    var t = getToken();
+    $("dot").className = "dot" + (t ? " ok" : "");
+    $("cfgLabel").textContent = t
+      ? "Configuración · token guardado ✓"
+      : "Configuración · falta el token de Apify";
+    if (t) $("token").value = t;
+  }
+  $("saveTok").addEventListener("click", function(){
+    var v = $("token").value.trim();
+    if (!v){ alert("Pega tu token de Apify."); return; }
+    try { localStorage.setItem(TOKEN_KEY, v); } catch(e){ alert("No se pudo guardar el token en este navegador."); return; }
+    refreshTokenUI();
+    $("cfg").open = false;
+  });
+  $("clearTok").addEventListener("click", function(){
+    try { localStorage.removeItem(TOKEN_KEY); } catch(e){}
+    $("token").value = "";
+    refreshTokenUI();
+  });
+
+  /* ---------- Status helpers ---------- */
+  function showStatus(kind, html){
+    var s = $("status");
+    s.className = "show";
+    s.innerHTML = '<div class="box ' + kind + '">' + html + '</div>';
+  }
+  function hideStatus(){ $("status").className = ""; $("status").innerHTML = ""; }
+
+  /* ---------- Build actor input ---------- */
+  function buildInput(){
+    var input = {
+      proxyConfiguration: { useApifyProxy:true, apifyProxyGroups:["RESIDENTIAL"], apifyProxyCountry:"ES" }
+    };
+    var terms = $("terms").value.split("\n").map(function(s){ return s.trim(); }).filter(Boolean);
+    if (terms.length) input.searchTerms = terms;
+
+    var organo = $("organo").value;   if (organo) input.organoTypes = [organo];
+    var jur = $("jur").value;          if (jur) input.jurisdictions = [jur];
+    var rt = $("restype").value;       if (rt) input.resolutionTypes = [rt];
+    var ccaa = $("ccaa").value;        if (ccaa) input.locations = [ccaa];
+    var dfrom = $("dfrom").value;      if (dfrom) input.dateFrom = dfrom;
+    var dto = $("dto").value;          if (dto) input.dateTo = dto;
+    var sort = $("sort").value;        if (sort) input.sortOrder = sort;
+
+    var max = parseInt($("max").value, 10);
+    input.maxResults = (isNaN(max) ? 25 : Math.min(200, Math.max(1, max)));
+
+    var paras = parseInt($("paras").value, 10);
+    if (!isNaN(paras) && paras > 0){
+      input.paragraphs = Math.min(20, paras);
+      var pt = $("parasTerms").value.trim();
+      if (pt) input.paragraphTerms = pt;
+    }
+    return { input: input, hasTerms: terms.length > 0 };
+  }
+
+  /* ---------- Render ---------- */
+  function esc(s){
+    return String(s == null ? "" : s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+  function fmtDate(iso){
+    if (!iso) return "s/f";
+    var m = String(iso).match(/(\d{4})-(\d{2})-(\d{2})/);
+    return m ? (m[3] + "/" + m[2] + "/" + m[1]) : esc(iso);
+  }
+  function pickParagraphs(it){
+    var v = it.paragraphs || it.text || it.fullText || it.relevantParagraphs;
+    if (!v) return "";
+    if (Array.isArray(v)) return v.join("\n\n");
+    return String(v);
+  }
+  function render(items){
+    lastResults = items;
+    var box = $("cards");
+    box.innerHTML = "";
+    items.forEach(function(it){
+      var card = document.createElement("article");
+      card.className = "r";
+      var meta = [];
+      if (it.roj) meta.push("<span><b>ROJ</b> " + esc(it.roj) + "</span>");
+      if (it.ecli) meta.push("<span><b>ECLI</b> " + esc(it.ecli) + "</span>");
+      if (it.appealNumber) meta.push("<span><b>Recurso</b> " + esc(it.appealNumber) + "</span>");
+      if (it.ponente) meta.push("<span><b>Ponente</b> " + esc(it.ponente) + "</span>");
+      if (it.municipality) meta.push("<span>" + esc(it.municipality) + "</span>");
+
+      var para = pickParagraphs(it);
+      var heading = it.title || it.summary || it.roj || it.ecli || "Resolución";
+      var summaryLine = (it.summary && it.summary !== it.title) ? '<p class="summary">' + esc(it.summary) + "</p>" : "";
+
+      card.innerHTML =
+        '<div class="r-top">' +
+          '<span class="date">' + fmtDate(it.resolutionDateISO) + "</span>" +
+          (it.organo ? '<span class="organo">' + esc(it.organo) + "</span>" : "") +
+          (it.jurisdiction ? '<span class="jtag">' + esc(it.jurisdiction) + "</span>" : "") +
+        "</div>" +
+        "<h3>" + esc(heading) + "</h3>" +
+        summaryLine +
+        (meta.length ? '<div class="meta">' + meta.join("") + "</div>" : "") +
+        (para ? '<div class="para">' + esc(para) + "</div>" : "") +
+        '<div class="r-actions">' +
+          (it.pdfUrl ? '<a class="pdf" href="' + esc(it.pdfUrl) + '" target="_blank" rel="noopener">📄 Ver PDF oficial</a>' : "") +
+          '<button class="copy" type="button">Copiar cita</button>' +
+        "</div>";
+
+      var citeBtn = card.querySelector(".copy");
+      citeBtn.addEventListener("click", function(){
+        var cite = [it.roj, it.ecli, (it.organo||""), fmtDate(it.resolutionDateISO)]
+          .filter(Boolean).join(" · ");
+        navigator.clipboard && navigator.clipboard.writeText(cite);
+        citeBtn.textContent = "¡Copiado!";
+        setTimeout(function(){ citeBtn.textContent = "Copiar cita"; }, 1400);
+      });
+      box.appendChild(card);
+    });
+
+    $("count").innerHTML = "<b>" + items.length + "</b> resolucion" + (items.length === 1 ? "" : "es");
+    $("resPanel").style.display = items.length ? "" : "none";
+  }
+
+  /* ---------- Search ---------- */
+  $("form").addEventListener("submit", function(ev){
+    ev.preventDefault();
+    var token = getToken();
+    if (!token){
+      $("cfg").open = true;
+      showStatus("bad", "Falta tu <b>token de Apify</b>. Ábrelo en «Configuración», pégalo y guárdalo.");
+      return;
+    }
+    var built = buildInput();
+    if (!built.hasTerms){
+      showStatus("bad", "Introduce al menos un <b>término de búsqueda</b>.");
+      return;
+    }
+
+    $("go").disabled = true;
+    showStatus("load",
+      '<span class="spin"></span><span>Buscando en CENDOJ vía proxy residencial… ' +
+      'puede tardar entre 20 s y 2 min según el volumen.</span>');
+    $("resPanel").style.display = "none";
+
+    fetch(ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
+      body: JSON.stringify(built.input)
+    })
+    .then(function(resp){
+      return resp.json().then(function(data){ return { ok: resp.ok, status: resp.status, data: data }; });
+    })
+    .then(function(r){
+      if (!r.ok || !Array.isArray(r.data)){
+        var msg = (r.data && (r.data.error && r.data.error.message)) || (r.data && r.data.message) || ("HTTP " + r.status);
+        if (r.status === 401) msg = "Token no válido o sin permisos (401). Revísalo en Configuración.";
+        if (r.status === 402) msg = "Sin créditos suficientes en tu cuenta de Apify (402).";
+        if (r.status === 408) msg = "La búsqueda tardó demasiado (408). Prueba a reducir el «Nº máximo» o desactivar el modo pasajes.";
+        throw new Error(msg);
+      }
+      if (!r.data.length){
+        hideStatus();
+        showStatus("empty", "Sin resultados para esos criterios. Prueba a ampliar el término, quitar filtros o el rango de fechas.");
+        return;
+      }
+      hideStatus();
+      render(r.data);
+      $("resPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+    })
+    .catch(function(err){
+      var m = err && err.message ? err.message : "Error de red.";
+      if (/Failed to fetch|NetworkError/i.test(m))
+        m = "No se pudo conectar con Apify (red o CORS). Comprueba tu conexión y que el token es correcto.";
+      showStatus("bad", "<b>Error:</b> " + esc(m));
+    })
+    .finally(function(){ $("go").disabled = false; });
+  });
+
+  $("reset").addEventListener("click", function(){
+    $("form").reset();
+    $("sort").value = "IN_FECHARESOLUCION:decreasing";
+    hideStatus();
+    $("resPanel").style.display = "none";
+  });
+
+  /* ---------- Export ---------- */
+  function download(name, text, type){
+    var blob = new Blob([text], { type: type });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = name; a.click();
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1500);
+  }
+  $("json").addEventListener("click", function(){
+    if (!lastResults.length) return;
+    download("cendoj.json", JSON.stringify(lastResults, null, 2), "application/json");
+  });
+  $("csv").addEventListener("click", function(){
+    if (!lastResults.length) return;
+    var cols = ["resolutionDateISO","organo","jurisdiction","roj","ecli","title","ponente","municipality","appealNumber","summary","pdfUrl"];
+    var head = ["Fecha","Órgano","Jurisdicción","ROJ","ECLI","Título","Ponente","Municipio","Recurso","Resumen","PDF"];
+    function cell(v){ v = (v == null ? "" : String(v)).replace(/"/g,'""'); return '"' + v + '"'; }
+    var rows = [head.map(cell).join(";")];
+    lastResults.forEach(function(it){
+      rows.push(cols.map(function(c){ return cell(it[c]); }).join(";"));
+    });
+    download("cendoj.csv", "﻿" + rows.join("\r\n"), "text/csv;charset=utf-8");
+  });
+
+  refreshTokenUI();
+})();
+</script>
+</body>
+</html>
