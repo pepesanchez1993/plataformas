@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#00a650">
+<title>Cesta Mercadona</title>
+<style>
+:root {
+  --g:    #00a650;
+  --gd:   #007a3c;
+  --gl:   #e6f7ee;
+  --gm:   #b2dfcb;
+  --red:  #e63946;
+  --txt:  #1a1a1a;
+  --txt2: #555;
+  --txt3: #999;
+  --bg:   #f2f2f2;
+  --card: #fff;
+  --line: #e4e4e4;
+  --sh:   0 2px 10px rgba(0,0,0,.07);
+  --r:    13px;
+  --r2:   9px;
+  --nav:  60px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%}
+body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);min-height:100dvh}
+
+/* ── HEADER ── */
+header{
+  position:sticky;top:0;z-index:90;
+  background:var(--g);color:#fff;
+  padding:10px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 8px rgba(0,166,80,.35);
+}
+.hd-logo{font-size:18px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:7px}
+.hd-logo small{font-weight:400;opacity:.75;font-size:14px}
+.hd-total{
+  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
+  border-radius:20px;padding:5px 13px;font-size:14px;font-weight:700;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;bottom:0;left:0;right:0;z-index:90;
+  display:flex;background:#fff;border-top:1px solid var(--line);
+  height:var(--nav);box-shadow:0 -2px 12px rgba(0,0,0,.06);
+}
+.nb{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3px;border:none;background:none;cursor:pointer;
+  font-size:10px;font-weight:600;color:var(--txt3);padding:0;
+  transition:color .15s;letter-spacing:.01em;
+}
+.nb.on{color:var(--g)}
+.nb svg{width:21px;height:21px}
+.nb-wrap{position:relative}
+.n-badge{
+  position:absolute;top:-3px;right:-8px;
+  background:var(--red);color:#fff;border-radius:10px;
+  padding:1px 5px;font-size:9px;font-weight:800;
+  min-width:16px;text-align:center;
+}
+
+/* ── TABS ── */
+main{padding-bottom:calc(var(--nav)+8px)}
+.tab{display:none}
+.tab.on{display:block}
+
+/* ── TOOLBAR ── */
+.toolbar{display:flex;gap:8px;padding:10px 12px 0}
+.btn-p{
+  flex:1;background:var(--g);color:#fff;border:none;
+  border-radius:var(--r2);padding:11px 14px;font-size:14px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.btn-s{
+  background:var(--gl);color:var(--gd);border:none;
+  border-radius:var(--r2);padding:11px 14px;font-size:14px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.btn-g{
+  background:none;color:var(--txt2);border:1.5px solid var(--line);
+  border-radius:var(--r2);padding:11px 14px;font-size:14px;
+  cursor:pointer;
+}
+
+/* ── RESUMEN BAR ── */
+.resumen{
+  display:flex;margin:10px 12px 0;background:#fff;
+  border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;
+}
+.res-cell{flex:1;text-align:center;padding:10px 6px}
+.res-v{font-size:20px;font-weight:800;color:var(--g)}
+.res-l{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
+.res-sep{width:1px;background:var(--line);margin:10px 0}
+
+/* ── SECCIÓN GRUPO ── */
+.sec-g{margin:10px 12px 0}
+.sec-h{
+  display:flex;align-items:center;gap:8px;padding:9px 13px;
+  background:#fff;border-radius:var(--r) var(--r) 0 0;
+  border-bottom:1px solid var(--line);
+  font-size:12px;font-weight:800;color:var(--gd);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+.sec-cnt{margin-left:auto;color:var(--txt3);font-weight:400;font-size:11px}
+
+/* ── ITEM LISTA ── */
+.li{
+  display:flex;align-items:center;gap:9px;padding:11px 12px;
+  background:#fff;border-bottom:1px solid var(--line);
+  transition:background .12s;
+}
+.li:last-child{border-bottom:none;border-radius:0 0 var(--r) var(--r)}
+.li.ck{opacity:.48}
+.li.ck .li-n{text-decoration:line-through}
+
+.chk{
+  width:27px;height:27px;flex-shrink:0;border-radius:50%;
+  border:2px solid var(--line);background:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.chk.on{background:var(--g);border-color:var(--g)}
+.chk svg{width:13px;height:13px;color:#fff}
+.li-info{flex:1;min-width:0}
+.li-n{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-sub{font-size:11px;color:var(--txt3);margin-top:2px}
+.li-ctrl{display:flex;align-items:center;gap:5px}
+.qb{
+  width:27px;height:27px;border-radius:50%;border:1.5px solid var(--line);
+  background:none;cursor:pointer;font-size:17px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--gd);font-weight:800;
+}
+.qv{font-size:14px;font-weight:700;min-width:18px;text-align:center}
+.li-pr{font-size:13px;font-weight:700;color:var(--gd);min-width:46px;text-align:right}
+.del-btn{
+  background:none;border:none;cursor:pointer;color:var(--txt3);
+  padding:5px;border-radius:6px;flex-shrink:0;
+}
+.del-btn svg{width:15px;height:15px;display:block}
+
+/* empty */
+.empty{text-align:center;padding:55px 20px;color:var(--txt3)}
+.empty .ei{font-size:52px;margin-bottom:10px}
+.empty p{font-size:15px;color:var(--txt2);margin-bottom:5px}
+.empty span{font-size:13px}
+
+/* hechos */
+.ck-toggle{
+  display:flex;align-items:center;gap:7px;padding:9px 12px;
+  cursor:pointer;font-size:13px;color:var(--txt3);
+  background:none;border:none;width:100%;margin-top:6px;
+}
+
+/* ── BUSCADOR ── */
+.search{
+  display:flex;align-items:center;gap:8px;margin:10px 12px 0;
+  background:#fff;border-radius:var(--r);padding:10px 13px;box-shadow:var(--sh);
+}
+.search input{flex:1;border:none;outline:none;font-size:15px;background:none}
+.search svg{width:17px;height:17px;color:var(--txt3);flex-shrink:0}
+
+/* chips */
+.chips{
+  display:flex;gap:7px;overflow-x:auto;padding:8px 12px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+}
+.chips::-webkit-scrollbar{display:none}
+.chip{
+  white-space:nowrap;padding:6px 13px;border-radius:18px;
+  border:1.5px solid var(--line);background:#fff;font-size:12px;
+  font-weight:600;cursor:pointer;transition:all .12s;
+}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+
+/* ── CATÁLOGO ITEMS ── */
+.cat-list{margin:0 12px 10px}
+.cat-item{
+  display:flex;align-items:center;gap:9px;padding:10px 12px;
+  background:#fff;border-bottom:1px solid var(--line);
+}
+.cat-item:first-child{border-radius:var(--r) var(--r) 0 0}
+.cat-item:last-child{border-bottom:none;border-radius:0 0 var(--r) var(--r)}
+.ci-ico{font-size:21px;width:34px;text-align:center;flex-shrink:0}
+.ci-info{flex:1;min-width:0}
+.ci-n{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-u{font-size:11px;color:var(--txt3)}
+.ci-pr{font-size:13px;font-weight:700;color:var(--gd);flex-shrink:0;min-width:45px;text-align:right}
+.ci-fav{
+  background:none;border:none;cursor:pointer;font-size:17px;
+  padding:3px;flex-shrink:0;opacity:.5;transition:opacity .12s;
+}
+.ci-fav.on{opacity:1}
+.ci-add{
+  width:30px;height:30px;border-radius:50%;background:var(--g);
+  border:none;color:#fff;cursor:pointer;font-size:19px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .1s,background .12s;
+}
+.ci-add:active{transform:scale(.88)}
+.ci-add.in{background:var(--gm);color:var(--gd)}
+
+/* ── FAVORITOS ── */
+.fav-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:10px 12px}
+.fav-c{
+  background:#fff;border-radius:var(--r);padding:13px 10px;
+  box-shadow:var(--sh);display:flex;flex-direction:column;
+  align-items:center;gap:5px;cursor:pointer;
+  transition:transform .1s;position:relative;
+}
+.fav-c:active{transform:scale(.96)}
+.fav-ico{font-size:30px}
+.fav-n{font-size:12px;font-weight:700;text-align:center;line-height:1.25;color:var(--txt2)}
+.fav-pr{font-size:11px;color:var(--g);font-weight:700}
+.fav-rm{
+  position:absolute;top:5px;right:6px;
+  background:none;border:none;font-size:14px;color:var(--txt3);
+  cursor:pointer;padding:2px;line-height:1;
+}
+.fav-plus{
+  position:absolute;bottom:7px;right:7px;
+  width:20px;height:20px;border-radius:50%;
+  background:var(--g);color:#fff;font-size:13px;
+  display:flex;align-items:center;justify-content:center;
+}
+
+/* ── HISTORIAL ── */
+.hist-c{
+  background:#fff;border-radius:var(--r);margin:10px 12px 0;
+  padding:13px 15px;box-shadow:var(--sh);
+}
+.hist-h{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.hist-f{font-size:14px;font-weight:800}
+.hist-t{font-size:16px;font-weight:900;color:var(--g)}
+.hist-items{font-size:12px;color:var(--txt3);margin-bottom:9px;line-height:1.4}
+.hist-acts{display:flex;gap:7px}
+.bsm{
+  padding:6px 13px;border-radius:8px;font-size:12px;
+  font-weight:700;cursor:pointer;border:none;
+}
+.bsm.p{background:var(--g);color:#fff}
+.bsm.g{background:var(--gl);color:var(--gd)}
+.bsm.r{background:#fdeaea;color:var(--red)}
+
+/* ── MODAL ── */
+.overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;
+  display:flex;align-items:flex-end;justify-content:center;
+  animation:fi .18s;
+}
+@keyframes fi{from{opacity:0}}
+.modal{
+  background:#fff;border-radius:20px 20px 0 0;
+  width:100%;max-width:500px;padding:0 0 env(safe-area-inset-bottom,16px);
+  animation:su .24s cubic-bezier(.4,0,.2,1);
+  max-height:92dvh;overflow-y:auto;
+}
+@keyframes su{from{transform:translateY(100%)}}
+.m-handle{width:36px;height:4px;background:var(--line);border-radius:2px;margin:10px auto}
+.m-title{padding:0 20px 12px;font-size:17px;font-weight:800;border-bottom:1px solid var(--line)}
+.m-body{padding:15px 18px}
+.fl{margin-bottom:12px}
+.fl label{display:block;font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+.fi{
+  width:100%;padding:10px 13px;border:1.5px solid var(--line);
+  border-radius:10px;font-size:15px;outline:none;background:var(--bg);
+  font-family:inherit;
+}
+.fi:focus{border-color:var(--g);background:#fff}
+.fr{display:flex;gap:9px}
+.fr .fl{flex:1}
+select.fi{appearance:none;cursor:pointer}
+.m-submit{
+  width:100%;background:var(--g);color:#fff;border:none;
+  border-radius:10px;padding:13px;font-size:15px;font-weight:800;
+  cursor:pointer;margin-top:4px;
+}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;bottom:calc(var(--nav)+12px);left:50%;
+  transform:translateX(-50%);background:#222;color:#fff;
+  border-radius:18px;padding:9px 17px;font-size:13px;font-weight:600;
+  z-index:400;white-space:nowrap;pointer-events:none;
+  animation:ti .25s, to .25s 1.7s forwards;
+}
+@keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(6px)}}
+@keyframes to{to{opacity:0;transform:translateX(-50%) translateY(6px)}}
+
+/* modo compra */
+body.mc .li{padding:15px 12px}
+body.mc .chk{width:34px;height:34px}
+body.mc .li-n{font-size:17px}
+body.mc .qb{width:32px;height:32px}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hd-logo">🛒 MiCesta <small>Mercadona</small></div>
+  <div class="hd-total" id="hTotal">0,00 €</div>
+</header>
+
+<main>
+
+<!-- ── LISTA ── -->
+<div class="tab on" id="tab-lista">
+  <div class="toolbar">
+    <button class="btn-p" onclick="openModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
+      Añadir producto
+    </button>
+    <button class="btn-s" id="btnMC" onclick="toggleMC()" title="Modo compra">🛒</button>
+    <button class="btn-g" onclick="guardarLista()" title="Guardar">💾</button>
+  </div>
+
+  <div class="resumen" id="resumen" style="display:none">
+    <div class="res-cell"><div class="res-v" id="rTotal">0</div><div class="res-l">Productos</div></div>
+    <div class="res-sep"></div>
+    <div class="res-cell"><div class="res-v" id="rPend">0</div><div class="res-l">Pendientes</div></div>
+    <div class="res-sep"></div>
+    <div class="res-cell"><div class="res-v" id="rCost">0€</div><div class="res-l">Total</div></div>
+  </div>
+
+  <div id="lCont"></div>
+  <div id="lEmpty" class="empty">
+    <div class="ei">🛒</div>
+    <p>La cesta está vacía</p>
+    <span>Añade productos desde el catálogo o el botón de arriba</span>
+  </div>
+</div>
+
+<!-- ── CATÁLOGO ── -->
+<div class="tab" id="tab-catalogo">
+  <div class="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="search" placeholder="Buscar en Mercadona…" id="catQ" oninput="filtrar()">
+  </div>
+  <div class="chips" id="chips"></div>
+  <div class="cat-list" id="catList"></div>
+</div>
+
+<!-- ── FAVORITOS ── -->
+<div class="tab" id="tab-favoritos">
+  <div class="fav-grid" id="favGrid"></div>
+  <div class="empty" id="favEmpty" style="display:none">
+    <div class="ei">⭐</div>
+    <p>Sin favoritos aún</p>
+    <span>Pulsa ⭐ en el catálogo para guardar productos frecuentes</span>
+  </div>
+</div>
+
+<!-- ── HISTORIAL ── -->
+<div class="tab" id="tab-historial">
+  <div id="histCont"></div>
+  <div class="empty" id="histEmpty" style="display:none">
+    <div class="ei">📋</div>
+    <p>Sin historial</p>
+    <span>Las listas guardadas aparecerán aquí</span>
+  </div>
+</div>
+
+</main>
+
+<nav>
+  <button class="nb on" data-t="lista" onclick="goTab('lista')">
+    <div class="nb-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4zM3 6h18M16 10a4 4 0 01-8 0"/></svg>
+      <span class="n-badge" id="badge" style="display:none">0</span>
+    </div>
+    Lista
+  </button>
+  <button class="nb" data-t="catalogo" onclick="goTab('catalogo')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    Catálogo
+  </button>
+  <button class="nb" data-t="favoritos" onclick="goTab('favoritos')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+    Favoritos
+  </button>
+  <button class="nb" data-t="historial" onclick="goTab('historial')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    Historial
+  </button>
+</nav>
+
+<!-- ── MODAL ── -->
+<div id="modal" style="display:none" class="overlay" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="m-handle"></div>
+    <div class="m-title" id="mTitle">Añadir producto</div>
+    <div class="m-body">
+      <div class="fl">
+        <label>Nombre *</label>
+        <input type="text" class="fi" id="mNom" placeholder="Ej: Leche entera Hacendado">
+      </div>
+      <div class="fr">
+        <div class="fl">
+          <label>Sección</label>
+          <select class="fi" id="mSec"></select>
+        </div>
+        <div class="fl" style="max-width:90px">
+          <label>Cantidad</label>
+          <input type="number" class="fi" id="mQty" value="1" min="1" max="99">
+        </div>
+      </div>
+      <div class="fr">
+        <div class="fl">
+          <label>Precio (€)</label>
+          <input type="number" class="fi" id="mPr" placeholder="0,00" step="0.01" min="0">
+        </div>
+        <div class="fl">
+          <label>Unidad</label>
+          <select class="fi" id="mUn">
+            <option>ud</option><option>kg</option><option>g</option>
+            <option>L</option><option>ml</option><option>pack</option><option>bote</option>
+          </select>
+        </div>
+      </div>
+      <div class="fl">
+        <label>Nota (opcional)</label>
+        <input type="text" class="fi" id="mNota" placeholder="Sin sal, marca específica…">
+      </div>
+      <button class="m-submit" onclick="confirmAdd()">Añadir a la cesta</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DATOS
+// ══════════════════════════════════════════════════════════════
+const SEC = [
+  {id:'frutas',    n:'Frutas y verduras',       ic:'🥦'},
+  {id:'pan',       n:'Panadería',               ic:'🍞'},
+  {id:'lacteos',   n:'Lácteos y huevos',        ic:'🥛'},
+  {id:'charcut',   n:'Charcutería',             ic:'🥩'},
+  {id:'carne',     n:'Carnicería',              ic:'🍗'},
+  {id:'pescado',   n:'Pescadería',              ic:'🐟'},
+  {id:'congel',    n:'Congelados',              ic:'🧊'},
+  {id:'conservas', n:'Conservas y salsas',      ic:'🥫'},
+  {id:'pastas',    n:'Pasta, arroz y legumbres',ic:'🍝'},
+  {id:'aceites',   n:'Aceites y especias',      ic:'🫙'},
+  {id:'desayuno',  n:'Desayuno y dulces',       ic:'☕'},
+  {id:'bebidas',   n:'Bebidas',                 ic:'🥤'},
+  {id:'limpieza',  n:'Limpieza del hogar',      ic:'🧹'},
+  {id:'higiene',   n:'Higiene y cosmética',     ic:'🧴'},
+];
+
+const CAT = [
+  // Frutas y verduras
+  {id:'v1', n:'Plátanos',          s:'frutas',    p:1.30, u:'kg',       ic:'🍌'},
+  {id:'v2', n:'Manzanas rojas',    s:'frutas',    p:1.99, u:'kg',       ic:'🍎'},
+  {id:'v3', n:'Naranjas de mesa',  s:'frutas',    p:1.49, u:'kg',       ic:'🍊'},
+  {id:'v4', n:'Limones',           s:'frutas',    p:1.20, u:'malla',    ic:'🍋'},
+  {id:'v5', n:'Peras conferencia', s:'frutas',    p:1.79, u:'kg',       ic:'🍐'},
+  {id:'v6', n:'Uvas blancas',      s:'frutas',    p:2.29, u:'kg',       ic:'🍇'},
+  {id:'v7', n:'Fresas',            s:'frutas',    p:2.49, u:'kg',       ic:'🍓'},
+  {id:'v8', n:'Tomates rama',      s:'frutas',    p:1.69, u:'kg',       ic:'🍅'},
+  {id:'v9', n:'Lechuga iceberg',   s:'frutas',    p:0.79, u:'ud',       ic:'🥬'},
+  {id:'v10',n:'Cebolla blanca',    s:'frutas',    p:0.99, u:'kg',       ic:'🧅'},
+  {id:'v11',n:'Ajo',               s:'frutas',    p:0.89, u:'cabeza',   ic:'🧄'},
+  {id:'v12',n:'Pimientos rojos',   s:'frutas',    p:1.99, u:'kg',       ic:'🫑'},
+  {id:'v13',n:'Pepino',            s:'frutas',    p:0.59, u:'ud',       ic:'🥒'},
+  {id:'v14',n:'Zanahorias',        s:'frutas',    p:0.75, u:'kg',       ic:'🥕'},
+  {id:'v15',n:'Patatas',           s:'frutas',    p:1.49, u:'kg',       ic:'🥔'},
+  {id:'v16',n:'Espinacas frescas', s:'frutas',    p:1.39, u:'bolsa',    ic:'🥬'},
+  {id:'v17',n:'Calabacín',         s:'frutas',    p:1.29, u:'kg',       ic:'🥗'},
+  {id:'v18',n:'Brócoli',           s:'frutas',    p:1.19, u:'ud',       ic:'🥦'},
+  {id:'v19',n:'Champiñones',       s:'frutas',    p:1.49, u:'bandeja',  ic:'🍄'},
+  {id:'v20',n:'Aguacates',         s:'frutas',    p:2.99, u:'kg',       ic:'🥑'},
+  // Panadería
+  {id:'p1', n:'Pan de molde Hacendado',   s:'pan',p:1.10, u:'ud',       ic:'🍞'},
+  {id:'p2', n:'Pan de molde integral',    s:'pan',p:1.25, u:'ud',       ic:'🍞'},
+  {id:'p3', n:'Pan de semillas',          s:'pan',p:1.79, u:'ud',       ic:'🍞'},
+  {id:'p4', n:'Baguette',                s:'pan',p:0.55, u:'ud',       ic:'🥖'},
+  {id:'p5', n:'Tostadas Hacendado',       s:'pan',p:0.99, u:'ud',       ic:'🍞'},
+  {id:'p6', n:'Croissant',               s:'pan',p:0.39, u:'ud',       ic:'🥐'},
+  // Lácteos y huevos
+  {id:'l1', n:'Leche entera Hacendado',   s:'lacteos',p:0.89,u:'L',    ic:'🥛'},
+  {id:'l2', n:'Leche semidesnatada',      s:'lacteos',p:0.83,u:'L',    ic:'🥛'},
+  {id:'l3', n:'Leche desnatada',          s:'lacteos',p:0.78,u:'L',    ic:'🥛'},
+  {id:'l4', n:'Leche sin lactosa',        s:'lacteos',p:1.19,u:'L',    ic:'🥛'},
+  {id:'l5', n:'Yogur natural (pack 4)',   s:'lacteos',p:0.75,u:'pack', ic:'🫙'},
+  {id:'l6', n:'Yogur griego Hacendado',   s:'lacteos',p:1.05,u:'pack', ic:'🫙'},
+  {id:'l7', n:'Yogur de sabores',         s:'lacteos',p:1.15,u:'pack', ic:'🫙'},
+  {id:'l8', n:'Mantequilla Hacendado',    s:'lacteos',p:1.85,u:'250g', ic:'🧈'},
+  {id:'l9', n:'Nata para cocinar',        s:'lacteos',p:0.79,u:'200ml',ic:'🫙'},
+  {id:'l10',n:'Queso fresco Hacendado',   s:'lacteos',p:1.39,u:'ud',   ic:'🧀'},
+  {id:'l11',n:'Queso manchego curado',    s:'lacteos',p:4.99,u:'200g', ic:'🧀'},
+  {id:'l12',n:'Mozzarella fresca',        s:'lacteos',p:1.29,u:'125g', ic:'🧀'},
+  {id:'l13',n:'Queso rallado Hacendado',  s:'lacteos',p:1.99,u:'200g', ic:'🧀'},
+  {id:'l14',n:'Huevos L clase A (12u)',   s:'lacteos',p:2.39,u:'docena',ic:'🥚'},
+  {id:'l15',n:'Huevos camperos (6u)',     s:'lacteos',p:1.99,u:'pack', ic:'🥚'},
+  // Charcutería
+  {id:'c1', n:'Jamón serrano lonchas',    s:'charcut',p:2.49,u:'100g', ic:'🥩'},
+  {id:'c2', n:'Jamón cocido extra',       s:'charcut',p:1.99,u:'150g', ic:'🥩'},
+  {id:'c3', n:'Lomo embuchado',           s:'charcut',p:1.89,u:'80g',  ic:'🥩'},
+  {id:'c4', n:'Chorizo Hacendado',        s:'charcut',p:2.29,u:'200g', ic:'🌭'},
+  {id:'c5', n:'Salami',                   s:'charcut',p:1.99,u:'100g', ic:'🥩'},
+  {id:'c6', n:'Pechuga de pavo',          s:'charcut',p:2.19,u:'200g', ic:'🥩'},
+  {id:'c7', n:'Bacon en lonchas',         s:'charcut',p:1.75,u:'150g', ic:'🥩'},
+  {id:'c8', n:'Fuet Hacendado',           s:'charcut',p:1.49,u:'ud',   ic:'🥩'},
+  // Carnicería
+  {id:'m1', n:'Pechuga de pollo',         s:'carne',  p:5.99,u:'kg',   ic:'🍗'},
+  {id:'m2', n:'Muslos de pollo',          s:'carne',  p:3.99,u:'kg',   ic:'🍗'},
+  {id:'m3', n:'Carne picada mixta',       s:'carne',  p:4.99,u:'500g', ic:'🥩'},
+  {id:'m4', n:'Filetes de ternera',       s:'carne',  p:9.99,u:'kg',   ic:'🥩'},
+  {id:'m5', n:'Lomo de cerdo',            s:'carne',  p:5.49,u:'kg',   ic:'🥩'},
+  {id:'m6', n:'Hamburguesas (4u)',         s:'carne',  p:3.49,u:'pack', ic:'🍔'},
+  {id:'m7', n:'Salchichas Frankfurt (6u)',s:'carne',  p:1.49,u:'pack', ic:'🌭'},
+  {id:'m8', n:'Costillas de cerdo',       s:'carne',  p:4.99,u:'kg',   ic:'🥩'},
+  // Pescadería
+  {id:'f1', n:'Salmón fresco',            s:'pescado',p:11.99,u:'kg',  ic:'🐟'},
+  {id:'f2', n:'Merluza en filetes',       s:'pescado',p:8.99, u:'kg',  ic:'🐟'},
+  {id:'f3', n:'Atún fresco',              s:'pescado',p:10.99,u:'kg',  ic:'🐟'},
+  {id:'f4', n:'Gambas crudas',            s:'pescado',p:9.99, u:'kg',  ic:'🦐'},
+  {id:'f5', n:'Mejillones frescos',       s:'pescado',p:2.99, u:'malla',ic:'🦪'},
+  {id:'f6', n:'Bacaladilla',              s:'pescado',p:3.99, u:'kg',  ic:'🐟'},
+  // Congelados
+  {id:'g1', n:'Mix verduras congeladas',  s:'congel', p:1.69,u:'750g', ic:'🧊'},
+  {id:'g2', n:'Espinacas congeladas',     s:'congel', p:1.29,u:'750g', ic:'🧊'},
+  {id:'g3', n:'Guisantes congelados',     s:'congel', p:1.19,u:'1kg',  ic:'🧊'},
+  {id:'g4', n:'Pizza margarita Hacendado',s:'congel', p:2.49,u:'ud',   ic:'🍕'},
+  {id:'g5', n:'Croquetas Hacendado',      s:'congel', p:2.99,u:'500g', ic:'🧊'},
+  {id:'g6', n:'Empanadillas atún (12u)',  s:'congel', p:2.49,u:'pack', ic:'🧊'},
+  {id:'g7', n:'Pollo rebozado',           s:'congel', p:2.99,u:'pack', ic:'🍗'},
+  // Conservas y salsas
+  {id:'k1', n:'Atún al natural (3 latas)',s:'conservas',p:2.89,u:'pack',ic:'🥫'},
+  {id:'k2', n:'Tomate frito Hacendado',   s:'conservas',p:0.69,u:'400g',ic:'🥫'},
+  {id:'k3', n:'Tomate triturado',         s:'conservas',p:0.49,u:'400g',ic:'🥫'},
+  {id:'k4', n:'Lentejas cocidas',         s:'conservas',p:0.79,u:'570g',ic:'🥫'},
+  {id:'k5', n:'Garbanzos cocidos',        s:'conservas',p:0.79,u:'570g',ic:'🥫'},
+  {id:'k6', n:'Alubias blancas',          s:'conservas',p:0.79,u:'570g',ic:'🥫'},
+  {id:'k7', n:'Maíz en lata',             s:'conservas',p:0.65,u:'285g',ic:'🌽'},
+  {id:'k8', n:'Aceitunas rellenas',       s:'conservas',p:0.99,u:'450g',ic:'🫒'},
+  {id:'k9', n:'Mayonesa Hacendado',       s:'conservas',p:1.49,u:'450ml',ic:'🫙'},
+  {id:'k10',n:'Ketchup Hacendado',        s:'conservas',p:0.99,u:'300ml',ic:'🍅'},
+  {id:'k11',n:'Sardinas en aceite',       s:'conservas',p:0.79,u:'lata',ic:'🥫'},
+  {id:'k12',n:'Berberechos al natural',   s:'conservas',p:1.99,u:'lata',ic:'🥫'},
+  // Pasta, arroz y legumbres
+  {id:'r1', n:'Espagueti Hacendado',      s:'pastas', p:0.65,u:'500g', ic:'🍝'},
+  {id:'r2', n:'Macarrones Hacendado',     s:'pastas', p:0.65,u:'500g', ic:'🍝'},
+  {id:'r3', n:'Penne rigate Hacendado',   s:'pastas', p:0.65,u:'500g', ic:'🍝'},
+  {id:'r4', n:'Arroz blanco Hacendado',   s:'pastas', p:0.89,u:'1kg',  ic:'🍚'},
+  {id:'r5', n:'Arroz integral Hacendado', s:'pastas', p:1.15,u:'1kg',  ic:'🍚'},
+  {id:'r6', n:'Lentejas secas',           s:'pastas', p:1.09,u:'1kg',  ic:'🫘'},
+  {id:'r7', n:'Garbanzos secos',          s:'pastas', p:1.29,u:'1kg',  ic:'🫘'},
+  // Aceites y especias
+  {id:'a1', n:'AOVE Hacendado 0,4°',     s:'aceites',p:3.99,u:'750ml',ic:'🫙'},
+  {id:'a2', n:'Aceite de girasol',        s:'aceites',p:1.89,u:'1L',   ic:'🫙'},
+  {id:'a3', n:'Vinagre de vino',          s:'aceites',p:0.79,u:'750ml',ic:'🫙'},
+  {id:'a4', n:'Sal fina Hacendado',       s:'aceites',p:0.39,u:'1kg',  ic:'🧂'},
+  {id:'a5', n:'Pimienta negra molida',    s:'aceites',p:0.99,u:'bote', ic:'🌶️'},
+  {id:'a6', n:'Orégano Hacendado',        s:'aceites',p:0.75,u:'bote', ic:'🌿'},
+  // Desayuno y dulces
+  {id:'d1', n:'Cereales muesli Hacendado',s:'desayuno',p:2.19,u:'500g',ic:'🥣'},
+  {id:'d2', n:'Avena Hacendado',          s:'desayuno',p:1.19,u:'500g',ic:'🥣'},
+  {id:'d3', n:'Cola Cao',                 s:'desayuno',p:3.49,u:'800g',ic:'☕'},
+  {id:'d4', n:'Café molido Hacendado',    s:'desayuno',p:3.29,u:'250g',ic:'☕'},
+  {id:'d5', n:'Café cápsulas Hacendado',  s:'desayuno',p:3.99,u:'10u', ic:'☕'},
+  {id:'d6', n:'Azúcar blanca Hacendado',  s:'desayuno',p:0.99,u:'1kg', ic:'🍬'},
+  {id:'d7', n:'Miel Hacendado',           s:'desayuno',p:2.49,u:'500g',ic:'🍯'},
+  {id:'d8', n:'Mermelada fresa Hacendado',s:'desayuno',p:0.99,u:'400g',ic:'🍓'},
+  {id:'d9', n:'Galletas María Hacendado', s:'desayuno',p:0.89,u:'800g',ic:'🍪'},
+  {id:'d10',n:'Chocolate negro 70%',      s:'desayuno',p:0.99,u:'100g',ic:'🍫'},
+  {id:'d11',n:'Chocolate con leche',      s:'desayuno',p:0.79,u:'100g',ic:'🍫'},
+  {id:'d12',n:'Aceite de oliva 0,4° 5L',  s:'aceites',p:18.99,u:'garrafa',ic:'🫙'},
+  // Bebidas
+  {id:'b1', n:'Agua mineral (6 botellas)',s:'bebidas',p:1.69,u:'pack', ic:'💧'},
+  {id:'b2', n:'Agua con gas',             s:'bebidas',p:0.65,u:'L',   ic:'💧'},
+  {id:'b3', n:'Zumo naranja Hacendado',   s:'bebidas',p:1.29,u:'1L',  ic:'🍊'},
+  {id:'b4', n:'Leche de avena Hacendado', s:'bebidas',p:1.15,u:'1L',  ic:'🥛'},
+  {id:'b5', n:'Leche de soja Hacendado',  s:'bebidas',p:1.09,u:'1L',  ic:'🥛'},
+  {id:'b6', n:'Coca-Cola 2L',             s:'bebidas',p:1.89,u:'ud',  ic:'🥤'},
+  {id:'b7', n:'Cerveza Hacendado lata',   s:'bebidas',p:0.69,u:'ud',  ic:'🍺'},
+  {id:'b8', n:'Cerveza Hacendado (pack 6)',s:'bebidas',p:3.49,u:'pack',ic:'🍺'},
+  {id:'b9', n:'Vino tinto Hacendado',     s:'bebidas',p:2.99,u:'75cl',ic:'🍷'},
+  {id:'b10',n:'Tónica Hacendado',         s:'bebidas',p:0.65,u:'33cl',ic:'🥤'},
+  // Limpieza
+  {id:'h1', n:'Detergente lavadora Hacendado',s:'limpieza',p:3.99,u:'40 lav',ic:'🧺'},
+  {id:'h2', n:'Suavizante Hacendado',     s:'limpieza',p:1.99,u:'1L',  ic:'🧴'},
+  {id:'h3', n:'Limpiahogar multiusos',    s:'limpieza',p:0.99,u:'L',   ic:'🧹'},
+  {id:'h4', n:'Papel higiénico (12u)',    s:'limpieza',p:2.99,u:'pack',ic:'🧻'},
+  {id:'h5', n:'Papel de cocina (2u)',     s:'limpieza',p:1.39,u:'pack',ic:'🧻'},
+  {id:'h6', n:'Bolsas basura 50L (20u)', s:'limpieza',p:1.29,u:'pack',ic:'🗑️'},
+  {id:'h7', n:'Bayeta multiusos (3u)',    s:'limpieza',p:0.99,u:'pack',ic:'🧹'},
+  {id:'h8', n:'Lavavajillas pastillas',   s:'limpieza',p:2.99,u:'30u', ic:'🍽️'},
+  {id:'h9', n:'Fregasuelos pino',         s:'limpieza',p:1.49,u:'1L',  ic:'🧹'},
+  // Higiene
+  {id:'i1', n:'Gel de ducha Hacendado',   s:'higiene',p:1.19,u:'750ml',ic:'🧴'},
+  {id:'i2', n:'Champú Hacendado',         s:'higiene',p:1.29,u:'400ml',ic:'🧴'},
+  {id:'i3', n:'Desodorante Hacendado',    s:'higiene',p:1.49,u:'ud',   ic:'🧴'},
+  {id:'i4', n:'Pasta de dientes Hacendado',s:'higiene',p:0.89,u:'75ml',ic:'🪥'},
+  {id:'i5', n:'Cepillo de dientes',       s:'higiene',p:1.29,u:'ud',   ic:'🪥'},
+  {id:'i6', n:'Maquinillas desechables',  s:'higiene',p:1.99,u:'5u',   ic:'🪒'},
+  {id:'i7', n:'Crema hidratante Deliplus',s:'higiene',p:2.99,u:'400ml',ic:'🧴'},
+];
+
+// ══════════════════════════════════════════════════════════════
+// STORE
+// ══════════════════════════════════════════════════════════════
+const KEY = 'mc-cesta-v1';
+let S = { lista:[], favs:[], hist:[], mc:false };
+
+function load() {
+  try { const x = localStorage.getItem(KEY); if (x) S = {...S,...JSON.parse(x)}; } catch(e) {}
+}
+function save() {
+  localStorage.setItem(KEY, JSON.stringify(S));
+}
+
+// ══════════════════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════════════════
+let _tt;
+function toast(msg) {
+  document.querySelectorAll('.toast').forEach(e=>e.remove());
+  const t=document.createElement('div');
+  t.className='toast'; t.textContent=msg;
+  document.body.appendChild(t);
+  clearTimeout(_tt); _tt=setTimeout(()=>t.remove(),2100);
+}
+const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const fmt = n => n.toFixed(2).replace('.',',') + ' €';
+const uid = () => '_'+Math.random().toString(36).slice(2,9);
+const getSec = id => SEC.find(s=>s.id===id) || {n:'Otros',ic:'📦'};
+const getProd = id => CAT.find(p=>p.id===id);
+
+// ══════════════════════════════════════════════════════════════
+// NAVEGACIÓN
+// ══════════════════════════════════════════════════════════════
+function goTab(name) {
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
+  document.getElementById('tab-'+name).classList.add('on');
+  document.querySelector(`[data-t="${name}"]`).classList.add('on');
+  if (name==='catalogo') renderCat();
+  if (name==='favoritos') renderFavs();
+  if (name==='historial') renderHist();
+}
+
+// ══════════════════════════════════════════════════════════════
+// LISTA
+// ══════════════════════════════════════════════════════════════
+function renderLista() {
+  const cont = document.getElementById('lCont');
+  const empty = document.getElementById('lEmpty');
+  const res = document.getElementById('resumen');
+  if (!S.lista.length) {
+    cont.innerHTML=''; empty.style.display=''; res.style.display='none';
+    updHdr(); updBadge(); return;
+  }
+  empty.style.display='none'; res.style.display='';
+
+  const pend = S.lista.filter(i=>!i.ck);
+  const done = S.lista.filter(i=>i.ck);
+  const total = S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);
+
+  document.getElementById('rTotal').textContent = S.lista.length;
+  document.getElementById('rPend').textContent  = pend.length;
+  document.getElementById('rCost').textContent  = total.toFixed(2).replace('.',',')+'€';
+
+  // Agrupar pendientes por sección
+  const grps = {};
+  pend.forEach(i => { (grps[i.sec]||(grps[i.sec]=[])).push(i); });
+
+  let html = '';
+  Object.entries(grps).forEach(([sid, items]) => {
+    const sec = getSec(sid);
+    html += `<div class="sec-g">
+      <div class="sec-h">${sec.ic} ${esc(sec.n)}<span class="sec-cnt">${items.length}</span></div>
+      ${items.map(itemHTML).join('')}
+    </div>`;
+  });
+
+  if (done.length) {
+    html += `<div style="margin:0 12px">
+      <button class="ck-toggle" onclick="toggleDone()">
+        <svg id="dChev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        Ya cogidos (${done.length})
+      </button>
+      <div id="doneList" style="display:none">
+        ${done.map(itemHTML).join('')}
+      </div>
+    </div>`;
+  }
+
+  cont.innerHTML = html;
+  updHdr(); updBadge();
+}
+
+function itemHTML(item) {
+  const pt = (item.pr||0)*(item.qty||1);
+  const prStr = pt>0 ? pt.toFixed(2).replace('.',',')+'€' : '—';
+  const nota = item.nota ? esc(item.nota)+' · ' : '';
+  const prUnit = item.pr ? item.pr.toFixed(2).replace('.',',')+' €/'+esc(item.un||'ud') : 'sin precio';
+  const chkCls = item.ck ? 'on' : '';
+  const tick = item.ck ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>` : '';
+  return `<div class="li ${item.ck?'ck':''}" id="li-${item.id}">
+    <button class="chk ${chkCls}" onclick="chkItem('${item.id}')">${tick}</button>
+    <div class="li-info">
+      <div class="li-n">${esc(item.n)}</div>
+      <div class="li-sub">${nota}${prUnit}</div>
+    </div>
+    <div class="li-ctrl">
+      <button class="qb" onclick="qty('${item.id}',-1)">−</button>
+      <span class="qv">${item.qty||1}</span>
+      <button class="qb" onclick="qty('${item.id}',1)">+</button>
+    </div>
+    <div class="li-pr">${prStr}</div>
+    <button class="del-btn" onclick="delItem('${item.id}')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
+    </button>
+  </div>`;
+}
+
+function toggleDone() {
+  const dl = document.getElementById('doneList');
+  const ch = document.getElementById('dChev');
+  if (!dl) return;
+  const open = dl.style.display!=='none';
+  dl.style.display = open?'none':'';
+  if(ch) ch.setAttribute('points', open?'6 9 12 15 18 9':'18 15 12 9 6 15');
+}
+
+function chkItem(id) {
+  const i = S.lista.find(x=>x.id===id);
+  if(i){ i.ck=!i.ck; save(); renderLista(); }
+}
+function qty(id,d) {
+  const i = S.lista.find(x=>x.id===id);
+  if(i){ i.qty=Math.max(1,(i.qty||1)+d); save(); renderLista(); }
+}
+function delItem(id) {
+  S.lista = S.lista.filter(x=>x.id!==id);
+  save(); renderLista(); renderCat();
+  toast('Producto eliminado');
+}
+
+function updHdr() {
+  const t = S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);
+  document.getElementById('hTotal').textContent = t>0 ? fmt(t) : '0,00 €';
+}
+function updBadge() {
+  const b = document.getElementById('badge');
+  const n = S.lista.filter(i=>!i.ck).length;
+  b.style.display = n>0?'':'none'; b.textContent=n;
+}
+
+function toggleMC() {
+  S.mc=!S.mc;
+  document.body.classList.toggle('mc',S.mc);
+  document.getElementById('btnMC').textContent = S.mc?'✏️':'🛒';
+  toast(S.mc?'Modo compra activado — items grandes':'Modo edición');
+}
+
+function guardarLista() {
+  if(!S.lista.length){ toast('La cesta está vacía'); return; }
+  const now = new Date();
+  S.hist.unshift({
+    id: uid(),
+    f: now.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}),
+    items: JSON.parse(JSON.stringify(S.lista)),
+    t: S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0),
+  });
+  if(S.hist.length>25) S.hist.pop();
+  S.lista = [];
+  save(); renderLista(); renderCat();
+  toast('✅ Lista guardada en el historial');
+}
+
+// ══════════════════════════════════════════════════════════════
+// MODAL AÑADIR
+// ══════════════════════════════════════════════════════════════
+let _catId = null;
+
+function openModal(prod=null) {
+  const sel = document.getElementById('mSec');
+  sel.innerHTML = SEC.map(s=>`<option value="${s.id}">${s.ic} ${s.n}</option>`).join('');
+  if(prod){
+    document.getElementById('mTitle').textContent = prod.n;
+    document.getElementById('mNom').value = prod.n;
+    sel.value = prod.s;
+    document.getElementById('mPr').value = prod.p||'';
+    document.getElementById('mUn').value = prod.u||'ud';
+    document.getElementById('mNota').value='';
+    document.getElementById('mQty').value=1;
+    _catId = prod.id;
+  } else {
+    document.getElementById('mTitle').textContent='Añadir producto';
+    document.getElementById('mNom').value='';
+    sel.value='frutas';
+    document.getElementById('mPr').value='';
+    document.getElementById('mUn').value='ud';
+    document.getElementById('mNota').value='';
+    document.getElementById('mQty').value=1;
+    _catId = null;
+  }
+  document.getElementById('modal').style.display='';
+  setTimeout(()=>document.getElementById('mNom').focus(),250);
+}
+
+function closeModal(e) {
+  if(!e||e.target===document.getElementById('modal'))
+    document.getElementById('modal').style.display='none';
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.getElementById('modal').style.display='none';
+});
+
+function confirmAdd() {
+  const n = document.getElementById('mNom').value.trim();
+  if(!n){ toast('Escribe el nombre del producto'); return; }
+  const qty  = parseInt(document.getElementById('mQty').value)||1;
+  const ya = _catId && S.lista.find(i=>i.catId===_catId);
+  if(ya){
+    ya.qty=(ya.qty||1)+qty;
+    toast(`+${qty} ${n}`);
+  } else {
+    S.lista.push({
+      id:uid(), catId:_catId||null,
+      n, sec:document.getElementById('mSec').value,
+      qty, pr:parseFloat(document.getElementById('mPr').value)||0,
+      un:document.getElementById('mUn').value,
+      nota:document.getElementById('mNota').value.trim(),
+      ck:false,
+    });
+    toast(`✅ ${n} añadido`);
+  }
+  save(); closeModal(); renderLista(); renderCat(); _catId=null;
+}
+
+// ══════════════════════════════════════════════════════════════
+// CATÁLOGO
+// ══════════════════════════════════════════════════════════════
+let cSec='all', cQ='';
+
+function renderCat() { renderChips(); renderProds(); }
+
+function renderChips() {
+  document.getElementById('chips').innerHTML =
+    [{id:'all',n:'Todos',ic:'🛒'},...SEC]
+    .map(s=>`<button class="chip ${cSec===s.id?'on':''}" onclick="setSec('${s.id}')">${s.ic} ${s.n}</button>`)
+    .join('');
+}
+
+function setSec(id){ cSec=id; renderCat(); }
+function filtrar(){ cQ=document.getElementById('catQ').value.toLowerCase(); renderProds(); }
+
+function renderProds() {
+  let prods = CAT;
+  if(cSec!=='all') prods=prods.filter(p=>p.s===cSec);
+  if(cQ) prods=prods.filter(p=>p.n.toLowerCase().includes(cQ));
+  const enLista = new Set(S.lista.map(i=>i.catId).filter(Boolean));
+  const enFavs  = new Set(S.favs.map(f=>f.id));
+  const el = document.getElementById('catList');
+  if(!prods.length){
+    el.innerHTML='<div class="empty" style="margin:0"><div class="ei">🔍</div><p>Sin resultados</p></div>';
+    return;
+  }
+  el.innerHTML = prods.map(p=>{
+    const inL=enLista.has(p.id), inF=enFavs.has(p.id);
+    return `<div class="cat-item">
+      <span class="ci-ico">${p.ic}</span>
+      <div class="ci-info">
+        <div class="ci-n">${esc(p.n)}</div>
+        <div class="ci-u">${esc(p.u)}</div>
+      </div>
+      <span class="ci-pr">${p.p.toFixed(2).replace('.',',')} €</span>
+      <button class="ci-fav ${inF?'on':''}" onclick="toggleFav('${p.id}')" title="${inF?'Quitar de favoritos':'Añadir a favoritos'}">${inF?'⭐':'☆'}</button>
+      <button class="ci-add ${inL?'in':''}" onclick="addCat('${p.id}')" title="${inL?'Ya en cesta (añadir más)':'Añadir'}">${inL?'✓':'+'}
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function addCat(id) {
+  const p=getProd(id); if(!p) return;
+  const ya=S.lista.find(i=>i.catId===id);
+  if(ya){ ya.qty=(ya.qty||1)+1; toast(`+1 ${p.n}`); }
+  else {
+    S.lista.push({id:uid(),catId:id,n:p.n,sec:p.s,qty:1,pr:p.p,un:p.u,nota:'',ck:false});
+    toast(`✅ ${p.n}`);
+  }
+  save(); renderLista(); renderProds();
+}
+
+// ══════════════════════════════════════════════════════════════
+// FAVORITOS
+// ══════════════════════════════════════════════════════════════
+function toggleFav(id) {
+  const p=getProd(id); if(!p) return;
+  const idx=S.favs.findIndex(f=>f.id===id);
+  if(idx>=0){ S.favs.splice(idx,1); toast('Quitado de favoritos'); }
+  else { S.favs.push({id,n:p.n,p:p.p,ic:p.ic,s:p.s}); toast('⭐ Añadido a favoritos'); }
+  save(); renderProds(); renderFavs();
+}
+
+function renderFavs() {
+  const grid=document.getElementById('favGrid');
+  const empty=document.getElementById('favEmpty');
+  if(!S.favs.length){ grid.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  grid.innerHTML=S.favs.map(f=>`
+    <div class="fav-c" onclick="addCat('${f.id}')">
+      <div class="fav-ico">${f.ic}</div>
+      <div class="fav-n">${esc(f.n)}</div>
+      <div class="fav-pr">${f.p>0?f.p.toFixed(2).replace('.',',')+'€':'—'}</div>
+      <button class="fav-rm" onclick="event.stopPropagation();toggleFav('${f.id}')">✕</button>
+      <span class="fav-plus">+</span>
+    </div>`).join('');
+}
+
+// ══════════════════════════════════════════════════════════════
+// HISTORIAL
+// ══════════════════════════════════════════════════════════════
+function renderHist() {
+  const cont=document.getElementById('histCont');
+  const empty=document.getElementById('histEmpty');
+  if(!S.hist.length){ cont.innerHTML=''; empty.style.display=''; return; }
+  empty.style.display='none';
+  cont.innerHTML=S.hist.map(e=>{
+    const prev=e.items.slice(0,5).map(i=>i.n).join(', ')+(e.items.length>5?'…':'');
+    return `<div class="hist-c">
+      <div class="hist-h">
+        <div><div class="hist-f">📋 ${esc(e.f)}</div></div>
+        <div class="hist-t">${e.t.toFixed(2).replace('.',',')} €</div>
+      </div>
+      <div class="hist-items">${esc(prev)}<br><small>${e.items.length} productos</small></div>
+      <div class="hist-acts">
+        <button class="bsm p" onclick="repeatHist('${e.id}')">🔄 Repetir lista</button>
+        <button class="bsm r" onclick="delHist('${e.id}')">🗑️ Eliminar</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function repeatHist(id) {
+  const e=S.hist.find(x=>x.id===id); if(!e) return;
+  S.lista.push(...e.items.map(i=>({...i,id:uid(),ck:false})));
+  save(); renderLista(); goTab('lista');
+  toast(`✅ ${e.items.length} productos cargados`);
+}
+function delHist(id) {
+  S.hist=S.hist.filter(x=>x.id!==id);
+  save(); renderHist(); toast('Eliminado del historial');
+}
+
+// ══════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════
+load();
+if(S.mc) document.body.classList.add('mc');
+renderLista();
+renderCat();
+</script>
+</body>
+</html>
