@@ -406,9 +406,14 @@ const S = {
   eosBlood:0, eosTissue:0, ige:0, olfTest:0, endoDx:false, rhino:false
 };
 
-/* Tabla 10.1 POLINA: 5 criterios validados de control (la recidiva NO es un criterio
-   de control — es un modificador pronóstico que se muestra aparte).
-   Declarado aquí arriba porque render() lo usa y se invoca durante el cableado de inputs. */
+/* Control POLINA (Tabla 10.1): la tabla define SEIS criterios. Esta app puntúa los cinco
+   directamente objetivables (gravedad EVA, olfato EVA, SNOT-22, tamaño de pólipos,
+   corticoides orales/año). El 6º criterio —"Necesidad de cirugía"— NO se incluye en el
+   score porque es circular (la indicación de cirugía es consecuencia del mal control, no
+   una entrada independiente) y se gestiona aparte en la vía quirúrgica/biológico (CENS /
+   contraindicación). La recidiva tampoco puntúa: es un modificador pronóstico. El umbral
+   "No controlada" (≥3) se cuenta sobre estos 5; ver la nota visible en el desglose.
+   Declarado aquí arriba porque render() lo usa durante el cableado de inputs. */
 const CTRL_KEYS = ["grav","olf","snot","pol","co"];
 
 /* ---------- LOEM descriptions (Lamella-Ostium-Extent-Mucosa, 2024) ----------
@@ -510,21 +515,30 @@ function control(g){
   return {k:1,label:"Parcialmente controlada",cls:"is-amber"};
 }
 function severity(){
-  if(S.eva<=3) return {label:"Leve",cls:"is-green",d:"EVA "+S.eva.toFixed(1)+" · 0–3"};
-  if(S.eva<=7) return {label:"Moderada",cls:"is-amber",d:"EVA "+S.eva.toFixed(1)+" · >3–7"};
+  /* Gravedad POLINA §2.1 = SOLO EVA global. OJO: el gate de biológico (Fig 13.4) define
+     "grave" de otra forma (EVA>7 Y/O SNOT-22>50). Si EVA es leve/moderada pero SNOT>50,
+     el paciente puede cumplir el criterio de gravedad para biológico aunque el chip diga
+     "Leve/Moderada"; se anota para que no se lea como "no candidato". */
+  const caveat = (S.eva<=7 && S.snot>50)
+    ? " · ⚠ SNOT-22 "+S.snot+">50: cumple el criterio de gravedad de Fig 13.4 para biológico"
+    : "";
+  if(S.eva<=3) return {label:"Leve",cls:"is-green",d:"EVA "+S.eva.toFixed(1)+" · 0–3"+caveat};
+  if(S.eva<=7) return {label:"Moderada",cls:"is-amber",d:"EVA "+S.eva.toFixed(1)+" · >3–7"+caveat};
   return {label:"Grave",cls:"is-red",d:"EVA "+S.eva.toFixed(1)+" · >7"};
 }
-/* Estado tipo 2 derivado: confirmación manual O biomarcadores. El umbral de eosinófilos
-   en sangre difiere: EPOS ≥250/µl, SNS España ≥300/µl. Tejido ≥10/campo e IgE ≥100 UI/ml
-   son comunes a ambos marcos. Cualquiera de los tres marca inflamación tipo 2. */
+/* Estado tipo 2 derivado: confirmación manual O biomarcadores. Umbrales por marco:
+   eosinófilos en sangre EPOS ≥250/µl vs SNS España ≥300/µl; IgE total EPOS ≥100 UI/ml
+   (inclusivo, Fig 1.6.3) vs POLINA/SNS >100 UI/ml (estricto, Fig 13.4). Tejido ≥10/campo
+   es común a ambos. Cualquiera de los criterios marca inflamación tipo 2. */
 function t2Status(){
-  const tissue = S.eosTissue>=10, igePos = S.ige>=100;
-  const sns  = S.t2 || S.eosBlood>=300 || tissue || igePos;
-  const epos = S.t2 || S.eosBlood>=250 || tissue || igePos;
+  const tissue = S.eosTissue>=10;
+  const igeSns = S.ige>100, igeEpos = S.ige>=100;   // POLINA/SNS estricto >100 · EPOS inclusivo ≥100
+  const sns  = S.t2 || S.eosBlood>=300 || tissue || igeSns;
+  const epos = S.t2 || S.eosBlood>=250 || tissue || igeEpos;
   const hits=[];
   if(S.eosBlood>0) hits.push("Eos sangre "+S.eosBlood+"/µl"+(S.eosBlood>=300?" (≥300 SNS+EPOS)":S.eosBlood>=250?" (≥250 EPOS)":""));
   if(S.eosTissue>0) hits.push("Eos tejido "+S.eosTissue+"/campo"+(tissue?" (≥10)":""));
-  if(S.ige>0) hits.push("IgE "+S.ige+" UI/ml"+(igePos?" (≥100)":""));
+  if(S.ige>0) hits.push("IgE "+S.ige+" UI/ml"+(igeSns?" (>100 SNS+EPOS)":igeEpos?" (≥100 EPOS)":""));
   if(S.t2) hits.push("confirmada clínicamente");
   return {sns, epos, hits};
 }
@@ -572,17 +586,18 @@ function phenotype(){
 
 /* ---------- biologic criteria ----------
    Requisito quirúrgico: el SNS (España) exige habitualmente ≥2 CENS para financiar el
-   biológico; POLINA Fig. 13.4 exige ≥1 CENS. Se admite además contraindicación quirúrgica
-   documentada como vía alternativa. La regla de gravedad es OR: EVA>7 O SNOT-22>50. */
+   biológico; POLINA Fig. 13.4 exige ≥1 CENS. La vía alternativa de "contraindicación /
+   no apto para cirugía" procede de EPOS/EUFOREA (Fig 1.6.3, "not fit for surgery"), no de
+   POLINA Fig 13.4. La regla de gravedad es OR: EVA>7 O SNOT-22>50. */
 function biologics(){
   const t2=t2Status();
   const sev = (S.eva>7)||(S.snot>50);
   const qx  = (S.cens>=2) || S.contraQx;
   const base = S.bilat && sev && qx;
   const add = [
-    {ok:t2.sns,  t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total ≥100 UI/ml"+(t2.hits.length?" — "+t2.hits.join("; "):"")},
+    {ok:t2.sns,  t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"+(t2.hits.length?" — "+t2.hits.join("; "):"")},
     {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 · hiposmia grave / anosmia"},
-    {ok:S.co>=2, t:"Corticoides orales ≥2 ciclos/año o contraindicación", s:"necesidad recurrente de corticoide sistémico"},
+    {ok:S.co>=2, t:"Corticoides orales ≥2 ciclos/año o contraindicación", s:"≥2 ciclos cortos/año (la contraindicación a corticoide oral —también válida en la guía— se valora manualmente)"},
     {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"vía respiratoria única / intolerancia a AINE"}
   ];
   const addOk = add.some(a=>a.ok);
@@ -618,7 +633,7 @@ function eposBio(){
                : ["","normosmia","hiposmia (no cumple: EPOS exige anosmia)","anosmia ✓"][S.olfTest];
   const crit = [
     {ok:t2.epos,    t:"Evidencia de inflamación tipo 2", s:"Eos tisular ≥10/campo · Eos sangre ≥250/µl · IgE total ≥100 UI/ml"+(t2.hits.length?" — "+t2.hits.join("; "):"")},
-    {ok:S.co>=2,    t:"Corticoide sistémico o contraindicación", s:"≥2 ciclos/año o pauta prolongada >3 meses a dosis baja"},
+    {ok:S.co>=2,    t:"Corticoide sistémico o contraindicación", s:"≥2 ciclos/año o pauta prolongada >3 meses a dosis baja (la contraindicación se valora manualmente)"},
     {ok:S.snot>=40, t:"Calidad de vida muy afectada", s:"SNOT-22 ≥40 (actual: "+S.snot+")"},
     {ok:anosmia(),  t:"Pérdida significativa del olfato", s:"anosmia en prueba objetiva — "+olfStr},
     {ok:S.asma,     t:"Asma concomitante", s:"asma que precisa corticoide inhalado regular"}
@@ -658,22 +673,26 @@ function eposControl(){
 /* ---------- biologic drug profile ----------
    Orden fijo = ranking global en NMA indirectas para desenlaces nucleares de RSCcPN
    (dupilumab > tezepelumab > omalizumab > mepolizumab). NO implica superioridad
-   estadística; no hay ensayos head-to-head. Marcado de preferente (★) reconciliado y
-   mutuamente coherente por fenotipo. Fuentes: SINUS-24/52 (Bachert, Lancet 2019),
+   estadística; no hay ensayos head-to-head. El marcado de preferente (★) es ORIENTATIVO,
+   no excluyente: puede marcar más de un fármaco en un mismo perfil y NO sustituye la
+   decisión clínica individualizada (comorbilidades, ficha técnica, financiación, preferencia
+   del paciente). El criterio tipo 2 se deriva de t2Status() (mismo umbral SNS que el resto
+   de la app), no de la bandera cruda S.t2. Fuentes: SINUS-24/52 (Bachert, Lancet 2019),
    WAYPOINT (NEJM 2025), POLYP 1/2 (Gevaert 2020), SYNAPSE (Han 2021),
    NMA Cai 2021 / Xu 2025, EPOS/EUFOREA 2023. */
 function bioProfile(){
+  const t2=t2Status();
   const drugs = [
     {
       name:"Dupilumab",
       trade:"(Dupixent®)",
-      preferred: S.olf>7 || S.erea || (S.t2 && !S.asma && !S.erea),
+      preferred: S.olf>7 || S.erea || (t2.sns && !S.asma && !S.erea),
       profile: dupilumabProfile()
     },
     {
       name:"Tezepelumab",
       trade:"(Tezspire®)",
-      preferred: (!S.t2) || (S.asma && !S.erea && !(S.olf>7)),
+      preferred: (!t2.sns) || (S.asma && !S.erea && !(S.olf>7)),
       profile: tezepelumabProfile()
     },
     {
@@ -685,7 +704,7 @@ function bioProfile(){
     {
       name:"Mepolizumab",
       trade:"(Nucala®)",
-      preferred: S.asma && S.t2 && !S.erea && !(S.olf>7),
+      preferred: S.asma && t2.sns && !S.erea && !(S.olf>7),
       profile: mepolizumabProfile()
     }
   ];
@@ -700,20 +719,22 @@ function bioProfile(){
 }
 
 function dupilumabProfile(){
+  const t2=t2Status();
   const parts=[];
   parts.push("Anti-IL-4Rα (bloquea IL-4 e IL-13). 1º en pólipos y especialmente en olfato en comparaciones indirectas (NPS LS-mean vs placebo −2,06 en SINUS-24 y −1,80 en SINUS-52; Bachert, Lancet 2019).");
   if(S.olf>7) parts.push("✓ Anosmia/pérdida grave de olfato: mejor recuperación olfatoria documentada — opción preferente.");
-  if(S.erea) parts.push("✓ EREA/N-ERD: mayor evidencia, única que restaura tolerancia a aspirina (~57%) — preferente en este perfil.");
+  if(S.erea) parts.push("✓ EREA/N-ERD: es el agente con mayor evidencia específica; en series observacionales aproximadamente la mitad de los pacientes recupera tolerancia a AINE — preferente en este perfil.");
   if(S.recidiva===2) parts.push("✓ Recidiva precoz (marcador T2 agresivo): opción de elevada evidencia para frenar la recurrencia.");
-  if(S.t2 && !S.asma && !S.erea) parts.push("✓ RSCcPN tipo 2 aislada (sin asma/EREA), sobre todo con olfato afectado: opción preferente razonable (EPOS/EUFOREA 2023 no fija jerarquía formal).");
+  if(t2.sns && !S.asma && !S.erea) parts.push("✓ RSCcPN tipo 2 aislada (sin asma/EREA), sobre todo con olfato afectado: opción preferente razonable (EPOS/EUFOREA 2023 no fija jerarquía formal).");
   if(S.asma) parts.push("Cubre también el asma tipo 2 no controlado.");
   return parts.join(" ");
 }
 
 function tezepelumabProfile(){
+  const t2=t2Status();
   const parts=[];
   parts.push("Anti-TSLP: bloquea la alarmina epitelial en el VÉRTICE de la cascada (aguas arriba de IL-4/IL-5/IL-13 e IgE). En WAYPOINT (NEJM 2025, n=408, 52 sem): NPS −2,07 y congestión −1,03 vs placebo (p<0,001), con gran reducción de cirugía (0,5% vs 22,1%; HR 0,02) y de corticoides sistémicos (5,2% vs 18,3%; HR 0,12).");
-  if(!S.t2) parts.push("✓ Sin marcadores tipo 2 documentados: es el biológico con racional mecanístico más sólido en enfermedad tipo 2-bajo / no eosinofílica (nicho exclusivo). NOTA: en RSCcPN es extrapolación desde el asma (eficacia con eos <150/µl) y del mecanismo upstream — WAYPOINT no publicó subgrupo por eosinófilos y su población fue mayoritariamente T2-alto; el beneficio es menor en T2-bajo.");
+  if(!t2.sns) parts.push("✓ Tipo 2-bajo / no eosinofílica: opción razonable a considerar por su mecanismo upstream (actúa por encima de IL-4/IL-5/IL-13 e IgE), independiente de la carga eosinofílica. NOTA: en RSCcPN T2-bajo la evidencia específica es limitada (extrapolación desde el asma con eos <150/µl; WAYPOINT no publicó subgrupo por eosinófilos y su población fue mayoritariamente T2-alto), por lo que NO hay un agente de elección establecido en este perfil.");
   if(S.asma) parts.push("✓ Asma concomitante: encabeza la reducción de exacerbaciones en asma+RSCcPN; un solo agente cubre vía aérea superior e inferior, con eficacia independiente de eosinófilos/FeNO.");
   if((S.cens>=2||S.contraQx) && S.recidiva===2) parts.push("✓ Poliposis recurrente postquirúrgica: opción razonable por su efecto rápido y la gran reducción de reintervenciones.");
   if(S.erea) parts.push("En EREA es alternativa, no preferente (la mayor evidencia específica es de dupilumab).");
@@ -730,10 +751,11 @@ function omalizumabProfile(){
 }
 
 function mepolizumabProfile(){
+  const t2=t2Status();
   const parts=[];
   parts.push("Anti-IL-5 (SYNAPSE; NPS −0,73, obstrucción nasal VAS −3,14). Beneficio ligado a la carga eosinofílica.");
-  if(S.asma && S.t2) parts.push("✓ Asma eosinofílico grave con eosinofilia ≥300/µl donde domina el fenotipo eosinofílico de vía baja: opción razonable que cubre ambas indicaciones.");
-  else if(S.t2) parts.push("Considerar si eosinofilia periférica muy alta sin asma.");
+  if(S.asma && t2.sns) parts.push("✓ Asma eosinofílico grave con eosinofilia ≥300/µl donde domina el fenotipo eosinofílico de vía baja: opción razonable que cubre ambas indicaciones.");
+  else if(t2.sns) parts.push("Considerar si eosinofilia periférica muy alta sin asma.");
   else parts.push("Menor evidencia sin asma eosinofílico o eosinofilia marcada.");
   parts.push("Efecto sobre el olfato débil/casi nulo frente a dupilumab; si recuperar el olfato es prioritario, preferir dupilumab.");
   return parts.join(" ");
@@ -832,6 +854,8 @@ function render(){
     cb.insertAdjacentHTML("beforeend",
       `<div class="cb"><span class="dot ${stDot[v]}"></span><span class="lbl">${labels[k]}</span><span class="st" style="color:var(--${v===0?"green":v===1?"amber":"red"})">${stTxt[v]}</span></div>`);
   });
+  cb.insertAdjacentHTML("beforeend",
+    `<div class="cb"><span class="lbl" style="color:var(--faint);font-size:.82em">La Tabla 10.1 define 6 criterios; el 6º («necesidad de cirugía») se valora en la vía quirúrgica/biológico (CENS), no en este score (≥3 = no controlada sobre los 5 mostrados).</span></div>`);
   // modificador pronóstico (fuera del score validado)
   if(S.recidiva>0){
     const rd = S.recidiva===2?"r":"a";
@@ -853,7 +877,7 @@ function render(){
 
   const bc=document.getElementById("bioCrit"); bc.innerHTML="";
   bc.insertAdjacentHTML("beforeend",critRow(S.bilat&&bio.sev,"RSCcPN bilateral GRAVE","EVA>7 y/o SNOT-22>50 — "+(bio.sev?"gravedad cumplida":"gravedad NO cumplida")));
-  bc.insertAdjacentHTML("beforeend",critRow(bio.qx,"Requisito quirúrgico","SNS España: habitualmente ≥2 CENS (POLINA Fig. 13.4: ≥1) o contraindicación quirúrgica — actualmente: "+(S.contraQx?"contraindicación documentada ✓":S.cens+" CENS"+(S.cens>=2?" ✓":""))));
+  bc.insertAdjacentHTML("beforeend",critRow(bio.qx,"Requisito quirúrgico","SNS España: habitualmente ≥2 CENS (POLINA Fig. 13.4: ≥1); la vía de contraindicación/no apto a cirugía sigue a EPOS/EUFOREA — actualmente: "+(S.contraQx?"contraindicación documentada ✓":S.cens+" CENS"+(S.cens>=2?" ✓":""))));
   bc.insertAdjacentHTML("beforeend",`<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥1 criterio adicional:</div></div>`);
   bio.add.forEach(a=>bc.insertAdjacentHTML("beforeend",critRow(a.ok,a.t,a.s)));
 
@@ -931,8 +955,9 @@ function render(){
     '<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥3 de 5 criterios:</div></div>'+
     eb.crit.map(c=>critRow(c.ok,c.t,c.s)).join("");
   document.getElementById("eposBioNote").innerHTML =
-    "EPOS/EUFOREA 2020 exige <b>pólipos bilaterales en paciente operado</b> (o no candidato a cirugía) <b>+ ≥3 de 5 criterios</b>. Umbrales <b>distintos del SNS español</b>: Eos sangre ≥250/µl (SNS ≥300), SNOT-22 ≥40, CENS ≥1 (SNS habitualmente ≥2)."+
-    (eb.eligible&&!bio.eligible?" <b>Nota:</b> cumple el marco EPOS pero todavía no el criterio SNS de financiación — orienta la indicación clínica internacional, no el visado en España.":"");
+    "EPOS/EUFOREA 2020 exige <b>pólipos bilaterales en paciente operado</b> (o no candidato a cirugía) <b>+ ≥3 de 5 criterios</b>. Umbrales <b>distintos del SNS español</b>: Eos sangre ≥250/µl (SNS ≥300), SNOT-22 ≥40, CENS ≥1 (SNS habitualmente ≥2). <span style=\"color:var(--faint)\">Los dos marcos <b>no son equivalentes ni uno es subconjunto del otro</b>: por sus umbrales un paciente puede cumplir uno y no el otro en cualquier dirección.</span>"+
+    (eb.eligible&&!bio.eligible?" <b>Nota:</b> cumple el marco EPOS pero todavía no el criterio SNS de financiación — orienta la indicación clínica internacional, no el visado en España.":"")+
+    (bio.eligible&&!eb.eligible?" <b>Nota:</b> cumple el criterio SNS de financiación pero no alcanza los 5 criterios EPOS/EUFOREA — la indicación en España es igualmente válida; ambos marcos coexisten y no se exige cumplir los dos.":"");
 
   // Respuesta al biológico (Fig 1.6.4) — solo si hay candidatura
   const rb=document.getElementById("respBlock");
@@ -940,7 +965,7 @@ function render(){
     rb.style.display="";
     document.getElementById("respNote").innerHTML =
       "Evaluar a las <b>16 semanas</b> y luego <b>anualmente</b> (EPOS 2020, Fig 1.6.4) sobre <b>5 criterios</b>: ↓ tamaño de pólipos · ↓ necesidad de corticoide sistémico · mejoría de calidad de vida (SNOT-22, <b>MCID 8,9</b>) · mejoría del olfato · ↓ impacto de la comorbilidad (asma).<br>"+
-      "<b>Respuesta excelente</b>: 5/5 criterios · <b>moderada</b>: 3–4 · <b>pobre</b>: 1–2 · <b>nula</b>: 0. Respuesta global = <b>al menos moderada en ≥1 criterio</b>; si <b>empeoramiento o sin respuesta → suspender</b>. (POLINA reevalúa a los 6 y 12 meses.)";
+      "<b>Respuesta excelente</b>: 5/5 criterios · <b>moderada</b>: 3–4 · <b>pobre</b>: 1–2 · <b>nula</b>: 0. <span style=\"color:var(--faint)\"><b>Interpretación (POLINA/app), no texto literal de EPOS:</b> continuar el biológico si la respuesta deja al paciente controlado o parcialmente controlado; suspender si no hay respuesta (0/5) o el paciente sigue no controlado pese al tratamiento.</span> (POLINA reevalúa a los 6 y 12 meses.)";
   } else {
     rb.style.display="none";
   }
