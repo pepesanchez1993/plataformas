@@ -185,6 +185,40 @@ select.fi{appearance:none;cursor:pointer}
 @keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(8px)}}
 @keyframes to{to{opacity:0;transform:translateX(-50%) translateY(8px)}}
 
+/* ── APARTADO COMPRAR (visual, sin precios) ── */
+.cmp-top{margin:11px 12px 0;background:#fff;border-radius:var(--r);box-shadow:var(--sh);padding:13px 15px}
+.cmp-top h2{font-size:15px;font-weight:800;display:flex;align-items:center;gap:7px}
+.cmp-bar{height:9px;background:var(--gl);border-radius:6px;margin-top:10px;overflow:hidden}
+.cmp-bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--g),#00c763);border-radius:6px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+.cmp-sub{font-size:11.5px;color:var(--txt3);margin-top:7px;font-weight:700}
+.cmp-done-banner{margin:13px 12px 0;background:linear-gradient(120deg,var(--g),#00c763);color:#fff;border-radius:var(--r);
+  padding:18px;text-align:center;font-weight:800;font-size:16px;box-shadow:var(--shc);animation:fade .3s}
+.cmp-done-banner span{display:block;font-weight:600;font-size:13px;opacity:.92;margin-top:3px}
+.cmp-sec{margin:15px 12px 0}
+.cmp-sec-h{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;color:var(--gd);text-transform:uppercase;
+  letter-spacing:.05em;margin-bottom:9px;padding-left:3px}
+.cmp-sec-h .se{font-size:17px}
+.cmp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(min-width:520px){.cmp-grid{grid-template-columns:1fr 1fr 1fr}}
+.cmp-card{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;cursor:pointer;position:relative;
+  border:2px solid transparent;transition:transform .12s,border-color .15s,opacity .25s}
+.cmp-card:active{transform:scale(.97)}
+.cmp-card.got{opacity:.55;border-color:var(--g)}
+.cmp-img{aspect-ratio:1;background:#fff center/contain no-repeat;display:flex;align-items:center;justify-content:center;
+  padding:10px;position:relative;border-bottom:1px solid var(--line)}
+.cmp-img img{width:100%;height:100%;object-fit:contain}
+.cmp-img .ph{font-size:50px;opacity:.7}
+.cmp-qbadge{position:absolute;top:7px;left:7px;background:var(--gd);color:#fff;border-radius:13px;min-width:27px;height:26px;
+  padding:0 8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.cmp-tick{position:absolute;top:7px;right:7px;width:29px;height:29px;border-radius:50%;background:rgba(255,255,255,.92);
+  border:2px solid var(--gm);display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.cmp-tick svg{width:15px;height:15px;color:#fff;opacity:0;transition:opacity .15s}
+.cmp-card.got .cmp-tick{background:var(--g);border-color:var(--g)}
+.cmp-card.got .cmp-tick svg{opacity:1}
+.cmp-name{padding:9px 9px 11px;font-size:13px;font-weight:600;line-height:1.3;text-align:center;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:50px}
+.cmp-card.got .cmp-name{text-decoration:line-through;color:var(--txt3)}
+
 /* modo compra */
 body.mc .li{padding:15px 12px}
 body.mc .li-thumb{width:56px;height:56px}
@@ -261,6 +295,16 @@ body.mc .qv{font-size:16px}
   </div>
 </div>
 
+<!-- ── COMPRAR (visual, sin precios) ── -->
+<div class="tab" id="tab-comprar">
+  <div id="cmpCont"></div>
+  <div class="empty" id="cmpEmpty">
+    <div class="ei">🛍️</div>
+    <p>Nada que comprar todavía</p>
+    <span>Añade productos a tu <b>Lista</b><br>y aquí los verás para ir a comprar</span>
+  </div>
+</div>
+
 </main>
 
 <nav>
@@ -270,6 +314,10 @@ body.mc .qv{font-size:16px}
       <span class="n-badge" id="badge" style="display:none">0</span>
     </div>
     Lista
+  </button>
+  <button class="nb" data-t="comprar" onclick="goTab('comprar')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1.4"/><circle cx="19" cy="21" r="1.4"/><path d="M2.5 3h2.4l2.3 12.4a1.6 1.6 0 001.6 1.3h8.7a1.6 1.6 0 001.6-1.3L21 7H6.2"/><polyline points="10 9.5 12.2 11.7 16 7.5"/></svg>
+    Comprar
   </button>
   <button class="nb" data-t="catalogo" onclick="goTab('catalogo')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
@@ -359,6 +407,7 @@ function goTab(name){
   document.querySelector(`[data-t="${name}"]`).classList.add('on');
   window.scrollTo(0,0);
   if(name==='lista')renderLista();
+  if(name==='comprar')renderComprar();
   if(name==='catalogo')renderCat();
   if(name==='favoritos')renderFavs();
   if(name==='historial')renderHist();
@@ -409,7 +458,41 @@ function itemHTML(it){
 }
 function toggleDone(){const dl=document.getElementById('doneList'),ch=document.getElementById('dChev');if(!dl)return;
   const open=dl.style.display!=='none';dl.style.display=open?'none':'';if(ch)ch.setAttribute('points',open?'6 9 12 15 18 9':'18 15 12 9 6 15')}
-function chkItem(id){const i=S.lista.find(x=>x.id===id);if(i){i.ck=!i.ck;save();renderLista()}}
+function chkItem(id){const i=S.lista.find(x=>x.id===id);if(i){i.ck=!i.ck;save();refreshActive()}}
+function refreshActive(){
+  if(document.getElementById('tab-comprar').classList.contains('on'))renderComprar();
+  else renderLista();
+}
+// ════════ COMPRAR (vista visual, sin precios) ════════
+function renderComprar(){
+  const cont=document.getElementById('cmpCont'),empty=document.getElementById('cmpEmpty');
+  updHdr();updBadge();
+  if(!S.lista.length){cont.innerHTML='';empty.style.display='';return}
+  empty.style.display='none';
+  const got=S.lista.filter(i=>i.ck).length,tot=S.lista.length,pct=tot?Math.round(got/tot*100):0;
+  let html=`<div class="cmp-top"><h2>🛒 Lo que necesito comprar</h2>
+    <div class="cmp-bar"><i style="width:${pct}%"></i></div>
+    <div class="cmp-sub">${got} de ${tot} cogidos · ${tot-got} por coger</div></div>`;
+  if(tot>0&&got===tot)
+    html+=`<div class="cmp-done-banner">✅ ¡Compra completa!<span>Has cogido todo lo de la lista</span></div>`;
+  const grps={};
+  S.lista.forEach(i=>{(grps[i.sec]||(grps[i.sec]=[])).push(i)});
+  SEC.forEach(sec=>{
+    const items=grps[sec.id];if(!items||!items.length)return;
+    items.sort((a,b)=>(a.ck?1:0)-(b.ck?1:0));
+    html+=`<div class="cmp-sec"><div class="cmp-sec-h"><span class="se">${sec.ic}</span>${esc(sec.n)}</div><div class="cmp-grid">`;
+    items.forEach(it=>{
+      const thumb=it.img?`<img src="${IMG(it.img)}" loading="lazy" decoding="async" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${SECIC[it.sec]||'📦'}</span>`:`<span class="ph">${SECIC[it.sec]||'📦'}</span>`;
+      html+=`<div class="cmp-card ${it.ck?'got':''}" onclick="chkItem('${it.id}')">
+        <div class="cmp-img">${thumb}${(it.qty>1)?`<span class="cmp-qbadge">×${it.qty}</span>`:''}
+          <span class="cmp-tick"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><polyline points="20 6 9 17 4 12"/></svg></span></div>
+        <div class="cmp-name">${esc(it.n)}</div>
+      </div>`;
+    });
+    html+=`</div></div>`;
+  });
+  cont.innerHTML=html;
+}
 function qty(id,d){const i=S.lista.find(x=>x.id===id);if(i){i.qty=Math.max(1,(i.qty||1)+d);save();renderLista()}}
 function delItem(id){S.lista=S.lista.filter(x=>x.id!==id);save();renderLista();if(document.getElementById('tab-catalogo').classList.contains('on'))renderProds();toast('Producto eliminado')}
 function updHdr(){const t=S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);document.getElementById('hTotal').textContent=t>0?eur(t):'0,00 €'}
