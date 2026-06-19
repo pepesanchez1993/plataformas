@@ -152,9 +152,9 @@ footer a{color:var(--muted)}
 <body>
 <div class="wrap">
   <header>
-    <div class="kicker">Guía POLINA 2023 · SEORL-CCC · Criterios SNS España</div>
+    <div class="kicker">Guía POLINA 2023 · EPOS 2020 · SEORL-CCC · Criterios SNS España</div>
     <h1>Asistente RSCcPN</h1>
-    <p class="sub">Rinosinusitis crónica con poliposis nasal. Introduce los parámetros y obtén clasificación, gravedad, control, escalón terapéutico y elegibilidad para biológicos (criterios SNS).</p>
+    <p class="sub">Rinosinusitis crónica con poliposis nasal. Introduce los parámetros y obtén clasificación, gravedad, control, escalón terapéutico y elegibilidad para biológicos. Integra los criterios internacionales <b>EPOS 2020</b> (Rhinology Suppl. 29) sobre la base POLINA 2023 / SNS.</p>
   </header>
 
   <!-- ================= INPUTS ================= -->
@@ -171,10 +171,31 @@ footer a{color:var(--muted)}
       <div class="scale"><span>Leve</span><span>Moderada</span><span>Anosmia</span></div>
     </div>
     <div class="field">
-      <div class="flab"><span>SNOT-22 <span class="hint">calidad de vida 0–110</span></span><span class="fval"><span id="snotV">30</span></span></div>
-      <input type="range" id="snot" min="0" max="110" step="1" value="30">
-      <div class="scale"><span>≤20</span><span>&gt;20–50</span><span>&gt;50</span></div>
+      <div class="flab"><span>Olfato · prueba objetiva <span class="hint">olfatometría si disponible (UPSIT / Sniffin' Sticks / TDI&lt;27)</span></span></div>
+      <div class="seg" id="olfTestSeg">
+        <button data-v="0" class="on">No realizada</button>
+        <button data-v="1">Normosmia</button>
+        <button data-v="2">Hiposmia</button>
+        <button data-v="3">Anosmia</button>
+      </div>
     </div>
+    <div class="field">
+      <div class="flab"><span>SNOT-22 <span class="hint">calidad de vida 0–110 · MCID 8,9 (EPOS)</span></span><span class="fval"><span id="snotV">30</span></span></div>
+      <input type="range" id="snot" min="0" max="110" step="1" value="30">
+      <div class="scale"><span>≤20</span><span>&gt;20–50 · ≥40 EPOS bio</span><span>&gt;50</span></div>
+    </div>
+    <label class="tog field" id="facialTog" data-key="facial">
+      <span class="flab"><span>Dolor / presión facial <span class="hint">síntoma EPOS · dominio de control</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="sleepTog" data-key="sleep">
+      <span class="flab"><span>Alteración del sueño o fatiga <span class="hint">dominio de control EPOS 2020</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="rhinoTog" data-key="rhino">
+      <span class="flab"><span>Rinorrea / goteo posterior <span class="hint">mucopurulenta la mayoría de días — dominio de control EPOS</span></span></span>
+      <span class="switch"></span>
+    </label>
   </div>
 
   <div class="group">Exploración endoscópica</div>
@@ -188,6 +209,10 @@ footer a{color:var(--muted)}
       <input type="range" id="pol" min="0" max="8" step="1" value="2">
       <div class="scale"><span>≤2</span><span>3–4</span><span>≥5</span></div>
     </div>
+    <label class="tog field" id="endoDxTog" data-key="endoDx">
+      <span class="flab"><span>Mucosa enferma en endoscopia <span class="hint">edema / secreción mucopurulenta / pólipos — signo objetivo EPOS (dx y control)</span></span></span>
+      <span class="switch"></span>
+    </label>
   </div>
 
   <div class="group">Antecedentes quirúrgicos e imagen</div>
@@ -251,9 +276,25 @@ footer a{color:var(--muted)}
   <div class="group">Comorbilidades y biomarcadores</div>
   <div class="card">
     <label class="tog field" id="t2Tog" data-key="t2">
-      <span class="flab"><span>Inflamación tipo 2 <span class="hint">Eo sangre ≥300/µl · Eo tisular ≥10/campo · IgE total &gt;100 UI/ml</span></span></span>
+      <span class="flab"><span>Inflamación tipo 2 confirmada <span class="hint">marcar si está documentada; los biomarcadores de abajo también la activan</span></span></span>
       <span class="switch"></span>
     </label>
+    <div class="field" style="border-top:1px dashed var(--line);padding-top:11px;margin-top:3px">
+      <div class="flab"><span>Eosinófilos en sangre <span class="hint">cél/µl · tipo 2 si ≥250 (EPOS) / ≥300 (SNS)</span></span><span class="fval"><span id="eosBloodV">0</span></span></div>
+      <input type="range" id="eosBlood" min="0" max="2000" step="10" value="0">
+      <div class="scale"><span>0 = no medido</span><span>250 · 300</span><span>2000</span></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>Eosinófilos en tejido <span class="hint">cél/campo (400×) · tipo 2 si ≥10</span></span><span class="fval"><span id="eosTissueV">0</span></span></div>
+      <input type="range" id="eosTissue" min="0" max="100" step="1" value="0">
+      <div class="scale"><span>0 = no medido</span><span>≥10</span><span>100</span></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>IgE total <span class="hint">UI/ml · tipo 2 si ≥100</span></span><span class="fval"><span id="igeV">0</span></span></div>
+      <input type="range" id="ige" min="0" max="1500" step="5" value="0">
+      <div class="scale"><span>0 = no medido</span><span>≥100</span><span>1500</span></div>
+    </div>
+    <div class="note" id="t2Note" style="margin-top:7px"></div>
     <label class="tog field" id="asmaTog" data-key="asma">
       <span class="flab"><span>Asma concomitante</span></span>
       <span class="switch"></span>
@@ -275,8 +316,27 @@ footer a{color:var(--muted)}
     </div>
 
     <div class="block">
+      <h3>Criterios diagnósticos · EPOS 2020 (1.2.2.6)</h3>
+      <div class="body">
+        <div class="crit" id="dxCrit"></div>
+        <div class="note" id="dxNote"></div>
+      </div>
+    </div>
+
+    <div class="block" id="redFlagsBlock">
+      <h3>Signos de alarma · derivación urgente (EPOS 2020, Fig 1.6.1)</h3>
+      <div class="body">
+        <div id="redFlagsBody"></div>
+      </div>
+    </div>
+
+    <div class="block">
       <h3>Control de la enfermedad · criterios POLINA (Tabla 10.1)</h3>
-      <div class="body"><div class="controlbreak" id="ctrlBreak"></div></div>
+      <div class="body">
+        <div class="controlbreak" id="ctrlBreak"></div>
+        <div class="note" id="dttNote" style="display:none"></div>
+        <div class="note" id="eposCtrlNote"></div>
+      </div>
     </div>
 
     <div class="block">
@@ -298,6 +358,22 @@ footer a{color:var(--muted)}
       </div>
     </div>
 
+    <div class="block">
+      <h3>Elegibilidad · criterios EPOS / EUFOREA 2020 (Fig 1.6.3)</h3>
+      <div class="body">
+        <div class="tx-strong" id="eposBioVerdict">—</div>
+        <div class="crit" id="eposBioCrit"></div>
+        <div class="note" id="eposBioNote"></div>
+      </div>
+    </div>
+
+    <div class="block" id="respBlock" style="display:none">
+      <h3>Respuesta al biológico · EPOS 2020 (Fig 1.6.4)</h3>
+      <div class="body">
+        <div class="note" id="respNote"></div>
+      </div>
+    </div>
+
     <div class="disc">
       <b>Herramienta de apoyo a la decisión</b> basada en el <i>Documento de consenso POLINA 2023 (SEORL-CCC / SEAIC / SEPAR)</i> y los <i>Informes de Posicionamiento Terapéutico (SNS España)</i>. Cuatro biológicos para RSCcPN: <b>dupilumab</b> (anti-IL-4Rα), <b>tezepelumab</b> (anti-TSLP), <b>omalizumab</b> (anti-IgE) y <b>mepolizumab</b> (anti-IL-5). El perfil por fármaco es orientativo según estudios pivotales y comparaciones indirectas (SINUS-24/52, WAYPOINT 2025, POLYP 1/2, SYNAPSE, NMA 2021-2025); no hay ensayos head-to-head. <b>Requisito quirúrgico:</b> el SNS español exige habitualmente ≥2 CENS para financiar el biológico, mientras que POLINA (Fig. 13.4) exige ≥1 — verifica el IPT/criterio autonómico vigente. <b>Tezepelumab:</b> aprobado por la EMA para RSCcPN grave (oct-2025); financiación en el SNS propuesta por la CIPM (ene-2026) — confirmar disponibilidad y condiciones antes de prescribir. No sustituye el juicio clínico ni la ficha técnica vigente. Uso diagnóstico hospitalario.
     </div>
@@ -305,7 +381,7 @@ footer a{color:var(--muted)}
   </div>
 
   <footer>
-    Privado · no indexado · Guía POLINA 2023. Consenso SEORL-CCC/SEAIC/SEPAR. ISBN 978-84-19069-76-4.
+    Privado · no indexado · Guía POLINA 2023 (Consenso SEORL-CCC/SEAIC/SEPAR, ISBN 978-84-19069-76-4) · EPOS 2020 (Fokkens WJ et&nbsp;al. <i>Rhinology</i> Suppl. 29; 1-464).
   </footer>
 </div>
 
@@ -325,7 +401,9 @@ const S = {
   eva:5, olf:5, snot:30, pol:2, co:0,
   bilat:false, cens:0, contraQx:false, recidiva:0,
   loem:0, lm:0, reman:false,
-  t2:false, asma:false, erea:false
+  t2:false, asma:false, erea:false,
+  facial:false, sleep:false,
+  eosBlood:0, eosTissue:0, ige:0, olfTest:0, endoDx:false, rhino:false
 };
 
 /* Tabla 10.1 POLINA: 5 criterios validados de control (la recidiva NO es un criterio
@@ -359,6 +437,14 @@ function setRange(id, key){
   el.addEventListener("input",upd); upd();
 }
 setRange("eva","eva"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol"); setRange("lm","lm");
+setRange("eosBlood","eosBlood"); setRange("eosTissue","eosTissue"); setRange("ige","ige");
+
+const olfTestSeg=document.getElementById("olfTestSeg");
+olfTestSeg.addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b)return;
+  olfTestSeg.querySelectorAll("button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); S.olfTest=parseInt(b.dataset.v,10); render();
+});
 
 document.querySelectorAll(".tog").forEach(t=>{
   const key=t.dataset.key;
@@ -428,13 +514,51 @@ function severity(){
   if(S.eva<=7) return {label:"Moderada",cls:"is-amber",d:"EVA "+S.eva.toFixed(1)+" · >3–7"};
   return {label:"Grave",cls:"is-red",d:"EVA "+S.eva.toFixed(1)+" · >7"};
 }
+/* Estado tipo 2 derivado: confirmación manual O biomarcadores. El umbral de eosinófilos
+   en sangre difiere: EPOS ≥250/µl, SNS España ≥300/µl. Tejido ≥10/campo e IgE ≥100 UI/ml
+   son comunes a ambos marcos. Cualquiera de los tres marca inflamación tipo 2. */
+function t2Status(){
+  const tissue = S.eosTissue>=10, igePos = S.ige>=100;
+  const sns  = S.t2 || S.eosBlood>=300 || tissue || igePos;
+  const epos = S.t2 || S.eosBlood>=250 || tissue || igePos;
+  const hits=[];
+  if(S.eosBlood>0) hits.push("Eos sangre "+S.eosBlood+"/µl"+(S.eosBlood>=300?" (≥300 SNS+EPOS)":S.eosBlood>=250?" (≥250 EPOS)":""));
+  if(S.eosTissue>0) hits.push("Eos tejido "+S.eosTissue+"/campo"+(tissue?" (≥10)":""));
+  if(S.ige>0) hits.push("IgE "+S.ige+" UI/ml"+(igePos?" (≥100)":""));
+  if(S.t2) hits.push("confirmada clínicamente");
+  return {sns, epos, hits};
+}
+
+/* Olfato para la indicación EPOS: el criterio es ANOSMIA en prueba objetiva. Sin
+   olfatometría se aproxima por EVA olfato >7. La hiposmia objetiva NO cumple "anosmia".
+   OJO: el proxy por EVA aquí es >7 (estricto, anosmia), DISTINTO del dominio "olfato"
+   del control EPOS en eposControl(), que usa EVA>5 (cualquier alteración, umbral más laxo).
+   La diferencia es intencionada — no unificar ambos cortes. */
+function anosmia(){
+  if(S.olfTest===3) return true;     // anosmia objetiva
+  if(S.olfTest>0)  return false;     // normosmia / hiposmia objetivas
+  return S.olf>7;                    // sin prueba: proxy por EVA
+}
+
 function phenotype(){
+  const t2=t2Status();
   const lateral = S.bilat?"RSCcPN bilateral (difusa)":"RSCcPN unilateral / localizada";
-  let endo = S.t2?"Inflamación tipo 2 (eosinofílica)":"Sin marcadores tipo 2 documentados";
+  let endo = t2.sns?"Inflamación tipo 2 (eosinofílica)":"Sin marcadores tipo 2 documentados";
   const extra=[];
   if(S.erea) extra.push("EREA");
   if(S.asma) extra.push("asma (vía única)");
   let d = endo + (extra.length?" · "+extra.join(" · "):"");
+
+  // EPOS 2020 (Fig 1.2.1/1.2.2): clasificación primaria/secundaria → localizada/difusa → tipo 2 / no-tipo 2
+  const eposEndo = t2.epos ? "tipo 2 dominante" : "no-tipo 2";
+  let eposClass;
+  if(S.bilat){
+    const ej = t2.epos ? "eCRS, CRSwNP, CCAD, RSCfA" : "RSC no eosinofílica";
+    eposClass = "EPOS: CRS primaria · difusa (bilateral) · "+eposEndo+" — fenotipos: "+ej;
+  } else {
+    eposClass = "EPOS: localizada (unilateral) · "+eposEndo+" — descartar CRS secundaria (Fig 1.2.2): odontógena, bola fúngica, tumor; o sistémica (GPA/EGPA, DCP, FQ, inmunodeficiencia)";
+  }
+  d = eposClass + " · " + d;
 
   const imgCtx=[];
   if(S.loem>0){ const ll=["","I","II","III","IV"]; imgCtx.push("CENS LOEM tipo "+ll[S.loem]); }
@@ -451,17 +575,84 @@ function phenotype(){
    biológico; POLINA Fig. 13.4 exige ≥1 CENS. Se admite además contraindicación quirúrgica
    documentada como vía alternativa. La regla de gravedad es OR: EVA>7 O SNOT-22>50. */
 function biologics(){
+  const t2=t2Status();
   const sev = (S.eva>7)||(S.snot>50);
   const qx  = (S.cens>=2) || S.contraQx;
   const base = S.bilat && sev && qx;
   const add = [
-    {ok:S.t2,    t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total >100 UI/ml"},
+    {ok:t2.sns,  t:"Inflamación tipo 2", s:"Eo sangre ≥300/µl, Eo tisular ≥10/campo o IgE total ≥100 UI/ml"+(t2.hits.length?" — "+t2.hits.join("; "):"")},
     {ok:S.olf>7, t:"Pérdida importante del olfato", s:"EVA olfato >7 · hiposmia grave / anosmia"},
     {ok:S.co>=2, t:"Corticoides orales ≥2 ciclos/año o contraindicación", s:"necesidad recurrente de corticoide sistémico"},
     {ok:(S.asma||S.erea), t:"Asma y/o EREA concomitante", s:"vía respiratoria única / intolerancia a AINE"}
   ];
   const addOk = add.some(a=>a.ok);
   return {sev, qx, base, eligible: base && addOk, add};
+}
+
+/* ===================== EPOS 2020 (Rhinology Suppl. 29) =====================
+   Capa internacional añadida sobre la base POLINA 2023 / SNS. No altera la
+   lógica POLINA validada; aporta los marcos EPOS de forma diferenciada. */
+
+/* Criterios diagnósticos EPOS 2020 (1.2.2.6): ≥2 síntomas, uno cardinal (obstrucción
+   o rinorrea/goteo), durante ≥12 semanas, MÁS signo objetivo (endoscopia: pólipos /
+   secreción mucopurulenta / edema-obstrucción en meato medio; y/o TC: cambios en el
+   complejo osteomeatal y/o senos). */
+function eposDx(){
+  return [
+    {ok:true,             t:"Obstrucción/congestión o rinorrea (cardinal)", s:"≥1 síntoma cardinal — asumido en RSCcPN"},
+    {ok:S.facial,         t:"Dolor / presión facial", s:"síntoma accesorio EPOS"},
+    {ok:S.olf>0,          t:"Reducción / pérdida de olfato", s:"EVA olfato "+S.olf.toFixed(1)},
+    {ok:true,             t:"Duración ≥12 semanas", s:"criterio de cronicidad"},
+    {ok:(S.pol>0)||S.bilat||(S.lm>0)||S.endoDx, t:"Signo objetivo: endoscopia y/o TC", s:"pólipos en meato medio, mucosa enferma o cambios en complejo osteomeatal (TC Lund-Mackay "+S.lm+"/24)"}
+  ];
+}
+
+/* EPOS / EUFOREA — indicación de biológico en RSCcPN (Fig 1.6.3): pólipos bilaterales en
+   paciente operado (CENS) — o no apto para cirugía — MÁS ≥3 de 5 criterios. Los umbrales
+   EPOS difieren del SNS (Eos sangre ≥250 vs ≥300; SNOT-22 ≥40 vs gravedad ≥50; CENS ≥1). */
+function eposBio(){
+  const t2=t2Status();
+  const ess = (S.cens>=1) || S.contraQx;
+  const base = S.bilat && ess;
+  const olfStr = S.olfTest===0 ? "sin olfatometría: proxy EVA olfato >7"
+               : ["","normosmia","hiposmia (no cumple: EPOS exige anosmia)","anosmia ✓"][S.olfTest];
+  const crit = [
+    {ok:t2.epos,    t:"Evidencia de inflamación tipo 2", s:"Eos tisular ≥10/campo · Eos sangre ≥250/µl · IgE total ≥100 UI/ml"+(t2.hits.length?" — "+t2.hits.join("; "):"")},
+    {ok:S.co>=2,    t:"Corticoide sistémico o contraindicación", s:"≥2 ciclos/año o pauta prolongada >3 meses a dosis baja"},
+    {ok:S.snot>=40, t:"Calidad de vida muy afectada", s:"SNOT-22 ≥40 (actual: "+S.snot+")"},
+    {ok:anosmia(),  t:"Pérdida significativa del olfato", s:"anosmia en prueba objetiva — "+olfStr},
+    {ok:S.asma,     t:"Asma concomitante", s:"asma que precisa corticoide inhalado regular"}
+  ];
+  const count = crit.filter(c=>c.ok).length;
+  return {ess, base, count, eligible: base && count>=3, crit};
+}
+
+/* EPOS 1.2.2.8 — RSC difícil de tratar: no alcanza control aceptable pese a cirugía
+   adecuada + corticoide intranasal + HASTA 2 tandas de ATB o CO sistémico en el último año.
+   Las "hasta 2 tandas" son el techo de tratamiento intentado, no un requisito; el rasgo
+   definitorio es el no-control tras cirugía + CIN. No se exige S.co>=1 (la app no captura
+   tandas de antibiótico, exigir CO sistémico infra-detectaría a los manejados con ATB). */
+function difficultToTreat(ctrl){
+  return S.cens>=1 && ctrl.k>=1;
+}
+
+/* EPOS 2020 control (Fig 1.2.3) — 7 parámetros del último mes (6 dominios + rescate).
+   No controlada = ≥3 parámetros presentes; parcialmente = 1-2; controlada = ninguno.
+   Complementa (no sustituye) a la Tabla 10.1 POLINA. "Presente" = VAS>5 o equivalente. */
+function eposControl(){
+  const smellOn = S.olfTest>=2 || (S.olfTest===0 && S.olf>5);
+  const flags = [
+    {on:S.eva>5,             t:"obstrucción nasal (VAS>5)"},
+    {on:S.rhino,             t:"rinorrea / goteo posnasal"},
+    {on:S.facial,            t:"dolor / presión facial"},
+    {on:smellOn,             t:"alteración del olfato"},
+    {on:S.sleep,             t:"alteración del sueño o fatiga"},
+    {on:(S.pol>0)||S.endoDx, t:"endoscopia: pólipos / secreción / mucosa inflamada"},
+    {on:S.co>=1,             t:"necesidad de tratamiento de rescate (CO sistémico)"}
+  ];
+  const present = flags.filter(f=>f.on).length;
+  const k = present>=3?2:present>=1?1:0;
+  return {present, k, label:["Controlada","Parcialmente controlada","No controlada"][k], flags};
 }
 
 /* ---------- biologic drug profile ----------
@@ -673,6 +864,86 @@ function render(){
   document.getElementById("bioNote").innerHTML = bio.eligible
     ? "Reevaluar respuesta a los <b>6 y 12 meses</b> (Figura 13.6 POLINA). ★ = primera opción orientativa según perfil; el orden no implica superioridad estadística (no hay ensayos head-to-head)."
     : "Faltan: <b>"+bioMissing(bio)+"</b>. El biológico se reserva a RSCcPN bilateral grave con requisito quirúrgico cumplido (SNS: habitualmente ≥2 CENS, o contraindicación quirúrgica) y ≥1 criterio adicional.";
+
+  // Estado de inflamación tipo 2 derivado de los biomarcadores
+  const ts=t2Status();
+  const t2box=document.getElementById("t2Note");
+  if(ts.hits.length){
+    const lvl = ts.sns ? "green" : ts.epos ? "amber" : "faint";
+    const verdict = ts.sns ? "Tipo 2 confirmada (umbral SNS y EPOS)"
+                  : ts.epos ? "Tipo 2 por umbral EPOS (Eos ≥250) — por debajo del corte SNS (≥300)"
+                            : "Biomarcadores por debajo de umbral de tipo 2";
+    t2box.style.display="";
+    t2box.innerHTML = "<b style=\"color:var(--"+lvl+")\">"+verdict+"</b><br><span style=\"color:var(--faint)\">"+ts.hits.join(" · ")+"</span>";
+  } else {
+    t2box.style.display="none";
+  }
+
+  // ===================== EPOS 2020 — render de la capa internacional =====================
+  // Criterios diagnósticos (1.2.2.6)
+  document.getElementById("dxCrit").innerHTML = eposDx().map(c=>critRow(c.ok,c.t,c.s)).join("");
+  document.getElementById("dxNote").innerHTML =
+    "Diagnóstico de RSC (EPOS 2020): <b>≥2 síntomas</b> —al menos uno cardinal (obstrucción/congestión nasal o rinorrea anterior/posterior)— durante <b>≥12 semanas</b>, confirmado por <b>endoscopia y/o TC</b>. La poliposis bilateral visible en meato medio satisface el signo objetivo.";
+
+  // Signos de alarma / derivación urgente (Fig 1.6.1)
+  const unilat = !S.bilat;
+  const rfRow=(active,t,s)=>`<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--${active?"red":"faint"})">${active?"⚠":"•"}</div><div class="ct"${active?' style="color:var(--red);font-weight:600"':''}>${t}<small>${s}</small></div></div>`;
+  const rf=[
+    {hit:unilat, t:"Enfermedad unilateral", s:"sospecha de neoplasia o micosis — biopsia / TC"},
+    {hit:false,  t:"Epistaxis de repetición o costras", s:"sangrado / costras, sobre todo unilaterales"},
+    {hit:false,  t:"Cacosmia", s:"percepción de mal olor — sospecha de infección/tumor"},
+    {hit:false,  t:"Síntomas orbitarios", s:"edema/eritema periorbitario, diplopía, oftalmoplejía, proptosis, ↓ agudeza visual"},
+    {hit:false,  t:"Cefalea frontal intensa o tumefacción frontal", s:"posible complicación intracraneal"},
+    {hit:false,  t:"Signos neurológicos o meníngeos", s:"derivación URGENTE"}
+  ];
+  document.getElementById("redFlagsBody").innerHTML =
+    '<div class="crit">'+rf.map(r=>rfRow(r.hit,r.t,r.s)).join("")+'</div>'+
+    '<div class="note">EPOS 2020 (Fig 1.6.1): ante cualquiera de estos signos, <b>derivación urgente</b> a ORL e imagen. '+
+    (unilat?'⚠️ <b>Enfermedad unilateral marcada</b>: descartar neoplasia/micosis antes de tratarla como RSCcPN.':'Revise manualmente el resto en la anamnesis.')+'</div>';
+
+  // Difícil de tratar (1.2.2.8) — nota condicional dentro del bloque de control
+  const dtt=document.getElementById("dttNote");
+  if(difficultToTreat(ctrl)){
+    dtt.style.display="";
+    dtt.innerHTML="⚠️ <b>RSC difícil de tratar (EPOS 1.2.2.8)</b>: no se alcanza control aceptable pese a cirugía adecuada + corticoide intranasal + corticoide/antibiótico sistémico en el último año. Reevaluar adherencia y fenoendotipo, y priorizar la candidatura a biológico.";
+  } else {
+    dtt.style.display="none";
+  }
+
+  // Control EPOS (Fig 1.2.3) — referencia complementaria
+  const ec=eposControl();
+  const onFlags=ec.flags.filter(f=>f.on).map(f=>f.t);
+  document.getElementById("eposCtrlNote").innerHTML =
+    "<b>Referencia EPOS 2020 (control de RSC, Fig 1.2.3)</b> — 7 parámetros del último mes (6 dominios + rescate): obstrucción nasal, rinorrea/goteo, dolor/presión facial, olfato, sueño/fatiga, endoscopia y necesidad de rescate. No controlada = ≥3 parámetros presentes. Estado actual: <b style=\"color:var(--"+(ec.k===0?"green":ec.k===1?"amber":"red")+")\">"+ec.label+"</b> ("+ec.present+"/7)"+
+    (onFlags.length?" — alterados: "+onFlags.join(", ")+".":".")+
+    " <span style=\"color:var(--faint)\">Complementa —no sustituye— a la Tabla 10.1 POLINA: añade dolor facial, sueño/fatiga, rinorrea y endoscopia, no incluidos en el score validado.</span>";
+
+  // Elegibilidad EPOS / EUFOREA (Fig 1.6.3)
+  const eb=eposBio();
+  const ev=document.getElementById("eposBioVerdict");
+  ev.textContent = eb.eligible
+    ? "Cumple criterios EPOS/EUFOREA ("+eb.count+"/5)"
+    : eb.base ? "No cumple — "+eb.count+"/5 criterios (faltan ≥"+(3-eb.count)+")"
+              : "Requiere pólipos bilaterales + cirugía previa (o no apto a cirugía)";
+  ev.className="tx-strong "+(eb.eligible?"green":"amber");
+  document.getElementById("eposBioCrit").innerHTML =
+    critRow(eb.base,"Pólipos bilaterales + cirugía previa (o no apto)","CENS ≥1 o contraindicación — "+(eb.ess?"cumplido":"NO cumplido"))+
+    '<div class="row"><div class="mk no" style="background:transparent;border:0;color:var(--accent)">+</div><div class="ct" style="color:var(--accent);font-weight:600">≥3 de 5 criterios:</div></div>'+
+    eb.crit.map(c=>critRow(c.ok,c.t,c.s)).join("");
+  document.getElementById("eposBioNote").innerHTML =
+    "EPOS/EUFOREA 2020 exige <b>pólipos bilaterales en paciente operado</b> (o no candidato a cirugía) <b>+ ≥3 de 5 criterios</b>. Umbrales <b>distintos del SNS español</b>: Eos sangre ≥250/µl (SNS ≥300), SNOT-22 ≥40, CENS ≥1 (SNS habitualmente ≥2)."+
+    (eb.eligible&&!bio.eligible?" <b>Nota:</b> cumple el marco EPOS pero todavía no el criterio SNS de financiación — orienta la indicación clínica internacional, no el visado en España.":"");
+
+  // Respuesta al biológico (Fig 1.6.4) — solo si hay candidatura
+  const rb=document.getElementById("respBlock");
+  if(bio.eligible||eb.eligible){
+    rb.style.display="";
+    document.getElementById("respNote").innerHTML =
+      "Evaluar a las <b>16 semanas</b> y luego <b>anualmente</b> (EPOS 2020, Fig 1.6.4) sobre <b>5 criterios</b>: ↓ tamaño de pólipos · ↓ necesidad de corticoide sistémico · mejoría de calidad de vida (SNOT-22, <b>MCID 8,9</b>) · mejoría del olfato · ↓ impacto de la comorbilidad (asma).<br>"+
+      "<b>Respuesta excelente</b>: 5/5 criterios · <b>moderada</b>: 3–4 · <b>pobre</b>: 1–2 · <b>nula</b>: 0. Respuesta global = <b>al menos moderada en ≥1 criterio</b>; si <b>empeoramiento o sin respuesta → suspender</b>. (POLINA reevalúa a los 6 y 12 meses.)";
+  } else {
+    rb.style.display="none";
+  }
 
   // sticky bar
   document.getElementById("bSev").textContent=sev.label;
