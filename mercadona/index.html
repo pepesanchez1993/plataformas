@@ -2,302 +2,196 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#00a650">
 <title>Cesta Mercadona</title>
 <style>
-:root {
-  --g:    #00a650;
-  --gd:   #007a3c;
-  --gl:   #e6f7ee;
-  --gm:   #b2dfcb;
-  --red:  #e63946;
-  --txt:  #1a1a1a;
-  --txt2: #555;
-  --txt3: #999;
-  --bg:   #f2f2f2;
-  --card: #fff;
-  --line: #e4e4e4;
-  --sh:   0 2px 10px rgba(0,0,0,.07);
-  --r:    13px;
-  --r2:   9px;
-  --nav:  60px;
+:root{
+  --g:#00a650; --gd:#008443; --gl:#e9f8f0; --gm:#bfe6d3;
+  --red:#e02d3c; --yl:#ffb300;
+  --txt:#15241c; --txt2:#5a6b62; --txt3:#9aa8a0;
+  --bg:#eef1ef; --card:#fff; --line:#e7eae8;
+  --sh:0 1px 3px rgba(20,40,30,.08); --shc:0 4px 14px rgba(20,40,30,.10);
+  --r:14px; --r2:10px; --nav:62px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%}
-body{font-family:system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--txt);min-height:100dvh}
+body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--txt);min-height:100dvh;overscroll-behavior-y:none}
+img{display:block}
 
 /* ── HEADER ── */
-header{
-  position:sticky;top:0;z-index:90;
-  background:var(--g);color:#fff;
-  padding:10px 16px;
-  display:flex;align-items:center;justify-content:space-between;
-  box-shadow:0 2px 8px rgba(0,166,80,.35);
-}
-.hd-logo{font-size:18px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:7px}
-.hd-logo small{font-weight:400;opacity:.75;font-size:14px}
-.hd-total{
-  background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);
-  border-radius:20px;padding:5px 13px;font-size:14px;font-weight:700;
-}
+header{position:sticky;top:0;z-index:90;background:linear-gradient(120deg,#00a650,#00b85a);color:#fff;
+  padding:calc(env(safe-area-inset-top,0) + 11px) 16px 11px;display:flex;align-items:center;justify-content:space-between;
+  box-shadow:0 2px 12px rgba(0,140,67,.35)}
+.hd-logo{font-size:18px;font-weight:800;letter-spacing:-.3px;display:flex;align-items:center;gap:8px}
+.hd-logo .bag{width:26px;height:26px;background:#fff;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.hd-logo small{font-weight:400;opacity:.8;font-size:13px;display:block;margin-top:-2px}
+.hd-total{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.32);border-radius:22px;
+  padding:6px 14px;font-size:15px;font-weight:800;display:flex;flex-direction:column;align-items:flex-end;line-height:1.05}
+.hd-total small{font-size:9px;font-weight:600;opacity:.8;letter-spacing:.06em;text-transform:uppercase}
 
 /* ── NAV ── */
-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:90;
-  display:flex;background:#fff;border-top:1px solid var(--line);
-  height:var(--nav);box-shadow:0 -2px 12px rgba(0,0,0,.06);
-}
-.nb{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:3px;border:none;background:none;cursor:pointer;
-  font-size:10px;font-weight:600;color:var(--txt3);padding:0;
-  transition:color .15s;letter-spacing:.01em;
-}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:90;display:flex;background:#fff;border-top:1px solid var(--line);
+  height:calc(var(--nav) + env(safe-area-inset-bottom,0));padding-bottom:env(safe-area-inset-bottom,0);box-shadow:0 -2px 14px rgba(0,0,0,.06)}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:none;background:none;
+  cursor:pointer;font-size:10px;font-weight:700;color:var(--txt3);padding:0;transition:color .15s}
 .nb.on{color:var(--g)}
-.nb svg{width:21px;height:21px}
+.nb svg{width:22px;height:22px}
 .nb-wrap{position:relative}
-.n-badge{
-  position:absolute;top:-3px;right:-8px;
-  background:var(--red);color:#fff;border-radius:10px;
-  padding:1px 5px;font-size:9px;font-weight:800;
-  min-width:16px;text-align:center;
-}
+.n-badge{position:absolute;top:-4px;right:-9px;background:var(--red);color:#fff;border-radius:10px;padding:1px 5px;
+  font-size:9px;font-weight:800;min-width:16px;text-align:center;box-shadow:0 1px 3px rgba(224,45,60,.5)}
 
-/* ── TABS ── */
-main{padding-bottom:calc(var(--nav)+8px)}
+main{padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 10px)}
 .tab{display:none}
-.tab.on{display:block}
+.tab.on{display:block;animation:fade .2s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}}
 
 /* ── TOOLBAR ── */
-.toolbar{display:flex;gap:8px;padding:10px 12px 0}
-.btn-p{
-  flex:1;background:var(--g);color:#fff;border:none;
-  border-radius:var(--r2);padding:11px 14px;font-size:14px;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;
-}
-.btn-s{
-  background:var(--gl);color:var(--gd);border:none;
-  border-radius:var(--r2);padding:11px 14px;font-size:14px;font-weight:700;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px;
-}
-.btn-g{
-  background:none;color:var(--txt2);border:1.5px solid var(--line);
-  border-radius:var(--r2);padding:11px 14px;font-size:14px;
-  cursor:pointer;
-}
+.toolbar{display:flex;gap:8px;padding:11px 12px 0}
+.btn-p{flex:1;background:var(--g);color:#fff;border:none;border-radius:var(--r2);padding:12px 14px;font-size:14px;
+  font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:0 2px 8px rgba(0,166,80,.3)}
+.btn-p:active{transform:scale(.98)}
+.btn-s{background:#fff;color:var(--gd);border:1.5px solid var(--gm);border-radius:var(--r2);padding:12px 15px;
+  font-size:16px;font-weight:700;cursor:pointer;box-shadow:var(--sh)}
+.btn-s.act{background:var(--gd);color:#fff;border-color:var(--gd)}
 
-/* ── RESUMEN BAR ── */
-.resumen{
-  display:flex;margin:10px 12px 0;background:#fff;
-  border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;
-}
-.res-cell{flex:1;text-align:center;padding:10px 6px}
-.res-v{font-size:20px;font-weight:800;color:var(--g)}
-.res-l{font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:.04em;margin-top:1px}
-.res-sep{width:1px;background:var(--line);margin:10px 0}
+/* ── RESUMEN ── */
+.resumen{display:flex;margin:11px 12px 0;background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden}
+.res-cell{flex:1;text-align:center;padding:11px 6px}
+.res-v{font-size:21px;font-weight:900;color:var(--g);letter-spacing:-.02em}
+.res-l{font-size:9.5px;color:var(--txt3);text-transform:uppercase;letter-spacing:.05em;margin-top:1px;font-weight:700}
+.res-sep{width:1px;background:var(--line);margin:11px 0}
 
-/* ── SECCIÓN GRUPO ── */
-.sec-g{margin:10px 12px 0}
-.sec-h{
-  display:flex;align-items:center;gap:8px;padding:9px 13px;
-  background:#fff;border-radius:var(--r) var(--r) 0 0;
-  border-bottom:1px solid var(--line);
-  font-size:12px;font-weight:800;color:var(--gd);
-  text-transform:uppercase;letter-spacing:.05em;
-}
-.sec-cnt{margin-left:auto;color:var(--txt3);font-weight:400;font-size:11px}
+/* ── SECCIÓN (lista) ── */
+.sec-g{margin:11px 12px 0;border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.sec-h{display:flex;align-items:center;gap:9px;padding:10px 14px;background:linear-gradient(90deg,var(--gl),#fff);
+  border-bottom:1px solid var(--line);font-size:12px;font-weight:800;color:var(--gd);text-transform:uppercase;letter-spacing:.05em}
+.sec-h .se{font-size:16px}
+.sec-cnt{margin-left:auto;color:var(--txt3);font-weight:600;font-size:11px;text-transform:none;letter-spacing:0}
 
 /* ── ITEM LISTA ── */
-.li{
-  display:flex;align-items:center;gap:9px;padding:11px 12px;
-  background:#fff;border-bottom:1px solid var(--line);
-  transition:background .12s;
-}
-.li:last-child{border-bottom:none;border-radius:0 0 var(--r) var(--r)}
-.li.ck{opacity:.48}
+.li{display:flex;align-items:center;gap:11px;padding:10px 12px;background:#fff;border-bottom:1px solid var(--line);transition:background .12s}
+.li:last-child{border-bottom:none}
+.li.ck{opacity:.5}
 .li.ck .li-n{text-decoration:line-through}
-
-.chk{
-  width:27px;height:27px;flex-shrink:0;border-radius:50%;
-  border:2px solid var(--line);background:none;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  transition:all .15s;
-}
+.li-thumb{width:46px;height:46px;border-radius:9px;background:#f5f7f6 center/contain no-repeat;flex-shrink:0;border:1px solid var(--line);
+  position:relative;overflow:hidden}
+.li-thumb img{width:100%;height:100%;object-fit:contain}
+.li-thumb .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:22px}
+.chk{width:26px;height:26px;flex-shrink:0;border-radius:50%;border:2px solid var(--gm);background:#fff;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .15s}
 .chk.on{background:var(--g);border-color:var(--g)}
 .chk svg{width:13px;height:13px;color:#fff}
 .li-info{flex:1;min-width:0}
-.li-n{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-n{font-size:14.5px;font-weight:600;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .li-sub{font-size:11px;color:var(--txt3);margin-top:2px}
-.li-ctrl{display:flex;align-items:center;gap:5px}
-.qb{
-  width:27px;height:27px;border-radius:50%;border:1.5px solid var(--line);
-  background:none;cursor:pointer;font-size:17px;line-height:1;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--gd);font-weight:800;
-}
-.qv{font-size:14px;font-weight:700;min-width:18px;text-align:center}
-.li-pr{font-size:13px;font-weight:700;color:var(--gd);min-width:46px;text-align:right}
-.del-btn{
-  background:none;border:none;cursor:pointer;color:var(--txt3);
-  padding:5px;border-radius:6px;flex-shrink:0;
-}
-.del-btn svg{width:15px;height:15px;display:block}
+.li-ctrl{display:flex;align-items:center;gap:4px;flex-shrink:0}
+.qb{width:27px;height:27px;border-radius:50%;border:1.5px solid var(--gm);background:#fff;cursor:pointer;font-size:17px;
+  line-height:1;display:flex;align-items:center;justify-content:center;color:var(--gd);font-weight:800}
+.qb:active{background:var(--gl)}
+.qv{font-size:14px;font-weight:800;min-width:20px;text-align:center}
+.li-pr{font-size:13.5px;font-weight:800;color:var(--gd);min-width:52px;text-align:right;flex-shrink:0}
+.del-btn{background:none;border:none;cursor:pointer;color:var(--txt3);padding:4px;flex-shrink:0}
+.del-btn svg{width:16px;height:16px;display:block}
 
 /* empty */
-.empty{text-align:center;padding:55px 20px;color:var(--txt3)}
-.empty .ei{font-size:52px;margin-bottom:10px}
-.empty p{font-size:15px;color:var(--txt2);margin-bottom:5px}
-.empty span{font-size:13px}
+.empty{text-align:center;padding:60px 24px;color:var(--txt3)}
+.empty .ei{font-size:56px;margin-bottom:12px;opacity:.85}
+.empty p{font-size:16px;color:var(--txt2);margin-bottom:5px;font-weight:700}
+.empty span{font-size:13px;line-height:1.5}
 
-/* hechos */
-.ck-toggle{
-  display:flex;align-items:center;gap:7px;padding:9px 12px;
-  cursor:pointer;font-size:13px;color:var(--txt3);
-  background:none;border:none;width:100%;margin-top:6px;
-}
+.ck-toggle{display:flex;align-items:center;gap:7px;padding:11px 14px;cursor:pointer;font-size:13px;font-weight:600;
+  color:var(--txt2);background:#fff;border:none;width:calc(100% - 24px);margin:11px 12px 0;border-radius:var(--r);box-shadow:var(--sh)}
 
 /* ── BUSCADOR ── */
-.search{
-  display:flex;align-items:center;gap:8px;margin:10px 12px 0;
-  background:#fff;border-radius:var(--r);padding:10px 13px;box-shadow:var(--sh);
-}
+.search{display:flex;align-items:center;gap:9px;margin:11px 12px 0;background:#fff;border-radius:var(--r);padding:11px 14px;box-shadow:var(--sh)}
 .search input{flex:1;border:none;outline:none;font-size:15px;background:none}
-.search svg{width:17px;height:17px;color:var(--txt3);flex-shrink:0}
+.search svg{width:18px;height:18px;color:var(--txt3);flex-shrink:0}
+.search .clr{color:var(--txt3);font-size:18px;cursor:pointer;padding:0 2px}
 
-/* chips */
-.chips{
-  display:flex;gap:7px;overflow-x:auto;padding:8px 12px;
-  scrollbar-width:none;-webkit-overflow-scrolling:touch;
-}
+/* ── CHIPS ── */
+.chips{display:flex;gap:7px;overflow-x:auto;padding:9px 12px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .chips::-webkit-scrollbar{display:none}
-.chip{
-  white-space:nowrap;padding:6px 13px;border-radius:18px;
-  border:1.5px solid var(--line);background:#fff;font-size:12px;
-  font-weight:600;cursor:pointer;transition:all .12s;
-}
-.chip.on{background:var(--g);border-color:var(--g);color:#fff}
+.chip{white-space:nowrap;padding:7px 13px;border-radius:18px;border:1.5px solid var(--line);background:#fff;font-size:12.5px;
+  font-weight:700;cursor:pointer;transition:all .12s;display:flex;align-items:center;gap:5px;color:var(--txt2)}
+.chip.on{background:var(--g);border-color:var(--g);color:#fff;box-shadow:0 2px 7px rgba(0,166,80,.3)}
 
-/* ── CATÁLOGO ITEMS ── */
-.cat-list{margin:0 12px 10px}
-.cat-item{
-  display:flex;align-items:center;gap:9px;padding:10px 12px;
-  background:#fff;border-bottom:1px solid var(--line);
-}
-.cat-item:first-child{border-radius:var(--r) var(--r) 0 0}
-.cat-item:last-child{border-bottom:none;border-radius:0 0 var(--r) var(--r)}
-.ci-ico{font-size:21px;width:34px;text-align:center;flex-shrink:0}
-.ci-info{flex:1;min-width:0}
-.ci-n{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ci-u{font-size:11px;color:var(--txt3)}
-.ci-pr{font-size:13px;font-weight:700;color:var(--gd);flex-shrink:0;min-width:45px;text-align:right}
-.ci-fav{
-  background:none;border:none;cursor:pointer;font-size:17px;
-  padding:3px;flex-shrink:0;opacity:.5;transition:opacity .12s;
-}
-.ci-fav.on{opacity:1}
-.ci-add{
-  width:30px;height:30px;border-radius:50%;background:var(--g);
-  border:none;color:#fff;cursor:pointer;font-size:19px;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  transition:transform .1s,background .12s;
-}
-.ci-add:active{transform:scale(.88)}
-.ci-add.in{background:var(--gm);color:var(--gd)}
-
-/* ── FAVORITOS ── */
-.fav-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:10px 12px}
-.fav-c{
-  background:#fff;border-radius:var(--r);padding:13px 10px;
-  box-shadow:var(--sh);display:flex;flex-direction:column;
-  align-items:center;gap:5px;cursor:pointer;
-  transition:transform .1s;position:relative;
-}
-.fav-c:active{transform:scale(.96)}
-.fav-ico{font-size:30px}
-.fav-n{font-size:12px;font-weight:700;text-align:center;line-height:1.25;color:var(--txt2)}
-.fav-pr{font-size:11px;color:var(--g);font-weight:700}
-.fav-rm{
-  position:absolute;top:5px;right:6px;
-  background:none;border:none;font-size:14px;color:var(--txt3);
-  cursor:pointer;padding:2px;line-height:1;
-}
-.fav-plus{
-  position:absolute;bottom:7px;right:7px;
-  width:20px;height:20px;border-radius:50%;
-  background:var(--g);color:#fff;font-size:13px;
-  display:flex;align-items:center;justify-content:center;
-}
+/* ── GRID PRODUCTOS (catálogo + favoritos) ── */
+.pgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 12px 12px}
+@media(min-width:520px){.pgrid{grid-template-columns:1fr 1fr 1fr}}
+.pc{background:#fff;border-radius:var(--r);box-shadow:var(--sh);overflow:hidden;display:flex;flex-direction:column;
+  position:relative;transition:transform .12s,box-shadow .12s}
+.pc:active{transform:scale(.975)}
+.pc-img{aspect-ratio:1;background:#fff center/contain no-repeat;position:relative;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;padding:8px}
+.pc-img img{width:100%;height:100%;object-fit:contain}
+.pc-img .ph{font-size:46px;opacity:.7}
+.pc-fav{position:absolute;top:6px;left:6px;width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.92);
+  border:none;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.15);z-index:2}
+.pc-fav.on{color:var(--yl)}
+.pc-body{padding:9px 10px 10px;display:flex;flex-direction:column;gap:3px;flex:1}
+.pc-n{font-size:12.5px;font-weight:600;line-height:1.28;color:var(--txt);display:-webkit-box;-webkit-line-clamp:2;
+  -webkit-box-orient:vertical;overflow:hidden;min-height:32px}
+.pc-u{font-size:10.5px;color:var(--txt3)}
+.pc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:5px}
+.pc-pr{font-size:15px;font-weight:900;color:var(--txt);letter-spacing:-.02em}
+.pc-pr small{font-size:10px;font-weight:600;color:var(--txt3)}
+.pc-add{width:32px;height:32px;border-radius:50%;background:var(--g);border:none;color:#fff;cursor:pointer;font-size:20px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 6px rgba(0,166,80,.35);transition:transform .1s}
+.pc-add:active{transform:scale(.85)}
+.pc-add.in{background:var(--gd)}
+.pc-qty{position:absolute;top:6px;right:6px;background:var(--gd);color:#fff;border-radius:14px;min-width:24px;height:24px;
+  padding:0 7px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;z-index:2;box-shadow:0 1px 4px rgba(0,0,0,.2)}
 
 /* ── HISTORIAL ── */
-.hist-c{
-  background:#fff;border-radius:var(--r);margin:10px 12px 0;
-  padding:13px 15px;box-shadow:var(--sh);
-}
-.hist-h{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px}
+.hist-c{background:#fff;border-radius:var(--r);margin:11px 12px 0;padding:14px 15px;box-shadow:var(--sh)}
+.hist-h{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px}
 .hist-f{font-size:14px;font-weight:800}
-.hist-t{font-size:16px;font-weight:900;color:var(--g)}
-.hist-items{font-size:12px;color:var(--txt3);margin-bottom:9px;line-height:1.4}
-.hist-acts{display:flex;gap:7px}
-.bsm{
-  padding:6px 13px;border-radius:8px;font-size:12px;
-  font-weight:700;cursor:pointer;border:none;
-}
+.hist-f small{display:block;font-size:11px;color:var(--txt3);font-weight:600;margin-top:1px}
+.hist-t{font-size:17px;font-weight:900;color:var(--g)}
+.hist-thumbs{display:flex;gap:5px;margin-bottom:10px;overflow:hidden}
+.hist-thumbs .ht{width:38px;height:38px;border-radius:8px;border:1px solid var(--line);background:#f5f7f6 center/contain no-repeat;flex-shrink:0}
+.hist-thumbs .more{width:38px;height:38px;border-radius:8px;background:var(--gl);color:var(--gd);font-size:11px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hist-acts{display:flex;gap:8px}
+.bsm{padding:8px 14px;border-radius:9px;font-size:12.5px;font-weight:800;cursor:pointer;border:none;flex:1}
 .bsm.p{background:var(--g);color:#fff}
-.bsm.g{background:var(--gl);color:var(--gd)}
-.bsm.r{background:#fdeaea;color:var(--red)}
+.bsm.r{background:#fdeaeb;color:var(--red);flex:0 0 auto}
 
 /* ── MODAL ── */
-.overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,.52);z-index:200;
-  display:flex;align-items:flex-end;justify-content:center;
-  animation:fi .18s;
-}
+.overlay{position:fixed;inset:0;background:rgba(10,20,15,.55);z-index:200;display:flex;align-items:flex-end;justify-content:center;animation:fi .18s}
 @keyframes fi{from{opacity:0}}
-.modal{
-  background:#fff;border-radius:20px 20px 0 0;
-  width:100%;max-width:500px;padding:0 0 env(safe-area-inset-bottom,16px);
-  animation:su .24s cubic-bezier(.4,0,.2,1);
-  max-height:92dvh;overflow-y:auto;
-}
+.modal{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:500px;
+  padding-bottom:calc(env(safe-area-inset-bottom,0) + 16px);animation:su .26s cubic-bezier(.4,0,.2,1);max-height:92dvh;overflow-y:auto}
 @keyframes su{from{transform:translateY(100%)}}
-.m-handle{width:36px;height:4px;background:var(--line);border-radius:2px;margin:10px auto}
-.m-title{padding:0 20px 12px;font-size:17px;font-weight:800;border-bottom:1px solid var(--line)}
-.m-body{padding:15px 18px}
-.fl{margin-bottom:12px}
-.fl label{display:block;font-size:12px;font-weight:700;color:var(--txt2);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
-.fi{
-  width:100%;padding:10px 13px;border:1.5px solid var(--line);
-  border-radius:10px;font-size:15px;outline:none;background:var(--bg);
-  font-family:inherit;
-}
+.m-handle{width:38px;height:4px;background:var(--line);border-radius:2px;margin:11px auto}
+.m-title{padding:0 20px 13px;font-size:17px;font-weight:800;border-bottom:1px solid var(--line)}
+.m-body{padding:16px 18px 0}
+.fl{margin-bottom:13px}
+.fl label{display:block;font-size:11.5px;font-weight:800;color:var(--txt2);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+.fi{width:100%;padding:11px 13px;border:1.5px solid var(--line);border-radius:11px;font-size:15px;outline:none;background:var(--bg);font-family:inherit}
 .fi:focus{border-color:var(--g);background:#fff}
-.fr{display:flex;gap:9px}
+.fr{display:flex;gap:10px}
 .fr .fl{flex:1}
 select.fi{appearance:none;cursor:pointer}
-.m-submit{
-  width:100%;background:var(--g);color:#fff;border:none;
-  border-radius:10px;padding:13px;font-size:15px;font-weight:800;
-  cursor:pointer;margin-top:4px;
-}
+.m-submit{width:100%;background:var(--g);color:#fff;border:none;border-radius:11px;padding:14px;font-size:15px;font-weight:800;
+  cursor:pointer;margin-top:2px;box-shadow:0 3px 10px rgba(0,166,80,.3)}
 
 /* ── TOAST ── */
-.toast{
-  position:fixed;bottom:calc(var(--nav)+12px);left:50%;
-  transform:translateX(-50%);background:#222;color:#fff;
-  border-radius:18px;padding:9px 17px;font-size:13px;font-weight:600;
-  z-index:400;white-space:nowrap;pointer-events:none;
-  animation:ti .25s, to .25s 1.7s forwards;
-}
-@keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(6px)}}
-@keyframes to{to{opacity:0;transform:translateX(-50%) translateY(6px)}}
+.toast{position:fixed;bottom:calc(var(--nav) + env(safe-area-inset-bottom,0) + 14px);left:50%;transform:translateX(-50%);
+  background:#15241c;color:#fff;border-radius:20px;padding:10px 18px;font-size:13px;font-weight:700;z-index:400;white-space:nowrap;
+  pointer-events:none;box-shadow:0 6px 20px rgba(0,0,0,.3);animation:ti .25s, to .25s 1.8s forwards;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
+@keyframes ti{from{opacity:0;transform:translateX(-50%) translateY(8px)}}
+@keyframes to{to{opacity:0;transform:translateX(-50%) translateY(8px)}}
 
 /* modo compra */
 body.mc .li{padding:15px 12px}
+body.mc .li-thumb{width:56px;height:56px}
 body.mc .chk{width:34px;height:34px}
-body.mc .li-n{font-size:17px}
-body.mc .qb{width:32px;height:32px}
+body.mc .li-n{font-size:16.5px;-webkit-line-clamp:3}
+body.mc .qb{width:33px;height:33px;font-size:19px}
+body.mc .qv{font-size:16px}
 
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -305,8 +199,8 @@ body.mc .qb{width:32px;height:32px}
 <body>
 
 <header>
-  <div class="hd-logo">🛒 MiCesta <small>Mercadona</small></div>
-  <div class="hd-total" id="hTotal">0,00 €</div>
+  <div class="hd-logo"><span class="bag">🛒</span><span>MiCesta<small>Mercadona · fotos reales</small></span></div>
+  <div class="hd-total"><span id="hTotal">0,00 €</span><small>total cesta</small></div>
 </header>
 
 <main>
@@ -316,12 +210,11 @@ body.mc .qb{width:32px;height:32px}
   <div class="toolbar">
     <button class="btn-p" onclick="openModal()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 5v14M5 12h14"/></svg>
-      Añadir producto
+      Añadir manual
     </button>
     <button class="btn-s" id="btnMC" onclick="toggleMC()" title="Modo compra">🛒</button>
-    <button class="btn-g" onclick="guardarLista()" title="Guardar">💾</button>
+    <button class="btn-s" onclick="guardarLista()" title="Guardar lista">💾</button>
   </div>
-
   <div class="resumen" id="resumen" style="display:none">
     <div class="res-cell"><div class="res-v" id="rTotal">0</div><div class="res-l">Productos</div></div>
     <div class="res-sep"></div>
@@ -329,12 +222,11 @@ body.mc .qb{width:32px;height:32px}
     <div class="res-sep"></div>
     <div class="res-cell"><div class="res-v" id="rCost">0€</div><div class="res-l">Total</div></div>
   </div>
-
   <div id="lCont"></div>
   <div id="lEmpty" class="empty">
     <div class="ei">🛒</div>
     <p>La cesta está vacía</p>
-    <span>Añade productos desde el catálogo o el botón de arriba</span>
+    <span>Ve al <b>Catálogo</b> y toca <b>+</b> en los productos<br>para llenar tu lista de la compra</span>
   </div>
 </div>
 
@@ -342,19 +234,20 @@ body.mc .qb{width:32px;height:32px}
 <div class="tab" id="tab-catalogo">
   <div class="search">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="search" placeholder="Buscar en Mercadona…" id="catQ" oninput="filtrar()">
+    <input type="search" placeholder="Buscar producto…" id="catQ" oninput="filtrar()" autocomplete="off">
+    <span class="clr" id="clrBtn" style="display:none" onclick="clearSearch()">✕</span>
   </div>
   <div class="chips" id="chips"></div>
-  <div class="cat-list" id="catList"></div>
+  <div class="pgrid" id="catGrid"></div>
 </div>
 
 <!-- ── FAVORITOS ── -->
 <div class="tab" id="tab-favoritos">
-  <div class="fav-grid" id="favGrid"></div>
+  <div class="pgrid" id="favGrid"></div>
   <div class="empty" id="favEmpty" style="display:none">
     <div class="ei">⭐</div>
     <p>Sin favoritos aún</p>
-    <span>Pulsa ⭐ en el catálogo para guardar productos frecuentes</span>
+    <span>Toca la ⭐ en cualquier producto del catálogo<br>para tenerlo siempre a mano aquí</span>
   </div>
 </div>
 
@@ -363,8 +256,8 @@ body.mc .qb{width:32px;height:32px}
   <div id="histCont"></div>
   <div class="empty" id="histEmpty" style="display:none">
     <div class="ei">📋</div>
-    <p>Sin historial</p>
-    <span>Las listas guardadas aparecerán aquí</span>
+    <p>Sin listas guardadas</p>
+    <span>Pulsa 💾 en tu lista para archivarla<br>y poder repetirla otro día</span>
   </div>
 </div>
 
@@ -379,7 +272,7 @@ body.mc .qb{width:32px;height:32px}
     Lista
   </button>
   <button class="nb" data-t="catalogo" onclick="goTab('catalogo')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
     Catálogo
   </button>
   <button class="nb" data-t="favoritos" onclick="goTab('favoritos')">
@@ -398,571 +291,252 @@ body.mc .qb{width:32px;height:32px}
     <div class="m-handle"></div>
     <div class="m-title" id="mTitle">Añadir producto</div>
     <div class="m-body">
-      <div class="fl">
-        <label>Nombre *</label>
-        <input type="text" class="fi" id="mNom" placeholder="Ej: Leche entera Hacendado">
+      <div class="fl"><label>Nombre *</label>
+        <input type="text" class="fi" id="mNom" placeholder="Ej: Leche entera Hacendado" autocomplete="off"></div>
+      <div class="fr">
+        <div class="fl"><label>Sección</label><select class="fi" id="mSec"></select></div>
+        <div class="fl" style="max-width:92px"><label>Cantidad</label><input type="number" class="fi" id="mQty" value="1" min="1" max="99"></div>
       </div>
       <div class="fr">
-        <div class="fl">
-          <label>Sección</label>
-          <select class="fi" id="mSec"></select>
-        </div>
-        <div class="fl" style="max-width:90px">
-          <label>Cantidad</label>
-          <input type="number" class="fi" id="mQty" value="1" min="1" max="99">
-        </div>
+        <div class="fl"><label>Precio (€)</label><input type="number" class="fi" id="mPr" placeholder="0,00" step="0.01" min="0" inputmode="decimal"></div>
+        <div class="fl"><label>Unidad</label>
+          <select class="fi" id="mUn"><option>ud</option><option>kg</option><option>L</option><option>pack</option><option>Pieza</option><option>bote</option><option>bolsa</option></select></div>
       </div>
-      <div class="fr">
-        <div class="fl">
-          <label>Precio (€)</label>
-          <input type="number" class="fi" id="mPr" placeholder="0,00" step="0.01" min="0">
-        </div>
-        <div class="fl">
-          <label>Unidad</label>
-          <select class="fi" id="mUn">
-            <option>ud</option><option>kg</option><option>g</option>
-            <option>L</option><option>ml</option><option>pack</option><option>bote</option>
-          </select>
-        </div>
-      </div>
-      <div class="fl">
-        <label>Nota (opcional)</label>
-        <input type="text" class="fi" id="mNota" placeholder="Sin sal, marca específica…">
-      </div>
+      <div class="fl"><label>Nota (opcional)</label><input type="text" class="fi" id="mNota" placeholder="Marca, sin sal, oferta…" autocomplete="off"></div>
       <button class="m-submit" onclick="confirmAdd()">Añadir a la cesta</button>
     </div>
   </div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════════════
-// DATOS
-// ══════════════════════════════════════════════════════════════
-const SEC = [
-  {id:'frutas',    n:'Frutas y verduras',       ic:'🥦'},
-  {id:'pan',       n:'Panadería',               ic:'🍞'},
-  {id:'lacteos',   n:'Lácteos y huevos',        ic:'🥛'},
-  {id:'charcut',   n:'Charcutería',             ic:'🥩'},
-  {id:'carne',     n:'Carnicería',              ic:'🍗'},
-  {id:'pescado',   n:'Pescadería',              ic:'🐟'},
-  {id:'congel',    n:'Congelados',              ic:'🧊'},
-  {id:'conservas', n:'Conservas y salsas',      ic:'🥫'},
-  {id:'pastas',    n:'Pasta, arroz y legumbres',ic:'🍝'},
-  {id:'aceites',   n:'Aceites y especias',      ic:'🫙'},
-  {id:'desayuno',  n:'Desayuno y dulces',       ic:'☕'},
-  {id:'bebidas',   n:'Bebidas',                 ic:'🥤'},
-  {id:'limpieza',  n:'Limpieza del hogar',      ic:'🧹'},
-  {id:'higiene',   n:'Higiene y cosmética',     ic:'🧴'},
+// ════════ SECCIONES ════════
+const SEC=[
+ {id:'frutas',n:'Frutas y verduras',ic:'🥦'},
+ {id:'pan',n:'Panadería',ic:'🍞'},
+ {id:'lacteos',n:'Lácteos, huevos y postres',ic:'🥛'},
+ {id:'charcut',n:'Charcutería y quesos',ic:'🧀'},
+ {id:'carne',n:'Carnicería',ic:'🍗'},
+ {id:'pescado',n:'Pescadería',ic:'🐟'},
+ {id:'congel',n:'Congelados',ic:'🧊'},
+ {id:'conservas',n:'Conservas y caldos',ic:'🥫'},
+ {id:'pastas',n:'Arroz, pasta y legumbres',ic:'🍝'},
+ {id:'aceites',n:'Aceite y especias',ic:'🫙'},
+ {id:'cereales',n:'Cereales y galletas',ic:'🥣'},
+ {id:'desayuno',n:'Café, cacao y dulces',ic:'☕'},
+ {id:'bebidas',n:'Bebidas',ic:'🥤'},
+ {id:'limpieza',n:'Limpieza y hogar',ic:'🧹'},
+ {id:'higiene',n:'Higiene y cuidado',ic:'🧴'},
 ];
+const SECIC=Object.fromEntries(SEC.map(s=>[s.id,s.ic]));
 
-const CAT = [
-  // Frutas y verduras
-  {id:'v1', n:'Plátanos',          s:'frutas',    p:1.30, u:'kg',       ic:'🍌'},
-  {id:'v2', n:'Manzanas rojas',    s:'frutas',    p:1.99, u:'kg',       ic:'🍎'},
-  {id:'v3', n:'Naranjas de mesa',  s:'frutas',    p:1.49, u:'kg',       ic:'🍊'},
-  {id:'v4', n:'Limones',           s:'frutas',    p:1.20, u:'malla',    ic:'🍋'},
-  {id:'v5', n:'Peras conferencia', s:'frutas',    p:1.79, u:'kg',       ic:'🍐'},
-  {id:'v6', n:'Uvas blancas',      s:'frutas',    p:2.29, u:'kg',       ic:'🍇'},
-  {id:'v7', n:'Fresas',            s:'frutas',    p:2.49, u:'kg',       ic:'🍓'},
-  {id:'v8', n:'Tomates rama',      s:'frutas',    p:1.69, u:'kg',       ic:'🍅'},
-  {id:'v9', n:'Lechuga iceberg',   s:'frutas',    p:0.79, u:'ud',       ic:'🥬'},
-  {id:'v10',n:'Cebolla blanca',    s:'frutas',    p:0.99, u:'kg',       ic:'🧅'},
-  {id:'v11',n:'Ajo',               s:'frutas',    p:0.89, u:'cabeza',   ic:'🧄'},
-  {id:'v12',n:'Pimientos rojos',   s:'frutas',    p:1.99, u:'kg',       ic:'🫑'},
-  {id:'v13',n:'Pepino',            s:'frutas',    p:0.59, u:'ud',       ic:'🥒'},
-  {id:'v14',n:'Zanahorias',        s:'frutas',    p:0.75, u:'kg',       ic:'🥕'},
-  {id:'v15',n:'Patatas',           s:'frutas',    p:1.49, u:'kg',       ic:'🥔'},
-  {id:'v16',n:'Espinacas frescas', s:'frutas',    p:1.39, u:'bolsa',    ic:'🥬'},
-  {id:'v17',n:'Calabacín',         s:'frutas',    p:1.29, u:'kg',       ic:'🥗'},
-  {id:'v18',n:'Brócoli',           s:'frutas',    p:1.19, u:'ud',       ic:'🥦'},
-  {id:'v19',n:'Champiñones',       s:'frutas',    p:1.49, u:'bandeja',  ic:'🍄'},
-  {id:'v20',n:'Aguacates',         s:'frutas',    p:2.99, u:'kg',       ic:'🥑'},
-  // Panadería
-  {id:'p1', n:'Pan de molde Hacendado',   s:'pan',p:1.10, u:'ud',       ic:'🍞'},
-  {id:'p2', n:'Pan de molde integral',    s:'pan',p:1.25, u:'ud',       ic:'🍞'},
-  {id:'p3', n:'Pan de semillas',          s:'pan',p:1.79, u:'ud',       ic:'🍞'},
-  {id:'p4', n:'Baguette',                s:'pan',p:0.55, u:'ud',       ic:'🥖'},
-  {id:'p5', n:'Tostadas Hacendado',       s:'pan',p:0.99, u:'ud',       ic:'🍞'},
-  {id:'p6', n:'Croissant',               s:'pan',p:0.39, u:'ud',       ic:'🥐'},
-  // Lácteos y huevos
-  {id:'l1', n:'Leche entera Hacendado',   s:'lacteos',p:0.89,u:'L',    ic:'🥛'},
-  {id:'l2', n:'Leche semidesnatada',      s:'lacteos',p:0.83,u:'L',    ic:'🥛'},
-  {id:'l3', n:'Leche desnatada',          s:'lacteos',p:0.78,u:'L',    ic:'🥛'},
-  {id:'l4', n:'Leche sin lactosa',        s:'lacteos',p:1.19,u:'L',    ic:'🥛'},
-  {id:'l5', n:'Yogur natural (pack 4)',   s:'lacteos',p:0.75,u:'pack', ic:'🫙'},
-  {id:'l6', n:'Yogur griego Hacendado',   s:'lacteos',p:1.05,u:'pack', ic:'🫙'},
-  {id:'l7', n:'Yogur de sabores',         s:'lacteos',p:1.15,u:'pack', ic:'🫙'},
-  {id:'l8', n:'Mantequilla Hacendado',    s:'lacteos',p:1.85,u:'250g', ic:'🧈'},
-  {id:'l9', n:'Nata para cocinar',        s:'lacteos',p:0.79,u:'200ml',ic:'🫙'},
-  {id:'l10',n:'Queso fresco Hacendado',   s:'lacteos',p:1.39,u:'ud',   ic:'🧀'},
-  {id:'l11',n:'Queso manchego curado',    s:'lacteos',p:4.99,u:'200g', ic:'🧀'},
-  {id:'l12',n:'Mozzarella fresca',        s:'lacteos',p:1.29,u:'125g', ic:'🧀'},
-  {id:'l13',n:'Queso rallado Hacendado',  s:'lacteos',p:1.99,u:'200g', ic:'🧀'},
-  {id:'l14',n:'Huevos L clase A (12u)',   s:'lacteos',p:2.39,u:'docena',ic:'🥚'},
-  {id:'l15',n:'Huevos camperos (6u)',     s:'lacteos',p:1.99,u:'pack', ic:'🥚'},
-  // Charcutería
-  {id:'c1', n:'Jamón serrano lonchas',    s:'charcut',p:2.49,u:'100g', ic:'🥩'},
-  {id:'c2', n:'Jamón cocido extra',       s:'charcut',p:1.99,u:'150g', ic:'🥩'},
-  {id:'c3', n:'Lomo embuchado',           s:'charcut',p:1.89,u:'80g',  ic:'🥩'},
-  {id:'c4', n:'Chorizo Hacendado',        s:'charcut',p:2.29,u:'200g', ic:'🌭'},
-  {id:'c5', n:'Salami',                   s:'charcut',p:1.99,u:'100g', ic:'🥩'},
-  {id:'c6', n:'Pechuga de pavo',          s:'charcut',p:2.19,u:'200g', ic:'🥩'},
-  {id:'c7', n:'Bacon en lonchas',         s:'charcut',p:1.75,u:'150g', ic:'🥩'},
-  {id:'c8', n:'Fuet Hacendado',           s:'charcut',p:1.49,u:'ud',   ic:'🥩'},
-  // Carnicería
-  {id:'m1', n:'Pechuga de pollo',         s:'carne',  p:5.99,u:'kg',   ic:'🍗'},
-  {id:'m2', n:'Muslos de pollo',          s:'carne',  p:3.99,u:'kg',   ic:'🍗'},
-  {id:'m3', n:'Carne picada mixta',       s:'carne',  p:4.99,u:'500g', ic:'🥩'},
-  {id:'m4', n:'Filetes de ternera',       s:'carne',  p:9.99,u:'kg',   ic:'🥩'},
-  {id:'m5', n:'Lomo de cerdo',            s:'carne',  p:5.49,u:'kg',   ic:'🥩'},
-  {id:'m6', n:'Hamburguesas (4u)',         s:'carne',  p:3.49,u:'pack', ic:'🍔'},
-  {id:'m7', n:'Salchichas Frankfurt (6u)',s:'carne',  p:1.49,u:'pack', ic:'🌭'},
-  {id:'m8', n:'Costillas de cerdo',       s:'carne',  p:4.99,u:'kg',   ic:'🥩'},
-  // Pescadería
-  {id:'f1', n:'Salmón fresco',            s:'pescado',p:11.99,u:'kg',  ic:'🐟'},
-  {id:'f2', n:'Merluza en filetes',       s:'pescado',p:8.99, u:'kg',  ic:'🐟'},
-  {id:'f3', n:'Atún fresco',              s:'pescado',p:10.99,u:'kg',  ic:'🐟'},
-  {id:'f4', n:'Gambas crudas',            s:'pescado',p:9.99, u:'kg',  ic:'🦐'},
-  {id:'f5', n:'Mejillones frescos',       s:'pescado',p:2.99, u:'malla',ic:'🦪'},
-  {id:'f6', n:'Bacaladilla',              s:'pescado',p:3.99, u:'kg',  ic:'🐟'},
-  // Congelados
-  {id:'g1', n:'Mix verduras congeladas',  s:'congel', p:1.69,u:'750g', ic:'🧊'},
-  {id:'g2', n:'Espinacas congeladas',     s:'congel', p:1.29,u:'750g', ic:'🧊'},
-  {id:'g3', n:'Guisantes congelados',     s:'congel', p:1.19,u:'1kg',  ic:'🧊'},
-  {id:'g4', n:'Pizza margarita Hacendado',s:'congel', p:2.49,u:'ud',   ic:'🍕'},
-  {id:'g5', n:'Croquetas Hacendado',      s:'congel', p:2.99,u:'500g', ic:'🧊'},
-  {id:'g6', n:'Empanadillas atún (12u)',  s:'congel', p:2.49,u:'pack', ic:'🧊'},
-  {id:'g7', n:'Pollo rebozado',           s:'congel', p:2.99,u:'pack', ic:'🍗'},
-  // Conservas y salsas
-  {id:'k1', n:'Atún al natural (3 latas)',s:'conservas',p:2.89,u:'pack',ic:'🥫'},
-  {id:'k2', n:'Tomate frito Hacendado',   s:'conservas',p:0.69,u:'400g',ic:'🥫'},
-  {id:'k3', n:'Tomate triturado',         s:'conservas',p:0.49,u:'400g',ic:'🥫'},
-  {id:'k4', n:'Lentejas cocidas',         s:'conservas',p:0.79,u:'570g',ic:'🥫'},
-  {id:'k5', n:'Garbanzos cocidos',        s:'conservas',p:0.79,u:'570g',ic:'🥫'},
-  {id:'k6', n:'Alubias blancas',          s:'conservas',p:0.79,u:'570g',ic:'🥫'},
-  {id:'k7', n:'Maíz en lata',             s:'conservas',p:0.65,u:'285g',ic:'🌽'},
-  {id:'k8', n:'Aceitunas rellenas',       s:'conservas',p:0.99,u:'450g',ic:'🫒'},
-  {id:'k9', n:'Mayonesa Hacendado',       s:'conservas',p:1.49,u:'450ml',ic:'🫙'},
-  {id:'k10',n:'Ketchup Hacendado',        s:'conservas',p:0.99,u:'300ml',ic:'🍅'},
-  {id:'k11',n:'Sardinas en aceite',       s:'conservas',p:0.79,u:'lata',ic:'🥫'},
-  {id:'k12',n:'Berberechos al natural',   s:'conservas',p:1.99,u:'lata',ic:'🥫'},
-  // Pasta, arroz y legumbres
-  {id:'r1', n:'Espagueti Hacendado',      s:'pastas', p:0.65,u:'500g', ic:'🍝'},
-  {id:'r2', n:'Macarrones Hacendado',     s:'pastas', p:0.65,u:'500g', ic:'🍝'},
-  {id:'r3', n:'Penne rigate Hacendado',   s:'pastas', p:0.65,u:'500g', ic:'🍝'},
-  {id:'r4', n:'Arroz blanco Hacendado',   s:'pastas', p:0.89,u:'1kg',  ic:'🍚'},
-  {id:'r5', n:'Arroz integral Hacendado', s:'pastas', p:1.15,u:'1kg',  ic:'🍚'},
-  {id:'r6', n:'Lentejas secas',           s:'pastas', p:1.09,u:'1kg',  ic:'🫘'},
-  {id:'r7', n:'Garbanzos secos',          s:'pastas', p:1.29,u:'1kg',  ic:'🫘'},
-  // Aceites y especias
-  {id:'a1', n:'AOVE Hacendado 0,4°',     s:'aceites',p:3.99,u:'750ml',ic:'🫙'},
-  {id:'a2', n:'Aceite de girasol',        s:'aceites',p:1.89,u:'1L',   ic:'🫙'},
-  {id:'a3', n:'Vinagre de vino',          s:'aceites',p:0.79,u:'750ml',ic:'🫙'},
-  {id:'a4', n:'Sal fina Hacendado',       s:'aceites',p:0.39,u:'1kg',  ic:'🧂'},
-  {id:'a5', n:'Pimienta negra molida',    s:'aceites',p:0.99,u:'bote', ic:'🌶️'},
-  {id:'a6', n:'Orégano Hacendado',        s:'aceites',p:0.75,u:'bote', ic:'🌿'},
-  // Desayuno y dulces
-  {id:'d1', n:'Cereales muesli Hacendado',s:'desayuno',p:2.19,u:'500g',ic:'🥣'},
-  {id:'d2', n:'Avena Hacendado',          s:'desayuno',p:1.19,u:'500g',ic:'🥣'},
-  {id:'d3', n:'Cola Cao',                 s:'desayuno',p:3.49,u:'800g',ic:'☕'},
-  {id:'d4', n:'Café molido Hacendado',    s:'desayuno',p:3.29,u:'250g',ic:'☕'},
-  {id:'d5', n:'Café cápsulas Hacendado',  s:'desayuno',p:3.99,u:'10u', ic:'☕'},
-  {id:'d6', n:'Azúcar blanca Hacendado',  s:'desayuno',p:0.99,u:'1kg', ic:'🍬'},
-  {id:'d7', n:'Miel Hacendado',           s:'desayuno',p:2.49,u:'500g',ic:'🍯'},
-  {id:'d8', n:'Mermelada fresa Hacendado',s:'desayuno',p:0.99,u:'400g',ic:'🍓'},
-  {id:'d9', n:'Galletas María Hacendado', s:'desayuno',p:0.89,u:'800g',ic:'🍪'},
-  {id:'d10',n:'Chocolate negro 70%',      s:'desayuno',p:0.99,u:'100g',ic:'🍫'},
-  {id:'d11',n:'Chocolate con leche',      s:'desayuno',p:0.79,u:'100g',ic:'🍫'},
-  {id:'d12',n:'Aceite de oliva 0,4° 5L',  s:'aceites',p:18.99,u:'garrafa',ic:'🫙'},
-  // Bebidas
-  {id:'b1', n:'Agua mineral (6 botellas)',s:'bebidas',p:1.69,u:'pack', ic:'💧'},
-  {id:'b2', n:'Agua con gas',             s:'bebidas',p:0.65,u:'L',   ic:'💧'},
-  {id:'b3', n:'Zumo naranja Hacendado',   s:'bebidas',p:1.29,u:'1L',  ic:'🍊'},
-  {id:'b4', n:'Leche de avena Hacendado', s:'bebidas',p:1.15,u:'1L',  ic:'🥛'},
-  {id:'b5', n:'Leche de soja Hacendado',  s:'bebidas',p:1.09,u:'1L',  ic:'🥛'},
-  {id:'b6', n:'Coca-Cola 2L',             s:'bebidas',p:1.89,u:'ud',  ic:'🥤'},
-  {id:'b7', n:'Cerveza Hacendado lata',   s:'bebidas',p:0.69,u:'ud',  ic:'🍺'},
-  {id:'b8', n:'Cerveza Hacendado (pack 6)',s:'bebidas',p:3.49,u:'pack',ic:'🍺'},
-  {id:'b9', n:'Vino tinto Hacendado',     s:'bebidas',p:2.99,u:'75cl',ic:'🍷'},
-  {id:'b10',n:'Tónica Hacendado',         s:'bebidas',p:0.65,u:'33cl',ic:'🥤'},
-  // Limpieza
-  {id:'h1', n:'Detergente lavadora Hacendado',s:'limpieza',p:3.99,u:'40 lav',ic:'🧺'},
-  {id:'h2', n:'Suavizante Hacendado',     s:'limpieza',p:1.99,u:'1L',  ic:'🧴'},
-  {id:'h3', n:'Limpiahogar multiusos',    s:'limpieza',p:0.99,u:'L',   ic:'🧹'},
-  {id:'h4', n:'Papel higiénico (12u)',    s:'limpieza',p:2.99,u:'pack',ic:'🧻'},
-  {id:'h5', n:'Papel de cocina (2u)',     s:'limpieza',p:1.39,u:'pack',ic:'🧻'},
-  {id:'h6', n:'Bolsas basura 50L (20u)', s:'limpieza',p:1.29,u:'pack',ic:'🗑️'},
-  {id:'h7', n:'Bayeta multiusos (3u)',    s:'limpieza',p:0.99,u:'pack',ic:'🧹'},
-  {id:'h8', n:'Lavavajillas pastillas',   s:'limpieza',p:2.99,u:'30u', ic:'🍽️'},
-  {id:'h9', n:'Fregasuelos pino',         s:'limpieza',p:1.49,u:'1L',  ic:'🧹'},
-  // Higiene
-  {id:'i1', n:'Gel de ducha Hacendado',   s:'higiene',p:1.19,u:'750ml',ic:'🧴'},
-  {id:'i2', n:'Champú Hacendado',         s:'higiene',p:1.29,u:'400ml',ic:'🧴'},
-  {id:'i3', n:'Desodorante Hacendado',    s:'higiene',p:1.49,u:'ud',   ic:'🧴'},
-  {id:'i4', n:'Pasta de dientes Hacendado',s:'higiene',p:0.89,u:'75ml',ic:'🪥'},
-  {id:'i5', n:'Cepillo de dientes',       s:'higiene',p:1.29,u:'ud',   ic:'🪥'},
-  {id:'i6', n:'Maquinillas desechables',  s:'higiene',p:1.99,u:'5u',   ic:'🪒'},
-  {id:'i7', n:'Crema hidratante Deliplus',s:'higiene',p:2.99,u:'400ml',ic:'🧴'},
-];
+// ════════ CATÁLOGO (datos reales Mercadona) ════════
+const CAT=[{"id":"m3819","n":"Plátano de Canarias IGP","s":"frutas","p":0.46,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/e4a37940916985bf5ca166e266580c37.jpg"},{"id":"m3824","n":"Banana","s":"frutas","p":0.29,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/69edef3541bbf3f4b7173c9d617a5698.jpg"},{"id":"m3132","n":"Plátano macho","s":"frutas","p":0.81,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/c22baa2a17de06fbf8477ef25392b7ca.jpg"},{"id":"m3313","n":"Uva blanca sin semillas","s":"frutas","p":2.85,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/386783ad8510e061d8ad0277b460a5f1.jpg"},{"id":"m3028","n":"Manzana Golden","s":"frutas","p":0.5,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/12cc1ef38a5b781f364ca22e46a25ad7.jpg"},{"id":"m3269","n":"Manzanas Golden","s":"frutas","p":3.3,"u":"kg","img":"https://prod-mercadona.imgix.net/images/022fa8e1cd6c9d9ee18a41ed06d71c35.jpg"},{"id":"m3119","n":"Pera Conferencia","s":"frutas","p":0.47,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/debea7dc78060cb9cab5c608e7f9eb27.jpg"},{"id":"m14470","n":"Peras Conferencia","s":"frutas","p":2.68,"u":"kg","img":"https://prod-mercadona.imgix.net/images/158b08c139cba5362b335f8b0a715cc8.jpg"},{"id":"m8177","n":"Manzana roja dulce","s":"frutas","p":0.54,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/1299d30ecbee300b19c487ecb3d6e31c.jpg"},{"id":"m8280","n":"Manzanas rojas dulces","s":"frutas","p":3.6,"u":"kg","img":"https://prod-mercadona.imgix.net/images/87f801433e34719ba9bdc226616e7511.jpg"},{"id":"m3170","n":"Pera Ercolina","s":"frutas","p":0.31,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/533ebe592abe9ee9a6b79cb1b3a7e8ed.jpg"},{"id":"m3021","n":"Manzana Granny Smith","s":"frutas","p":0.4,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/fea3470bee0679f0e081916ec48c0b36.jpg"},{"id":"m8175","n":"Manzana roja acidulce","s":"frutas","p":0.73,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/22301daf320667073b7662206e508c36.jpg"},{"id":"m8268","n":"Manzanas rojas acidulces","s":"frutas","p":4.21,"u":"kg","img":"https://prod-mercadona.imgix.net/images/e65f4165ef836b54f4cb49b719b269bd.jpg"},{"id":"m3505.2","n":"1/4 Sandía baja en semillas","s":"frutas","p":2.1,"u":"1/4 Pieza","img":"https://prod-mercadona.imgix.net/images/09182c8d0e75928bcd808fc4fb7d75d4.jpg"},{"id":"m3505.1","n":"Media sandía baja en semillas","s":"frutas","p":3.63,"u":"1/2 Pieza","img":"https://prod-mercadona.imgix.net/images/3f5e582ec279d307ccc73ef5daa94586.jpg"},{"id":"m3529","n":"Sandía baja en semillas","s":"frutas","p":5.24,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/5c34ac2535f19aa86b1fcdfe56d5c61c.jpg"},{"id":"m3515","n":"Medio melón piel de sapo","s":"frutas","p":3.1,"u":"1/2 Pieza","img":"https://prod-mercadona.imgix.net/images/2d034c1b80642d033f7b5aecd3fb8269.jpg"},{"id":"m3506","n":"Melón piel de sapo","s":"frutas","p":4.88,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/bd4459355f58bc265a2c6720b688e3c3.jpg"},{"id":"m3523","n":"Melón Galia","s":"frutas","p":4.47,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/f7d56f5d9fc9bd92c12a9191f1a42d1f.jpg"},{"id":"m3236","n":"Limones","s":"frutas","p":3.2,"u":"Malla","img":"https://prod-mercadona.imgix.net/images/71af62c5aab9056773f8934f4dce3768.jpg"},{"id":"m3210","n":"Limón","s":"frutas","p":0.61,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/dde3a9f03e3b8abc1ebf690a29c9631d.jpg"},{"id":"m83203.1","n":"3 Barras de pan","s":"pan","p":1.19,"u":"kg","img":"https://prod-mercadona.imgix.net/images/b2885ac23e9ad6ffc406882e24291809.jpg"},{"id":"m83202.1","n":"Barra de pan","s":"pan","p":0.5,"u":"kg","img":"https://prod-mercadona.imgix.net/images/b0382f15d4c53669852e014255bdc714.jpg"},{"id":"m83232.1","n":"3 Barras de pan aceite de oliva","s":"pan","p":1.51,"u":"kg","img":"https://prod-mercadona.imgix.net/images/0dfcb4c2801caae6127716ae1c2b66d1.jpg"},{"id":"m83231.1","n":"Barra pan de aceite de oliva","s":"pan","p":0.57,"u":"kg","img":"https://prod-mercadona.imgix.net/images/16ed97786750877a733481b6604791cc.jpg"},{"id":"m83230","n":"Baguette masa madre","s":"pan","p":0.57,"u":"kg","img":"https://prod-mercadona.imgix.net/images/c1f8685ad5daaf993884112888f49191.jpg"},{"id":"m82830.1","n":"Barra de pan campesina masa madre","s":"pan","p":0.65,"u":"kg","img":"https://prod-mercadona.imgix.net/images/065a0790cf04335b7802e01a105a07da.jpg"},{"id":"m60235","n":"2 Baguettes para hornear","s":"pan","p":1.3,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/724bbd112c2835ae8ecdd3a72f08af70.jpg"},{"id":"m82753","n":"Baguette sin gluten","s":"pan","p":1.95,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/30fba96b365c6c3c4e687aef790c21eb.jpg"},{"id":"m9660.1","n":"Barra pan de agua","s":"pan","p":0.95,"u":"kg","img":"https://prod-mercadona.imgix.net/images/e076eb5d105103b74c608da38026956e.jpg"},{"id":"m82380.1","n":"Pan campeón del mundo","s":"pan","p":2.0,"u":"kg","img":"https://prod-mercadona.imgix.net/images/9b4ea2fcafe1157323c788640891bc80.jpg"},{"id":"m12049.1","n":"Pan integral trigo 100%","s":"pan","p":1.5,"u":"kg","img":"https://prod-mercadona.imgix.net/images/af7f030f73aeb80be5996256f1b3f44f.jpg"},{"id":"m15691.1","n":"Hogaza de centeno 50%","s":"pan","p":1.7,"u":"kg","img":"https://prod-mercadona.imgix.net/images/9e174cbc19a1557b3a589249d2d2aeea.jpg"},{"id":"m23086.1","n":"Barra pan de pueblo","s":"pan","p":1.6,"u":"kg","img":"https://prod-mercadona.imgix.net/images/f2c461ca72260e92cd55bda23e266256.jpg"},{"id":"m86610.1","n":"Barra de pan espiga","s":"pan","p":1.05,"u":"kg","img":"https://prod-mercadona.imgix.net/images/284599e6e5bf62e1b0a9a834b385fbdd.jpg"},{"id":"m21596.1","n":"Barra pan integral de espelta 100%","s":"pan","p":1.25,"u":"kg","img":"https://prod-mercadona.imgix.net/images/668bc5de88ff6ea24633608fd7422173.jpg"},{"id":"m21841","n":"Panes con semillas","s":"pan","p":1.5,"u":"Bolsa","img":"https://prod-mercadona.imgix.net/images/27ce902c875893f25844d240f5b72bef.jpg"},{"id":"m9664","n":"3 Bocadillos","s":"pan","p":1.04,"u":"Bolsa","img":"https://prod-mercadona.imgix.net/images/00cb2b3410317555d4d56752c7e0beef.jpg"},{"id":"m17649","n":"Bocadillo","s":"pan","p":0.45,"u":"kg","img":"https://prod-mercadona.imgix.net/images/6041d7e17a261343dce579614904efe2.jpg"},{"id":"m67563","n":"Panecillo de queso 18%","s":"pan","p":0.5,"u":"kg","img":"https://prod-mercadona.imgix.net/images/f4f02a71533319d2aac8a592955f39e7.jpg"},{"id":"m6459","n":"Panes chapata de cristal","s":"pan","p":1.3,"u":"Bolsa","img":"https://prod-mercadona.imgix.net/images/d5957a4bdd1ddf5232905190e2b0974b.jpg"},{"id":"m83116","n":"Pan mini semillas","s":"pan","p":0.35,"u":"kg","img":"https://prod-mercadona.imgix.net/images/59676df0c9df7308840d3aac54fd742c.jpg"},{"id":"m83452","n":"5 Barras de pan 51% integral","s":"pan","p":1.35,"u":"Bolsa","img":"https://prod-mercadona.imgix.net/images/145fcd2de95532d134a4a0078da2af2d.jpg"},{"id":"m10381","n":"Leche semidesnatada Hacendado","s":"lacteos","p":5.04,"u":"L","img":"https://prod-mercadona.imgix.net/images/c15010ddd0e6fc881e5ef94446d43bef.jpg"},{"id":"m10382","n":"Leche semidesnatada Hacendado","s":"lacteos","p":0.84,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/5a14472b53ac7a848fc8220982694c4a.jpg"},{"id":"m10794","n":"Leche semidesnatada Hacendado","s":"lacteos","p":1.64,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/f16c6d550a0a4236222a7dfdea3017ca.jpg"},{"id":"m10541","n":"Leche semidesnatada Hacendado","s":"lacteos","p":9.0,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/866fa5a181f2d26607393eac0323a40c.jpg"},{"id":"m10542","n":"Leche semidesnatada Hacendado","s":"lacteos","p":1.5,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/ff7a708dfba6860d1c625d4cf8316719.jpg"},{"id":"m10721","n":"Leche semidesnatada sin lactosa Hacendado","s":"lacteos","p":5.64,"u":"L","img":"https://prod-mercadona.imgix.net/images/6b02e742d27be2ee2db0994bc431fe99.jpg"},{"id":"m10722","n":"Leche semidesnatada sin lactosa Hacendado","s":"lacteos","p":0.94,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/0a223f379a6d628804b8043f48320fc6.jpg"},{"id":"m10732","n":"Leche semidesnatada sin lactosa Hacendado","s":"lacteos","p":1.9,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/86beaab2a15ac2d9840049b9cdbd6535.jpg"},{"id":"m10683","n":"Leche semidesnatada calcio Hacendado","s":"lacteos","p":6.3,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/cf197c52289c9349011966afbe4ca15c.jpg"},{"id":"m10685","n":"Leche semidesnatada calcio Hacendado","s":"lacteos","p":1.05,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/9105d6bbc58b552d881406c4fdac38ff.jpg"},{"id":"m10505","n":"Leche semidesnatada Asturiana","s":"lacteos","p":10.02,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/596d38a62e4ab57340efa89f95c0a61e.jpeg"},{"id":"m10502","n":"Leche semidesnatada Asturiana","s":"lacteos","p":1.67,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/599728432d51afa362440f7a580864c7.jpg"},{"id":"m10814","n":"Bebida láctea semidesnatada con fibra Hacendado","s":"lacteos","p":7.8,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/be9b67b0a4dcf2bcbaabb8bac2ef3318.jpg"},{"id":"m10826","n":"Bebida láctea semidesnatada con fibra Hacendado","s":"lacteos","p":1.3,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/120f6a29ceb6ccc2fea56cc1d064e29c.jpg"},{"id":"m10806","n":"Leche semidesnatada de cabra Hacendado","s":"lacteos","p":11.82,"u":"L","img":"https://prod-mercadona.imgix.net/images/4395b561337441945693f84660814c2e.jpg"},{"id":"m10812","n":"Leche semidesnatada de cabra Hacendado","s":"lacteos","p":1.97,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/5ebf4f33cd25300147cca4db86f18e6f.jpg"},{"id":"m10922","n":"Leche semidesnatada Hacendado","s":"lacteos","p":1.09,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/7f509c7db41e5763626998702f5cb755.jpg"},{"id":"m10545","n":"Leche semidesnatada sin lactosa Hacendado","s":"lacteos","p":9.72,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/f0cd5d59c24ed6637a2d1f1e1c4bd093.jpg"},{"id":"m10546","n":"Leche semidesnatada sin lactosa Hacendado","s":"lacteos","p":1.62,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/cb6c51dc548abac574de376046426d67.jpg"},{"id":"m10531","n":"Leche semidesnatada Asturiana","s":"lacteos","p":7.02,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/0a5dfb02aff81354daed696ad56760b5.jpg"},{"id":"m10712","n":"Leche semidesnatada Asturiana","s":"lacteos","p":1.17,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/4e47699cd59e42ae6a11b6b83651542d.jpeg"},{"id":"m21640","n":"Leche desnatada +Proteínas & calcio Hacendado","s":"lacteos","p":2.1,"u":"L","img":"https://prod-mercadona.imgix.net/images/9b34cb359dac31df627b4fa76af53cfa.jpg"},{"id":"m21646","n":"Pechuga pavo cocida extrafino Hacendado lonchas","s":"charcut","p":2.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/85e5ab00244841c29b4236dc36f46a36.jpg"},{"id":"m21647","n":"Pechuga de pollo braseada extrafino Hacendado lonchas","s":"charcut","p":2.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/3a1c91aedd4a8405f6457a978c78df72.jpg"},{"id":"m86786","n":"Pechuga de pavo reducido en sal Hacendado finas lonchas","s":"charcut","p":3.95,"u":"kg","img":"https://prod-mercadona.imgix.net/images/0743c4f754d2155a541a9363a5bf373c.jpg"},{"id":"m60243","n":"Pechuga de pavo reducido en sal Hacendado finas lonchas","s":"charcut","p":2.5,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/49d21ca3fcddbcc679eb677e61337d1b.jpg"},{"id":"m67972","n":"Pechuga de pavo Hacendado finas lonchas","s":"charcut","p":3.95,"u":"Pack-2","img":"https://prod-mercadona.imgix.net/images/2458f24e9a065c2a16a09cae37257260.jpg"},{"id":"m60244","n":"Pechuga de pavo Hacendado finas lonchas","s":"charcut","p":2.3,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/8987d5ff5420c83d5be5a3dc6e3ebcbb.jpg"},{"id":"m59159","n":"Salchichón de pavo extra Hacendado lonchas","s":"charcut","p":2.8,"u":"Pack-4","img":"https://prod-mercadona.imgix.net/images/e52cc37d238bef484922733955772aab.jpg"},{"id":"m59165","n":"Longaniza de pavo extra Hacendado lonchas","s":"charcut","p":2.8,"u":"Pack-4","img":"https://prod-mercadona.imgix.net/images/869824136a75badac404e2ec0522ce0b.jpeg"},{"id":"m56652","n":"Tiras de pechuga pollo al horno Hacendado","s":"charcut","p":2.25,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/a771c6adb7a421fa3c83983defee636c.jpg"},{"id":"m56619","n":"Jamón de pavo Hacendado finas lonchas","s":"charcut","p":1.9,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/b7691fb2718bc66ad695bb0454823efe.jpg"},{"id":"m56661","n":"Tiras de pechuga de pollo al natural Hacendado","s":"charcut","p":2.25,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/aece46064c7f86ca0d02cda808d4ba74.jpg"},{"id":"m53140","n":"Pechuga de pavo al horno de leña Campofrío lonchas","s":"charcut","p":1.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/4d0aeb86816023033231a708eeb0f7cb.jpg"},{"id":"m5710","n":"Pechuga 92% pavo Hacendado lonchas","s":"charcut","p":2.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/42caa18db79c87be197d47cdb41c0e28.jpg"},{"id":"m59283","n":"Pechuga de pavo Noel lonchas muy finas","s":"charcut","p":2.45,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/918213955ad9fe95742e4abe7665f787.jpg"},{"id":"m56084","n":"Pollo 97% relleno La Carloteña asado al horno lonchas","s":"charcut","p":2.4,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/c0a4ea8f1fe98e43e957b317ac9c3d07.jpg"},{"id":"m59218","n":"Jamón de pavo Hacendado","s":"charcut","p":2.85,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/0a4b8f824e5ea4032abcee4e75a9092a.jpg"},{"id":"m16280","n":"Longaniza de pavo Imperial extra Hacendado","s":"charcut","p":3.95,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/1311620a4e617efb60e22ada82e19d37.jpg"},{"id":"m59364","n":"Cabeza de cerdo Hacendado finas lonchas","s":"charcut","p":1.7,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/6301271ead526408834d91b05e58ae68.jpg"},{"id":"m22332","n":"Pechuguita de pollo 99% La Carloteña asada al horno lonchas","s":"charcut","p":2.5,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/1e13c330e4bce89f5a37d8e709c976a0.jpg"},{"id":"m22430","n":"Maxi pavo Hacendado finas lonchas","s":"charcut","p":3.05,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/18d308abcd2a05dcec6ee3cc012d6e86.jpg"},{"id":"m11507","n":"Lomo asado La Carloteña lonchas","s":"charcut","p":2.5,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/1ad85ae3023b7f755f0e9dfbc5d03fdb.jpg"},{"id":"m14269","n":"Muslito de pollo 97% La Carloteña asado al horno lonchas","s":"charcut","p":2.25,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/325deb597c90a810813ddd63281b3fd2.jpg"},{"id":"m86395","n":"Filetes lomo de cerdo corte fino","s":"carne","p":3.91,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/a3ba20f5b4816bc681f38f82aae566cd.jpg"},{"id":"m12792","n":"Chuletas lomo de cerdo finas","s":"carne","p":3.66,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/9d75b9c7cefcede381c5cc40bcccab72.jpg"},{"id":"m12793","n":"Filetes secreto de cerdo","s":"carne","p":3.24,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/149f82ef7720bdb5e5037e38dd57cb72.jpg"},{"id":"m86928","n":"Entrecot aguja de cerdo Duroc","s":"carne","p":5.12,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/21f5a86973def639aa986031aab20081.jpg"},{"id":"m17537","n":"Panceta de cerdo adobada","s":"carne","p":3.86,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/30ef1bfd427773b00855b2a13e4a4672.jpg"},{"id":"m17458","n":"Costillas de cerdo marinadas Smoke Honey","s":"carne","p":5.85,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/45115582466db86abe80236f9e3b98a0.jpg"},{"id":"m2811","n":"Costillas de cerdo carnosas a tacos","s":"carne","p":4.96,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/2a9034fed753ec9f2947d36f73bebbf3.jpg"},{"id":"m3395","n":"Filetes lomo de cerdo familiar","s":"carne","p":5.67,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/7865223a99982e513a1e44182bf0edd4.jpg"},{"id":"m2810","n":"Carrillada de cerdo","s":"carne","p":6.55,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/cebcd0e5e43fec643cc13b5ce2c1fa5f.jpg"},{"id":"m1564","n":"Costilla de cerdo ibérico adobada","s":"carne","p":3.78,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/af452ee749d0981858f5bfd393dccf15.jpg"},{"id":"m23305","n":"Chuletas de cerdo sajonia","s":"carne","p":3.67,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/f27090a52a211af71289bfd5f60a689d.jpg"},{"id":"m35286","n":"Costilla de cerdo churrasco","s":"carne","p":4.1,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/381b5c4827de021999445f0094d97092.jpg"},{"id":"m2815","n":"Panceta de cerdo","s":"carne","p":3.24,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/d3aebc50f3c2fdb3bbf81d728bc5c7e1.jpg"},{"id":"m2851","n":"Manos de cerdo","s":"carne","p":3.9,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/f4fadadb46a1e5864af2836e7fd30667.jpg"},{"id":"m2813","n":"Cerdo a tacos","s":"carne","p":3.22,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/3e3b46478252539e490d17eac79f3e42.jpg"},{"id":"m2715","n":"Filetes lomo de cerdo adobado","s":"carne","p":3.27,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/f1c9dda0bf7290499534dbe4776c6207.jpeg"},{"id":"m5046","n":"Filetes lomo de cerdo adobado familiar","s":"carne","p":6.5,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/55cc474c76c30984dc63a16c30fcbc67.jpg"},{"id":"m14298","n":"San Jacobos de cerdo sin gluten","s":"carne","p":2.64,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/496d5a9a9de7faa2cf2b14354963a567.jpg"},{"id":"m2817","n":"Filetes lomo de cerdo cabeza","s":"carne","p":4.22,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/2b88a5d154cc77e60b79bf3265a31886.jpg"},{"id":"m2169","n":"Flautas de bacón y queso","s":"carne","p":2.2,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/efd938ceb30081a8b1c076c1d4a08bd9.jpg"},{"id":"m2812","n":"Media careta de cerdo sin oreja","s":"carne","p":3.52,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/23df518e2439d4ce078cd3a460cf914a.jpg"},{"id":"m23308","n":"Fiambre de magro de cerdo adobado","s":"carne","p":2.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/35d3a3b57c5ee4d74e778939d27be3d8.jpg"},{"id":"m81649.1","n":"Salmón a rodajas","s":"pescado","p":37.89,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/efde699df9d548c2e8a9887daf63cd7a.jpg"},{"id":"m81649.4","n":"Salmón media pieza a rodajas","s":"pescado","p":18.18,"u":"1/2 Pieza","img":"https://prod-mercadona.imgix.net/images/3cb80836bc33e899bc88c403a7dbdf05.jpg"},{"id":"m81649.2","n":"Salmón abierto en libro sin cabeza y sin espina","s":"pescado","p":37.89,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/0ab4d3bebe2987d4c536456e2b2397b1.jpg"},{"id":"m81649.5","n":"Salmón media pieza abierto en libro sin cabeza y sin espina","s":"pescado","p":18.18,"u":"1/2 Pieza","img":"https://prod-mercadona.imgix.net/images/9e3d2b0d70964b5e08e4430a34872631.jpg"},{"id":"m81649.3","n":"Salmón sin aletas y sin escamas","s":"pescado","p":37.89,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/951a3919c430a3945602d4f82ba89f23.jpg"},{"id":"m81649.6","n":"Salmón media pieza sin aletas y sin escamas","s":"pescado","p":18.18,"u":"1/2 Pieza","img":"https://prod-mercadona.imgix.net/images/2a83560771de82f2644054222802f106.jpg"},{"id":"m87208","n":"Medio salmón","s":"pescado","p":17.85,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/da236aaa8e3f4a760d95f063ec5a1638.jpg"},{"id":"m87204","n":"Filete de salmón","s":"pescado","p":8.23,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/b072fbeed617fa30e152c33cd8eb8fbb.jpg"},{"id":"m87203","n":"Escalopin de salmón","s":"pescado","p":8.75,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/2df072f2dd7c97b13e248c47f576b11e.jpg"},{"id":"m87205","n":"Rodaja de salmón","s":"pescado","p":7.0,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/5e79ea62e9617114a5871d9e62e087aa.jpg"},{"id":"m81234.1","n":"Dorada limpia con cabeza","s":"pescado","p":3.71,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/436b010dcbc6108690d724afe2d95b97.jpg"},{"id":"m81234.2","n":"Dorada abierta a la espalda con espinas y con cabeza","s":"pescado","p":3.71,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/b00be480049e6df6699dfcc258e77d84.jpg"},{"id":"m81234.5","n":"Dorada a filetes sin cabeza y sin espina","s":"pescado","p":3.71,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/63343ce507fc67170a68187887e2a908.jpg"},{"id":"m81234.4","n":"Dorada abierta en libro sin cabeza y sin espina","s":"pescado","p":3.71,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/2957b087240ec84fa053668b79413731.jpg"},{"id":"m81234.3","n":"Dorada sin limpiar","s":"pescado","p":3.71,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/5a648f8a69f2dd2d87d7049b8e604499.jpg"},{"id":"m87302","n":"Filetes de dorada","s":"pescado","p":4.5,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/3280796f6d931b64ee082213adb0b7a9.jpg"},{"id":"m81241.1","n":"Lubina limpia con cabeza","s":"pescado","p":3.99,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/7b996b05f032204332216f5e6a72b129.jpg"},{"id":"m81241.2","n":"Lubina abierta a la espalda con espinas y con cabeza","s":"pescado","p":3.99,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/45f37ee9fbccebfd1cde069320cc9b3b.jpg"},{"id":"m81241.5","n":"Lubina a filetes sin cabeza y sin espina","s":"pescado","p":3.99,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/08fb245b6763997aa1ec02d8a537c03f.jpg"},{"id":"m81241.4","n":"Lubina abierta en libro sin cabeza y sin espina","s":"pescado","p":3.99,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/a81a713fad959d63b5ab54f2d11cff23.jpg"},{"id":"m81241.3","n":"Lubina sin limpiar","s":"pescado","p":3.99,"u":"Pieza","img":"https://prod-mercadona.imgix.net/images/079d2d1fac75b66dea891397f9744121.jpg"},{"id":"m87313","n":"Filete de lubina","s":"pescado","p":4.5,"u":"Bandeja","img":"https://prod-mercadona.imgix.net/images/368f56db42723921152f308e2c2bdf30.jpg"},{"id":"m61089","n":"Mix frutos rojos Hacendado ultracongeladas","s":"congel","p":1.9,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/9226d0c69488fd575c374293d5538ad6.jpg"},{"id":"m61092","n":"Fresas enteras Hacendado ultracongeladas","s":"congel","p":1.9,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/82271348f4c89b9ee829c7a42f81412f.jpg"},{"id":"m61093","n":"Arándanos enteros Hacendado ultracongelados","s":"congel","p":2.15,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/816d6a2275f1cada7d00c665d6a371bf.jpg"},{"id":"m86403","n":"Mix frutas tropical Hacendado ultracongeladas","s":"congel","p":2.75,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/aef553f69297509609d69e0c2541cf5b.jpg"},{"id":"m14283","n":"Aguacate en dados Hacendado congelado","s":"congel","p":3.5,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/7afc639243a351139b0d2c0679a14c0e.jpg"},{"id":"m14301","n":"Dúo frutas fresa y plátano Hacendado congeladas","s":"congel","p":2.75,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/8d47d36a277d997701929048cd862853.jpg"},{"id":"m61125","n":"Verdura para paella Hacendado ultracongelada","s":"congel","p":0.95,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/f6c0af7778861897920113b5cbabd58b.jpg"},{"id":"m61101","n":"Ensaladilla Hacendado ultracongelada","s":"congel","p":1.1,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/2207791ea61f6613e34ad96bb909d9ab.jpg"},{"id":"m61270","n":"Garrofón Hacendado ultracongelado","s":"congel","p":1.55,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/39b7229d22631670ed2d2be1a0785d54.jpg"},{"id":"m61272","n":"Garbanzo Hacendado ultracongelado","s":"congel","p":1.36,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/efbadaccd79807948c4b62ee8e4c1757.jpg"},{"id":"m61200","n":"Guisante muy tierno Hacendado ultracongelado","s":"congel","p":1.05,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/110a733a4288e3cee3fa98822491ea5a.jpg"},{"id":"m61215","n":"Guisante fino Hacendado ultracongelado","s":"congel","p":1.5,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/1cfc769270faf8a5f58a20cdc8b0ef5b.jpg"},{"id":"m61283","n":"Judía verde plana Hacendado ultracongelada","s":"congel","p":1.3,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/b4c7ca3ec466371e2d5f09589e9c663e.jpg"},{"id":"m13568","n":"Cebolla troceada Hacendado ultracongelada","s":"congel","p":0.95,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/01e62dd81eb0ed0c43d341f5dc84d170.jpg"},{"id":"m61282","n":"Judía verde redonda Hacendado ultracongelada","s":"congel","p":1.3,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/6f64b307b3a4062e866cd985ce389994.jpg"},{"id":"m61288","n":"Ajo tierno Hacendado ultracongelado","s":"congel","p":2.05,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/81100f26d8d5b846fbe8d8a963c6a86d.jpg"},{"id":"m13865","n":"Alcachofa troceada Hacendado ultracongelada","s":"congel","p":2.55,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/f803b1f1ffed78eff58997dc332d32bb.jpg"},{"id":"m61279","n":"Espinaca en porciones Hacendado ultracongelada","s":"congel","p":0.9,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/708f8d553aec26d56e2e09daf447df4b.jpg"},{"id":"m35781","n":"Espinaca picada en porciones Hacendado ultracongelada","s":"congel","p":1.3,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/b738648efadba41e6fcf45597269f920.jpg"},{"id":"m52534","n":"Menestra de verduras Hacendado ultracongelada","s":"congel","p":1.75,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/cda982b20663598e095ee29141b906fc.jpg"},{"id":"m86820","n":"Relleno fajitas pollo, pimientos y cebolla Hacendado ultracongelado","s":"congel","p":1.9,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/616e77243843f37f7568ef21d1b4fd13.jpg"},{"id":"m61285","n":"Habitas muy tiernas Hacendado ultracongeladas","s":"congel","p":2.92,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/ac99f78733e867d09770f1fc0715ce7d.jpg"},{"id":"m13406","n":"Mayonesa Hacendado","s":"conservas","p":1.2,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/375c1d5f612df94041b236a115c6449b.jpg"},{"id":"m52728","n":"Mayonesa Hacendado","s":"conservas","p":1.0,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/8fad795a540a94bad45e28495ca1b61e.jpg"},{"id":"m11550","n":"Mayonesa Hacendado","s":"conservas","p":1.4,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/5345e532a16f3b8770720312778ffe32.jpeg"},{"id":"m23816","n":"Mayonesa en sobres individuales Hacendado","s":"conservas","p":1.4,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/6b9a1437ed7f3785c2319cb081540046.jpg"},{"id":"m35840","n":"Mayonesa Hellmann's","s":"conservas","p":2.95,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/75a622bc9eddc83bfb4ef37c1964f4f1.jpg"},{"id":"m35839","n":"Salsa Original Ligeresa","s":"conservas","p":2.5,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/97b123513a759039bd5c38a4e8ae2dad.jpg"},{"id":"m15793","n":"Salsa Light Hacendado","s":"conservas","p":1.2,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/54a5e9e2a8bd0173da353d48cfa16211.jpeg"},{"id":"m11551","n":"Salsa Light Hacendado","s":"conservas","p":1.35,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/b5dc1f61915220fb90a23d411bede969.jpg"},{"id":"m23579","n":"Ketchup Hacendado","s":"conservas","p":1.05,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/560d3c1a007e5ab9c97cc0bb2b23b206.jpg"},{"id":"m67586","n":"Ketchup en sobres individuales Hacendado","s":"conservas","p":1.4,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/fdd6165134ec5a050d930e02a92191eb.jpg"},{"id":"m35343","n":"Salsa de tomate Zero sin azúcares añadidos Hacendado","s":"conservas","p":1.6,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/4ecccbaf38713c3f2966540720c5eec8.jpg"},{"id":"m17228","n":"Mostaza de Dijon Hacendado","s":"conservas","p":1.25,"u":"Tarro","img":"https://prod-mercadona.imgix.net/images/732a547ddb13e1ac5d7242a79807c611.jpg"},{"id":"m23410","n":"Mostaza clásica Hacendado","s":"conservas","p":1.35,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/8a0749aa163298f9b2b036de495a1b05.jpg"},{"id":"m17150","n":"Allioli Chovi","s":"conservas","p":1.55,"u":"Tarrina","img":"https://prod-mercadona.imgix.net/images/8dd36370d7a4694f15c53ae896c21960.jpg"},{"id":"m17172","n":"Allioli Hacendado","s":"conservas","p":1.1,"u":"Tarrina","img":"https://prod-mercadona.imgix.net/images/75743f79bdd54af55f258c3d80e48cbd.jpg"},{"id":"m17173","n":"Allioli en sobres individuales Hacendado","s":"conservas","p":1.6,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/a3af7184fb2d5417c88ac0cf9d4b9898.jpg"},{"id":"m7973","n":"Alioli con perejil Hacendado","s":"conservas","p":1.45,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/2e58797a3c0394cc4e05a231a967c587.jpeg"},{"id":"m18086","n":"Atún en aceite de girasol Hacendado","s":"conservas","p":6.5,"u":"Lata","img":"https://prod-mercadona.imgix.net/images/2c06dcbb4643e6b4447d5d064c4eb6a5.jpg"},{"id":"m18055","n":"Atún claro en aceite de girasol Hacendado","s":"conservas","p":4.2,"u":"kg","img":"https://prod-mercadona.imgix.net/images/d8fdd0b8183829db2aa6f531bc008202.jpg"},{"id":"m18092","n":"Atún claro en aceite de girasol Hacendado","s":"conservas","p":2.7,"u":"Pack-3","img":"https://prod-mercadona.imgix.net/images/05c67043e6c2918b27b0d79ebfb99a7a.jpg"},{"id":"m18030","n":"Atún en aceite de oliva Hacendado","s":"conservas","p":7.7,"u":"Lata","img":"https://prod-mercadona.imgix.net/images/890912ced7f8be4da5455ca493729892.jpg"},{"id":"m18002","n":"Atún claro en aceite de oliva Hacendado","s":"conservas","p":4.9,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/f99f0a2b9e478cee5b0e02fac62d4686.jpg"},{"id":"m5044","n":"Arroz redondo Hacendado","s":"pastas","p":1.2,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/0daf43fb5761b823ce83c985930c97c9.jpg"},{"id":"m5063","n":"Arroz largo Hacendado","s":"pastas","p":1.2,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/801f924df0d429d82c0a136901dcb9b0.jpg"},{"id":"m5000","n":"Arroz redondo La Fallera","s":"pastas","p":1.69,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/3d5a3a0f0c7a9b8e1a6503dbe5be466d.jpg"},{"id":"m22280","n":"Arroz cocido basmati Sabroz","s":"pastas","p":1.1,"u":"Pack-2","img":"https://prod-mercadona.imgix.net/images/485f5e653b6655185c51eec9858703cb.jpg"},{"id":"m22281","n":"Arroz cocido integral Sabroz","s":"pastas","p":1.05,"u":"Pack-2","img":"https://prod-mercadona.imgix.net/images/3c538ead2ed048792639ef28915cfaef.jpg"},{"id":"m52790","n":"Arroz Albufera Hacendado","s":"pastas","p":2.95,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/6a35bea8548f6137ff812a1265bfa155.jpg"},{"id":"m22278","n":"Quinoa cocida blanca y roja Sabroz","s":"pastas","p":1.45,"u":"Pack-2","img":"https://prod-mercadona.imgix.net/images/cccf4ae8ce7152534fba1cd7c2689433.jpg"},{"id":"m22279","n":"Arroz cocido redondo Sabroz","s":"pastas","p":1.05,"u":"Pack-2","img":"https://prod-mercadona.imgix.net/images/b87d489084215ea73d35d6c2d465f39e.jpg"},{"id":"m5042","n":"Arroz redondo J Sendra Hacendado","s":"pastas","p":1.6,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/44a0df1169e9ebdceb061ebea08b4d42.jpg"},{"id":"m5002","n":"Arroz basmati aromático Hacendado","s":"pastas","p":2.1,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/ff02e0b326c0d33682f76e66cc825dda.jpg"},{"id":"m9395","n":"Cous cous mediano Hacendado","s":"pastas","p":1.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/ab155e76bb3242671ee34c6e11d4fd78.jpg"},{"id":"m5020","n":"Arroz vaporizado Hacendado","s":"pastas","p":1.55,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/1c5a40f534247a5a8b8e16737c809be8.jpg"},{"id":"m9430","n":"Quinoa Hacendado","s":"pastas","p":2.7,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/5f96e6f16b3a5d30f2fd7135e3d1f74e.jpg"},{"id":"m5184","n":"Arroz integral largo Hacendado","s":"pastas","p":1.65,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/4991480b2fe769d8673224a89d50636c.jpg"},{"id":"m52637","n":"Arroz redondo Sabor","s":"pastas","p":2.45,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/bc5fcc520250ffec2cada3273830046c.jpg"},{"id":"m12972","n":"Arroz largo Sabroz","s":"pastas","p":1.1,"u":"kg","img":"https://prod-mercadona.imgix.net/images/e2d8b845aff0cf75e5999abe2df136b7.jpg"},{"id":"m13577","n":"Fideo cabello de ángel Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/66992393aeb518b19a12b4844845ac21.jpg"},{"id":"m6253","n":"Fideuá Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/e5b402647751a7b60f87b4663bdc86e5.jpg"},{"id":"m6261","n":"Fideo grueso Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/0778f8e6272f1c743d1da88f16c4d978.jpg"},{"id":"m6363","n":"Pasta estrellas Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/6c418320c51659907a16ff4f9192a2cf.jpg"},{"id":"m6258","n":"Pasta maravilla Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/dbd6fee787fb1be15b95c11e1ba3787b.jpg"},{"id":"m6256","n":"Fideo mediano Hacendado","s":"pastas","p":0.8,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/1af340d1ed092fc1cae6c712c683edfb.jpg"},{"id":"m4241","n":"Aceite de oliva 0,4º Hacendado","s":"aceites","p":18.75,"u":"Garrafa","img":"https://prod-mercadona.imgix.net/images/3b8cde7b3cb069ee0316029012cf8562.jpg"},{"id":"m4240","n":"Aceite de oliva 0,4º Hacendado","s":"aceites","p":3.9,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/65c2349950feb1958362e06217003b10.jpg"},{"id":"m4717","n":"Aceite de oliva virgen extra Hacendado","s":"aceites","p":14.4,"u":"Garrafa","img":"https://prod-mercadona.imgix.net/images/cd149804838dc230dad3c2a314cf2286.jpg"},{"id":"m4740","n":"Aceite de oliva virgen extra Hacendado","s":"aceites","p":4.95,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/a5648e373920a10023a7ab6304eb0dc0.jpg"},{"id":"m4706","n":"Aceite de oliva virgen extra Hacendado Gran Selección","s":"aceites","p":5.75,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/c60e6e09dc2037a291515d3b15af376c.jpg"},{"id":"m4641","n":"Aceite de oliva 1º Hacendado","s":"aceites","p":18.75,"u":"Garrafa","img":"https://prod-mercadona.imgix.net/images/340603f72b335443e93eeb027630e9ad.jpg"},{"id":"m4640","n":"Aceite de oliva 1º Hacendado","s":"aceites","p":4.15,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/fe860edbcbb7504d90ad34af0b93b6d7.jpg"},{"id":"m4711","n":"Aceite de oliva virgen Hacendado","s":"aceites","p":12.85,"u":"Garrafa","img":"https://prod-mercadona.imgix.net/images/5b2daa7ddeb496942b974d178bf3a47d.jpg"},{"id":"m4749","n":"Aceite de oliva virgen Hacendado","s":"aceites","p":4.45,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/a6b5607809fdd257ffd5e778791bdc6a.jpg"},{"id":"m4718","n":"Aceite de oliva virgen extra Hacendado","s":"aceites","p":2.6,"u":"Spray","img":"https://prod-mercadona.imgix.net/images/efb4b2c1a0e2cb8d9d522a815c295fa0.jpg"},{"id":"m4850","n":"Aceite de oliva virgen extra Picual Casa Juncal","s":"aceites","p":4.85,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/218712ed55645f7f5a0eb8f40d96aea0.jpg"},{"id":"m4940","n":"Vinagre de vino blanco Hacendado","s":"aceites","p":0.65,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/44c1552cc9f3945d63d01565d313846c.jpg"},{"id":"m4957","n":"Vinagre de manzana Hacendado","s":"aceites","p":0.9,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/6803f40bdcd3d9b3be574bcee41399f4.jpg"},{"id":"m4903","n":"Limón exprimido Hacendado","s":"aceites","p":1.4,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/1910ee61299100e2bca29c2b39fab7a5.jpg"},{"id":"m4908","n":"Crema de vinagre balsámico de Módena Hacendado","s":"aceites","p":1.8,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/883340a038ef8c74f085947925aabae5.jpg"},{"id":"m13609","n":"Vinagre de Jerez reserva Hacendado","s":"aceites","p":2.15,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/bfa0c4aabf80adf4cd9a390df6aa7184.jpg"},{"id":"m4905","n":"Reducción bálsamica de vinagre Pedro Ximénez Hacendado","s":"aceites","p":2.25,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/fe6926c18e637de430384b64e1c2ac30.jpg"},{"id":"m26496","n":"Vinagre balsámico de Módena Hacendado","s":"aceites","p":2.3,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/ad2f9e12b1b52d36e022e0164652021a.jpg"},{"id":"m16486","n":"Vinagre de manzana Hacendado sin filtrar","s":"aceites","p":2.5,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/5b5c4268a227dfb3e21fd42d912df4db.jpg"},{"id":"m4041","n":"Aceite de girasol refinado 0,2º Hacendado","s":"aceites","p":8.3,"u":"Garrafa","img":"https://prod-mercadona.imgix.net/images/e6398afba1d032d2e1c0489fd727d2f6.jpg"},{"id":"m4040","n":"Aceite de girasol refinado 0,2º Hacendado","s":"aceites","p":1.75,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/3de50b8eb0dd7aedd0c8a7da4bd2de31.jpg"},{"id":"m4193","n":"Aceite de coco virgen Hacendado","s":"aceites","p":5.25,"u":"Bote","img":"https://prod-mercadona.imgix.net/images/2fe6ba84f4e3783e1e57c42903035bd3.jpg"},{"id":"m9264","n":"Cereales rellenos de leche Hacendado","s":"cereales","p":2.4,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/f28fce2e1849905d03b85683e4407734.jpeg"},{"id":"m9333","n":"Mini cereales rellenos de leche Hacendado","s":"cereales","p":1.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/c3ee3973b93c5c7a2b7c136f145bc3d1.jpg"},{"id":"m9377","n":"Cereales rellenos de chocolate y avellana Hacendado","s":"cereales","p":2.0,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/bfd940e46de1fdc0c05b91750161f379.jpeg"},{"id":"m80515","n":"Cereales estrellas de maíz Stars Hacendado con miel","s":"cereales","p":2.1,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/3cc53c61c022b13a42b12f9dfa87f355.jpeg"},{"id":"m22966","n":"Cereales copos de maíz Corn Flakes Hacendado 0% azúcares añadidos","s":"cereales","p":1.5,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/413f941aa57b4903cc693d93171b87f7.jpg"},{"id":"m9210","n":"Cereales copos de maíz Corn Flakes Kellogg's","s":"cereales","p":3.0,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/2692711f88c9f20e6004998019e64504.jpeg"},{"id":"m35987","n":"Cereales de arroz inflado Choco Krispies Kellogg's con chocolate","s":"cereales","p":2.85,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/3aa570213697c9cd80248d024110faf1.jpeg"},{"id":"m9508","n":"Cereales copos de trigo Chocodays Hacendado con chocolate","s":"cereales","p":2.0,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/b993cc6e84c05e720f2a69794c345ca2.jpg"},{"id":"m9547","n":"Cereales rellenos de crema de cacao y avellana Hacendado sin gluten","s":"cereales","p":2.25,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/59e8c16311be455d779e8aa3fb9ad9bd.jpg"},{"id":"m21450","n":"Cereales cubiertos de chocolate blanco rellenos con leche Hacendado","s":"cereales","p":1.75,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/974abed62b2ae8a310ab1c222b37c209.jpg"},{"id":"m86368","n":"Copos de avena sin gluten Hacendado","s":"cereales","p":2.1,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/d4337bb397a1e7f50b9a5f9e7bc175a9.jpeg"},{"id":"m86341","n":"Copos de avena Brüggen","s":"cereales","p":1.3,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/98910a7833008eddea7deffc843ffac7.jpg"},{"id":"m35707","n":"Cereales copos de trigo integral y arroz Special K Classic","s":"cereales","p":2.4,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/7217d5cc7c1294828207ae7eab262d1e.jpg"},{"id":"m9355","n":"Muesli Crunchy Hacendado con chocolate","s":"cereales","p":2.35,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/3d93c78bdee2295299fbdca9332e7439.jpg"},{"id":"m9488","n":"Cereales copos de trigo integral y arroz Hacendado 0% azúcares añadidos","s":"cereales","p":2.0,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/b911f6af2c54a9e27b676aef897ba8ff.jpg"},{"id":"m9571","n":"Cereales copos de trigo espelta integral Hacendado 0% azúcares añadidos","s":"cereales","p":1.7,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/228d3a9046ad302f21ad6b4263fadb6e.jpg"},{"id":"m9357","n":"Muesli Crunchy Hacendado con frutos secos","s":"cereales","p":2.1,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/5b1898618dab16dce87e9a35cdaa44d8.jpg"},{"id":"m35892","n":"Muesli Crunchy Hacendado","s":"cereales","p":2.0,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/bcc77b4ef78fee77250af49238c1d0e3.jpg"},{"id":"m9487","n":"Cereales copos de trigo integral y arroz Hacendado bañados en chocolate con leche","s":"cereales","p":2.65,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/5ef3d3435e4f02a3589a3745a9891faa.jpg"},{"id":"m52772","n":"Cereales copos tostados de trigo integral y arroz Hacendado con chocolate","s":"cereales","p":2.3,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/1bd07524e377881e474d3788346a17d9.jpg"},{"id":"m9356","n":"Muesli Crunchy Hacendado con fruta","s":"cereales","p":2.1,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/beb80ebf53bbc0cbafbd2343731775e2.jpg"},{"id":"m16807","n":"Avena molida Hacendado","s":"cereales","p":1.15,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/ac09f887690d869a4c7d0ac036a412c6.jpg"},{"id":"m10350","n":"Café en cápsula extra fuerte Hacendado","s":"desayuno","p":3.8,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/8d05d7fc4ecb2ebe79e54aa409334508.jpg"},{"id":"m10355","n":"Café en cápsula descafeinado Hacendado","s":"desayuno","p":3.85,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/dd84f71224c87ca3675092c9d8f31090.jpg"},{"id":"m9847","n":"Café en cápsula Colombia Hacendado","s":"desayuno","p":3.8,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/2e10cf88be65aae55bb5dca24088e75f.jpg"},{"id":"m10352","n":"Café en cápsula espresso Hacendado","s":"desayuno","p":3.8,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/8f326fcd58a42998f5c4d164c16826cd.jpg"},{"id":"m19940","n":"Café en cápsula ristretto Hacendado","s":"desayuno","p":3.8,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/89a2bd9abd1c25f1e322a2cb14846e38.jpg"},{"id":"m52774","n":"Café en cápsulas doble espresso Hacendado","s":"desayuno","p":3.8,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/05d9e6772ffe82efdc3497286bc4c2c9.jpg"},{"id":"m13596","n":"Café en cápsula descafeinado espresso Hacendado","s":"desayuno","p":3.85,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/8b2f0bfbdc524b99dd45cb041e9f0adc.jpg"},{"id":"m14383","n":"Café en cápsula sabor Caramel Hacendado","s":"desayuno","p":2.4,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/e17506bf16198116df06ebb32a0421ad.jpg"},{"id":"m11931","n":"Café en cápsula espresso intenso Dolce Gusto","s":"desayuno","p":4.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/686d147f0a98a8438274689d162e5ad7.jpg"},{"id":"m16363","n":"Café en cápsula extra forte Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/17d4cd219a2cceab5a23c8a16365e147.jpeg"},{"id":"m13635","n":"Café en cápsula forte Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/74b8483ab4c065c8001e564b019419b6.jpg"},{"id":"m13634","n":"Café en cápsula classic Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/d17e50f729d012761e33c7b08af76dd2.jpg"},{"id":"m11869","n":"Café en cápsula descafeinado espresso intenso Dolce Gusto","s":"desayuno","p":4.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/0d9cba4243e4990b301d0f828ba59254.jpg"},{"id":"m11801","n":"Café con leche en cápsula Dolce Gusto","s":"desayuno","p":4.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/83315ec5617bebe8e48783333afee21d.jpg"},{"id":"m86348","n":"Café con leche en cápsula Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/9a09682b89fb745ac5550a7055aab223.jpg"},{"id":"m11918","n":"Café en cápsula ristretto napoli Dolce Gusto","s":"desayuno","p":4.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/1fe78d541136c8a5e890d4efd2ca62c5.jpg"},{"id":"m11785","n":"Café en cápsula cortado Dolce Gusto","s":"desayuno","p":4.95,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/1de2fa09b6e78175f67abc32db271c5a.jpg"},{"id":"m23293","n":"Café en cápsula descafeinado Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/f7700bd8a1a4c582ec3e5851441e9993.jpeg"},{"id":"m67659","n":"Café cortado en cápsula Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/1ba3107b201ea762f89590aa3679152b.jpg"},{"id":"m23405","n":"Café con leche en cápsula descafeinado Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/4ee8dcf4c122ee081dfa59dde32060cf.jpg"},{"id":"m23404","n":"Cortado en cápsula descafeinado Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/91504c8c1f5abae12d037294e595b23e.jpg"},{"id":"m22801","n":"Café en cápsula doble espresso Hacendado","s":"desayuno","p":3.35,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/22bbd040ba40ae6f790ca8791f1df0e3.jpg"},{"id":"m86385","n":"Fruta + leche tropical Hacendado sin azúcares añadidos","s":"bebidas","p":0.95,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/3a8f540290f549c079923eda19f0d269.jpg"},{"id":"m86386","n":"Fruta + leche tropical Hacendado sin azúcares añadidos","s":"bebidas","p":1.0,"u":"L","img":"https://prod-mercadona.imgix.net/images/3e2066a10bbe070412dfa30acba7e2a7.jpg"},{"id":"m86387","n":"Fruta + leche tropical Hacendado sin azúcares añadidos","s":"bebidas","p":1.2,"u":"L","img":"https://prod-mercadona.imgix.net/images/6d7dc4df24253ea7993dd7373e88d52c.jpg"},{"id":"m86388","n":"Fruta + leche mediterráneo Hacendado sin azúcares añadidos","s":"bebidas","p":0.95,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/865b75448a2be64749ae797c4bce44f3.jpg"},{"id":"m86390","n":"Fruta + leche mediterráneo Hacendado sin azúcares añadidos","s":"bebidas","p":1.0,"u":"L","img":"https://prod-mercadona.imgix.net/images/bd1eecec0f58252b804a2a445e96dae4.jpg"},{"id":"m86392","n":"Fruta + leche mediterráneo Hacendado sin azúcares añadidos","s":"bebidas","p":1.2,"u":"L","img":"https://prod-mercadona.imgix.net/images/b12e59e1e0ca122779074d3b38bd07db.jpg"},{"id":"m10126","n":"Fruta + leche tropical Bifrutas","s":"bebidas","p":2.19,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/912f8849edb89e0c43b0c89b63a1f1c1.jpg"},{"id":"m10362","n":"Fruta + leche tropical Bifrutas","s":"bebidas","p":2.19,"u":"Pack-3","img":"https://prod-mercadona.imgix.net/images/28467306ca35c5a24c6289b84d5ef9f4.jpg"},{"id":"m10106","n":"Fruta + leche caribe Don Simón sin azúcares añadidos y zero materia grasa","s":"bebidas","p":1.5,"u":"L","img":"https://prod-mercadona.imgix.net/images/c7c2026bd60cbd318c47a8ee8b6ae2de.jpg"},{"id":"m11925","n":"Fruta + leche piña y coco Hacendado sin azúcares añadidos","s":"bebidas","p":1.25,"u":"L","img":"https://prod-mercadona.imgix.net/images/7dc10fb4ef5caabe27bb80f64726d48a.jpg"},{"id":"m52948","n":"Fruta + leche caribe Hacendado sin azúcares añadidos","s":"bebidas","p":1.2,"u":"L","img":"https://prod-mercadona.imgix.net/images/ca90bf3b0851cee384f4c7ee51a97f29.jpg"},{"id":"m24551","n":"Fruta + leche tropical Don Simón sin azúcares añadidos y zero materia grasa","s":"bebidas","p":1.4,"u":"L","img":"https://prod-mercadona.imgix.net/images/420a9a4345afa117de8088e765eadeef.jpg"},{"id":"m39109","n":"Bebida Bahamas Hacendado","s":"bebidas","p":1.25,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/a2191ccc7c4c7f6db1a611d6fd746ca7.jpg"},{"id":"m39606","n":"Bebida tropical Hacendado sin azúcares añadidos","s":"bebidas","p":1.0,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/bf71396100c18cca59c72da31db9c63b.jpg"},{"id":"m39650","n":"Bebida de zumo de naranja, mango y zanahoria La Verja sin azúcares añadidos","s":"bebidas","p":1.8,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/9e831867eb7ecbe0e8516d377d919b33.jpg"},{"id":"m39224","n":"Bebida 5 frutas Hacendado sin azúcares añadidos","s":"bebidas","p":1.75,"u":"Pack-6","img":"https://prod-mercadona.imgix.net/images/5b8c6f98527bf34412a5653d4619f7dc.jpg"},{"id":"m39627","n":"Bebida de arándanos y frutas rojas Hacendado sin azúcares añadidos","s":"bebidas","p":1.75,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/94e4c5ea515e482003816fb0c6d3f452.jpg"},{"id":"m39640","n":"Bebida de frutas rojas antioxidante Hacendado sin azúcares añadidos","s":"bebidas","p":1.95,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/6c18bfdedcacf5f2fc82a289f3a8d3f1.jpg"},{"id":"m39651","n":"Bebida multivitaminas Hacendado sin azúcares añadidos","s":"bebidas","p":1.0,"u":"Brik","img":"https://prod-mercadona.imgix.net/images/c0aec617c3d9db1cc8ec8f99554338e6.jpg"},{"id":"m21847","n":"Smoothie veggie aguacate, mango y espinaca Hacendado","s":"bebidas","p":1.8,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/1bd9caadc5d2a745434664836595f94b.jpg"},{"id":"m21784","n":"Zumo maracuyá y chía Hacendado","s":"bebidas","p":1.65,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/a2a591a0b1f504dc9a7fd9cfacf5a147.jpg"},{"id":"m21772","n":"Smoothie fresa y plátano Hacendado","s":"bebidas","p":1.65,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/9ee82693cef262425fc35804cf9258be.jpg"},{"id":"m21534","n":"Detergente ropa de Color y Oscura Bosque Verde líquido","s":"limpieza","p":4.9,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/f3b8cbd95b177e12735f13169587232d.jpg"},{"id":"m86397","n":"Detergente ropa jabón natural de Marsella Bosque Verde líquido","s":"limpieza","p":3.4,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/102bbb82bf71a7846528e2d2daef4567.jpg"},{"id":"m40404","n":"Detergente ropa Blanca y de Color Bosque Verde en gel concentrado","s":"limpieza","p":3.65,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/d7d3cf05c5162a35ed107bc310f505a0.jpg"},{"id":"m86400","n":"Detergente ropa Blanca y de Color Bosque Verde líquido","s":"limpieza","p":5.85,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/a6b5023c46b3a1f230230cc88db78c09.jpg"},{"id":"m40530","n":"Detergente ropa Prendas Delicadas Bosque Verde líquido","s":"limpieza","p":2.5,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/9797257703d2e4f77d7d846efbcd84e6.jpg"},{"id":"m16830","n":"Detergente ropa Ariel líquido","s":"limpieza","p":7.95,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/8f6b39034dbd905b7d32f54886cf1e16.jpg"},{"id":"m13643","n":"Detergente ropa Pieles Sensibles Bosque Verde líquido","s":"limpieza","p":4.8,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/e0c6bf972b3f52f80cbdff23d108586d.jpg"},{"id":"m14946","n":"Detergente ropa colada mixta Micolor en gel","s":"limpieza","p":5.95,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/d2fe09165db835922138be22d01803e1.jpg"},{"id":"m40573","n":"Detergente ropa Oscura Bosque Verde líquido","s":"limpieza","p":4.0,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/c57e4eabe1b2c37752a03f75d510d019.jpg"},{"id":"m40567","n":"Desinfectante Tejidos y Lavadora Bosque Verde sin lejía","s":"limpieza","p":2.2,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/e12b22b9d1d9c4b77dc2741d17a92166.jpg"},{"id":"m86399","n":"Detergente ropa Colonia Hipoalergénico Bosque Verde líquido","s":"limpieza","p":3.4,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/f5b64f6a4c89b0bd1fb736fb98b51952.jpg"},{"id":"m11664","n":"Detergente ropa Frescura Bosque Verde líquido","s":"limpieza","p":3.4,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/c07f239cc2c76fea1f2c71b1b6a60367.jpg"},{"id":"m14270","n":"Detergente ropa blanca y de color Bosque Verde en polvo","s":"limpieza","p":6.9,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/c75203fbc5e74f0715cf4be74bf8707e.jpg"},{"id":"m52553","n":"Detergente ropa todo en 1 Ariel Pods en cápsulas","s":"limpieza","p":6.9,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/4a42e5e71080ea960711b84cdc98d1b6.jpg"},{"id":"m16442","n":"Detergente ropa todo en 1 frescor floral Ariel Pods en cápsulas","s":"limpieza","p":6.9,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/ac78c0a8f08e2ff7e0d1a5f054bbcba3.jpg"},{"id":"m14271","n":"Detergente ropa jabón de Marsella Bosque Verde en polvo","s":"limpieza","p":5.9,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/9bd953189306103748aaec9fe8d1097c.jpg"},{"id":"m23440","n":"Detergente ropa blanca y color Bosque Verde en cápsulas","s":"limpieza","p":4.65,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/385aa36f3f84b97a060a3c9aa56bf8d7.jpg"},{"id":"m20959","n":"Detergente ropa Blanca y Color floral Sensation Bosque Verde en cápsulas","s":"limpieza","p":4.65,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/7506b9fd1605c5c43304dee2f48adf82.jpg"},{"id":"m52752","n":"Detergente Lavado a Mano Bosque Verde en polvo","s":"limpieza","p":1.9,"u":"Caja","img":"https://prod-mercadona.imgix.net/images/aaeaf34a357f844bb096a7b6ce32767e.jpg"},{"id":"m13607","n":"Jabón Natural con glicerina Bosque Verde","s":"limpieza","p":1.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/49889e4d79b71f6c50be183b72b20810.jpg"},{"id":"m40552","n":"Eliminador de olores tejidos Bosque Verde","s":"limpieza","p":2.0,"u":"Botella","img":"https://prod-mercadona.imgix.net/images/a6623927ae2dd17358d7472870a30b80.jpg"},{"id":"m79083","n":"Toallitas lavadora Bosque Verde anti-transferencia de color","s":"limpieza","p":1.85,"u":"Paquete","img":"https://prod-mercadona.imgix.net/images/cac1a7c079067259c478c509671ceead.jpg"},{"id":"m73978","n":"Dentífrico Triple Acción Colgate menta intensa","s":"higiene","p":1.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/97535c0930b03860b5b9cbaebd7fb546.jpg"},{"id":"m13913","n":"Dentífrico Pro-Expert Oral-B sabor menta especiada","s":"higiene","p":2.5,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/4694ce4c429d9c43caf15531b4be598a.jpg"},{"id":"m79593","n":"Dentífrico Total original Colgate","s":"higiene","p":2.9,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/7397bd7156dd780f01459d68fb170eec.jpg"},{"id":"m74044","n":"Dentífrico Blanqueador Bicarbonato Signal","s":"higiene","p":1.8,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/842bf3af328e4747f5cd5a30c1c69244.jpg"},{"id":"m73979","n":"Dentífrico Protección Caries Colgate","s":"higiene","p":1.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/4aa28b3ef5157389e17ad4c37b3be907.jpg"},{"id":"m46724","n":"Dentífrico Bicarbonato blanqueador Deliplus","s":"higiene","p":1.1,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/fc3b1177452b8114a06f0d96fd215419.jpg"},{"id":"m13869","n":"Dentífrico Repair & Protect Sensodyne","s":"higiene","p":4.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/8f04e03bac2634cfc6dddad6a912a1ed.jpg"},{"id":"m13868","n":"Dentífrico Blanqueante Sensodyne","s":"higiene","p":3.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/c390a806272a727a8e31663e95efe859.jpg"},{"id":"m73431","n":"Dentífrico Max White Colgate","s":"higiene","p":2.6,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/d1ed5586527ea4a1d73dd29a19cf1a82.jpg"},{"id":"m73999","n":"Dentífrico Max Fresh Colgate sabor menta fresca","s":"higiene","p":2.4,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/afce05565a630c57f20e772e96c72a6a.jpg"},{"id":"m46730","n":"Dentífrico Fresh Gel Deliplus menta extra refrescante","s":"higiene","p":1.1,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/4c07255316fa1e278e0de5f8bc0c01bf.jpg"},{"id":"m8996","n":"Dentífrico Herbal Deliplus","s":"higiene","p":1.05,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/37271c09e44e5fe1727206eef2c455df.jpg"},{"id":"m12901","n":"Dentífrico Encías Protect Deliplus","s":"higiene","p":1.7,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/6e85458efe6abed969c3b02173a8abd1.jpg"},{"id":"m46727","n":"Dentífrico Dental Pearl Deliplus blanqueador","s":"higiene","p":1.85,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/692299488b05bb35f53ea2263ccf015a.jpg"},{"id":"m35982","n":"Dentífrico 3 action Deliplus","s":"higiene","p":1.05,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/158b05912f6ef52b51237f50b523d481.jpg"},{"id":"m35983","n":"Dentífrico Anticaries Deliplus","s":"higiene","p":1.05,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/64e73ed2b0f37f382ef1a90b3e36f9d2.jpg"},{"id":"m46997","n":"Dentífrico infantil + 2 años Deliplus","s":"higiene","p":0.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/ee27e0fae38697e9dbb41e4232e5436f.jpg"},{"id":"m46739","n":"Dentífrico Sensitive Deliplus con hidroxiapatita","s":"higiene","p":1.7,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/96af37c45f81b425b2ed299683af3a34.jpg"},{"id":"m23674","n":"Dentífrico infantil +6 años Deliplus menta suave","s":"higiene","p":0.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/c32e0b923572f198da1801e9be19b4ef.jpg"},{"id":"m23675","n":"Dentífrico infantil +6 años Deliplus sabor gominola","s":"higiene","p":0.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/483ff220a00d9458f22ba10c7882d73e.jpg"},{"id":"m35654","n":"Dentífrico reparación activa de encías Parodontax menta fresca","s":"higiene","p":4.95,"u":"Tubo","img":"https://prod-mercadona.imgix.net/images/52595b2bd376099baa8af328c6c8daab.jpg"},{"id":"m12818","n":"Kit de viaje higiene dental Deliplus 3 Action","s":"higiene","p":2.45,"u":"ud","img":"https://prod-mercadona.imgix.net/images/7d994d7f3cf408468695300fab972a86.jpg"}];
+const IMG=u=>u?u+'?fit=crop&w=260&h=260&auto=format,compress':'';
 
-// ══════════════════════════════════════════════════════════════
-// STORE
-// ══════════════════════════════════════════════════════════════
-const KEY = 'mc-cesta-v1';
-let S = { lista:[], favs:[], hist:[], mc:false };
+// ════════ STORE ════════
+const KEY='mc-cesta-v2';
+let S={lista:[],favs:[],hist:[],mc:false};
+function load(){try{const x=localStorage.getItem(KEY);if(x)S={...S,...JSON.parse(x)}}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
 
-function load() {
-  try { const x = localStorage.getItem(KEY); if (x) S = {...S,...JSON.parse(x)}; } catch(e) {}
-}
-function save() {
-  localStorage.setItem(KEY, JSON.stringify(S));
-}
-
-// ══════════════════════════════════════════════════════════════
-// UTILS
-// ══════════════════════════════════════════════════════════════
+// ════════ UTILS ════════
 let _tt;
-function toast(msg) {
-  document.querySelectorAll('.toast').forEach(e=>e.remove());
-  const t=document.createElement('div');
-  t.className='toast'; t.textContent=msg;
-  document.body.appendChild(t);
-  clearTimeout(_tt); _tt=setTimeout(()=>t.remove(),2100);
-}
-const esc = s => String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-const fmt = n => n.toFixed(2).replace('.',',') + ' €';
-const uid = () => '_'+Math.random().toString(36).slice(2,9);
-const getSec = id => SEC.find(s=>s.id===id) || {n:'Otros',ic:'📦'};
-const getProd = id => CAT.find(p=>p.id===id);
+function toast(m){document.querySelectorAll('.toast').forEach(e=>e.remove());
+  const t=document.createElement('div');t.className='toast';t.textContent=m;document.body.appendChild(t);
+  clearTimeout(_tt);_tt=setTimeout(()=>t.remove(),2200)}
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+const eur=n=>n.toFixed(2).replace('.',',')+' €';
+const uid=()=>'_'+Math.random().toString(36).slice(2,9);
+const getSec=id=>SEC.find(s=>s.id===id)||{n:'Otros',ic:'📦'};
+const getProd=id=>CAT.find(p=>p.id===id);
+const imgTag=p=>p&&p.img?`<img src="${IMG(p.img)}" loading="lazy" decoding="async" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${SECIC[p.s]||'📦'}</span>`:`<span class="ph">${SECIC[(p&&p.s)]||'📦'}</span>`;
 
-// ══════════════════════════════════════════════════════════════
-// NAVEGACIÓN
-// ══════════════════════════════════════════════════════════════
-function goTab(name) {
+// ════════ NAV ════════
+function goTab(name){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
   document.getElementById('tab-'+name).classList.add('on');
   document.querySelector(`[data-t="${name}"]`).classList.add('on');
-  if (name==='catalogo') renderCat();
-  if (name==='favoritos') renderFavs();
-  if (name==='historial') renderHist();
+  window.scrollTo(0,0);
+  if(name==='lista')renderLista();
+  if(name==='catalogo')renderCat();
+  if(name==='favoritos')renderFavs();
+  if(name==='historial')renderHist();
 }
 
-// ══════════════════════════════════════════════════════════════
-// LISTA
-// ══════════════════════════════════════════════════════════════
-function renderLista() {
-  const cont = document.getElementById('lCont');
-  const empty = document.getElementById('lEmpty');
-  const res = document.getElementById('resumen');
-  if (!S.lista.length) {
-    cont.innerHTML=''; empty.style.display=''; res.style.display='none';
-    updHdr(); updBadge(); return;
-  }
-  empty.style.display='none'; res.style.display='';
-
-  const pend = S.lista.filter(i=>!i.ck);
-  const done = S.lista.filter(i=>i.ck);
-  const total = S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);
-
-  document.getElementById('rTotal').textContent = S.lista.length;
-  document.getElementById('rPend').textContent  = pend.length;
-  document.getElementById('rCost').textContent  = total.toFixed(2).replace('.',',')+'€';
-
-  // Agrupar pendientes por sección
-  const grps = {};
-  pend.forEach(i => { (grps[i.sec]||(grps[i.sec]=[])).push(i); });
-
-  let html = '';
-  Object.entries(grps).forEach(([sid, items]) => {
-    const sec = getSec(sid);
-    html += `<div class="sec-g">
-      <div class="sec-h">${sec.ic} ${esc(sec.n)}<span class="sec-cnt">${items.length}</span></div>
-      ${items.map(itemHTML).join('')}
-    </div>`;
+// ════════ LISTA ════════
+function renderLista(){
+  const cont=document.getElementById('lCont'),empty=document.getElementById('lEmpty'),res=document.getElementById('resumen');
+  if(!S.lista.length){cont.innerHTML='';empty.style.display='';res.style.display='none';updHdr();updBadge();return}
+  empty.style.display='none';res.style.display='';
+  const pend=S.lista.filter(i=>!i.ck),done=S.lista.filter(i=>i.ck);
+  const total=S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);
+  document.getElementById('rTotal').textContent=S.lista.length;
+  document.getElementById('rPend').textContent=pend.length;
+  document.getElementById('rCost').textContent=total.toFixed(2).replace('.',',')+'€';
+  const grps={};
+  pend.forEach(i=>{(grps[i.sec]||(grps[i.sec]=[])).push(i)});
+  let html='';
+  SEC.forEach(sec=>{
+    const items=grps[sec.id];if(!items||!items.length)return;
+    html+=`<div class="sec-g"><div class="sec-h"><span class="se">${sec.ic}</span>${esc(sec.n)}<span class="sec-cnt">${items.length}</span></div>${items.map(itemHTML).join('')}</div>`;
   });
-
-  if (done.length) {
-    html += `<div style="margin:0 12px">
-      <button class="ck-toggle" onclick="toggleDone()">
-        <svg id="dChev" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        Ya cogidos (${done.length})
-      </button>
-      <div id="doneList" style="display:none">
-        ${done.map(itemHTML).join('')}
-      </div>
-    </div>`;
+  if(done.length){
+    html+=`<button class="ck-toggle" onclick="toggleDone()"><svg id="dChev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>Ya cogidos (${done.length})</button>
+      <div id="doneList" style="display:none">${done.map(i=>`<div class="sec-g">${itemHTML(i)}</div>`).join('')}</div>`;
   }
-
-  cont.innerHTML = html;
-  updHdr(); updBadge();
+  cont.innerHTML=html;updHdr();updBadge();
 }
-
-function itemHTML(item) {
-  const pt = (item.pr||0)*(item.qty||1);
-  const prStr = pt>0 ? pt.toFixed(2).replace('.',',')+'€' : '—';
-  const nota = item.nota ? esc(item.nota)+' · ' : '';
-  const prUnit = item.pr ? item.pr.toFixed(2).replace('.',',')+' €/'+esc(item.un||'ud') : 'sin precio';
-  const chkCls = item.ck ? 'on' : '';
-  const tick = item.ck ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>` : '';
-  return `<div class="li ${item.ck?'ck':''}" id="li-${item.id}">
-    <button class="chk ${chkCls}" onclick="chkItem('${item.id}')">${tick}</button>
-    <div class="li-info">
-      <div class="li-n">${esc(item.n)}</div>
-      <div class="li-sub">${nota}${prUnit}</div>
-    </div>
+function itemHTML(it){
+  const pt=(it.pr||0)*(it.qty||1);
+  const prStr=pt>0?pt.toFixed(2).replace('.',',')+'€':'—';
+  const nota=it.nota?esc(it.nota)+' · ':'';
+  const unit=it.pr?it.pr.toFixed(2).replace('.',',')+' €/'+esc(it.un||'ud'):'sin precio';
+  const tick=it.ck?`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`:'';
+  const thumb=it.img?`<img src="${IMG(it.img)}" loading="lazy" decoding="async" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="ph" style="display:none">${SECIC[it.sec]||'📦'}</span>`:`<span class="ph">${SECIC[it.sec]||'📦'}</span>`;
+  return `<div class="li ${it.ck?'ck':''}">
+    <button class="chk ${it.ck?'on':''}" onclick="chkItem('${it.id}')">${tick}</button>
+    <div class="li-thumb">${thumb}</div>
+    <div class="li-info"><div class="li-n">${esc(it.n)}</div><div class="li-sub">${nota}${unit}</div></div>
     <div class="li-ctrl">
-      <button class="qb" onclick="qty('${item.id}',-1)">−</button>
-      <span class="qv">${item.qty||1}</span>
-      <button class="qb" onclick="qty('${item.id}',1)">+</button>
+      <button class="qb" onclick="qty('${it.id}',-1)">−</button>
+      <span class="qv">${it.qty||1}</span>
+      <button class="qb" onclick="qty('${it.id}',1)">+</button>
     </div>
     <div class="li-pr">${prStr}</div>
-    <button class="del-btn" onclick="delItem('${item.id}')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-    </button>
+    <button class="del-btn" onclick="delItem('${it.id}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>
   </div>`;
 }
+function toggleDone(){const dl=document.getElementById('doneList'),ch=document.getElementById('dChev');if(!dl)return;
+  const open=dl.style.display!=='none';dl.style.display=open?'none':'';if(ch)ch.setAttribute('points',open?'6 9 12 15 18 9':'18 15 12 9 6 15')}
+function chkItem(id){const i=S.lista.find(x=>x.id===id);if(i){i.ck=!i.ck;save();renderLista()}}
+function qty(id,d){const i=S.lista.find(x=>x.id===id);if(i){i.qty=Math.max(1,(i.qty||1)+d);save();renderLista()}}
+function delItem(id){S.lista=S.lista.filter(x=>x.id!==id);save();renderLista();if(document.getElementById('tab-catalogo').classList.contains('on'))renderProds();toast('Producto eliminado')}
+function updHdr(){const t=S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);document.getElementById('hTotal').textContent=t>0?eur(t):'0,00 €'}
+function updBadge(){const b=document.getElementById('badge'),n=S.lista.filter(i=>!i.ck).length;b.style.display=n>0?'':'none';b.textContent=n}
+function toggleMC(){S.mc=!S.mc;save();document.body.classList.toggle('mc',S.mc);
+  document.getElementById('btnMC').classList.toggle('act',S.mc);document.getElementById('btnMC').textContent=S.mc?'✓':'🛒';
+  toast(S.mc?'🛒 Modo compra: filas grandes':'Modo normal')}
+function guardarLista(){
+  if(!S.lista.length){toast('La cesta está vacía');return}
+  const d=new Date();
+  S.hist.unshift({id:uid(),f:d.toLocaleDateString('es-ES',{weekday:'long',day:'numeric',month:'long'}),
+    fa:d.toLocaleDateString('es-ES',{day:'2-digit',month:'2-digit',year:'numeric'}),
+    items:JSON.parse(JSON.stringify(S.lista)),t:S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0)});
+  if(S.hist.length>30)S.hist.pop();
+  S.lista=[];save();renderLista();toast('✅ Lista guardada en el historial')}
 
-function toggleDone() {
-  const dl = document.getElementById('doneList');
-  const ch = document.getElementById('dChev');
-  if (!dl) return;
-  const open = dl.style.display!=='none';
-  dl.style.display = open?'none':'';
-  if(ch) ch.setAttribute('points', open?'6 9 12 15 18 9':'18 15 12 9 6 15');
-}
-
-function chkItem(id) {
-  const i = S.lista.find(x=>x.id===id);
-  if(i){ i.ck=!i.ck; save(); renderLista(); }
-}
-function qty(id,d) {
-  const i = S.lista.find(x=>x.id===id);
-  if(i){ i.qty=Math.max(1,(i.qty||1)+d); save(); renderLista(); }
-}
-function delItem(id) {
-  S.lista = S.lista.filter(x=>x.id!==id);
-  save(); renderLista(); renderCat();
-  toast('Producto eliminado');
-}
-
-function updHdr() {
-  const t = S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0);
-  document.getElementById('hTotal').textContent = t>0 ? fmt(t) : '0,00 €';
-}
-function updBadge() {
-  const b = document.getElementById('badge');
-  const n = S.lista.filter(i=>!i.ck).length;
-  b.style.display = n>0?'':'none'; b.textContent=n;
-}
-
-function toggleMC() {
-  S.mc=!S.mc;
-  document.body.classList.toggle('mc',S.mc);
-  document.getElementById('btnMC').textContent = S.mc?'✏️':'🛒';
-  toast(S.mc?'Modo compra activado — items grandes':'Modo edición');
-}
-
-function guardarLista() {
-  if(!S.lista.length){ toast('La cesta está vacía'); return; }
-  const now = new Date();
-  S.hist.unshift({
-    id: uid(),
-    f: now.toLocaleDateString('es-ES',{day:'2-digit',month:'short',year:'numeric'}),
-    items: JSON.parse(JSON.stringify(S.lista)),
-    t: S.lista.reduce((s,i)=>s+(i.pr||0)*(i.qty||1),0),
-  });
-  if(S.hist.length>25) S.hist.pop();
-  S.lista = [];
-  save(); renderLista(); renderCat();
-  toast('✅ Lista guardada en el historial');
-}
-
-// ══════════════════════════════════════════════════════════════
-// MODAL AÑADIR
-// ══════════════════════════════════════════════════════════════
-let _catId = null;
-
-function openModal(prod=null) {
-  const sel = document.getElementById('mSec');
-  sel.innerHTML = SEC.map(s=>`<option value="${s.id}">${s.ic} ${s.n}</option>`).join('');
-  if(prod){
-    document.getElementById('mTitle').textContent = prod.n;
-    document.getElementById('mNom').value = prod.n;
-    sel.value = prod.s;
-    document.getElementById('mPr').value = prod.p||'';
-    document.getElementById('mUn').value = prod.u||'ud';
-    document.getElementById('mNota').value='';
-    document.getElementById('mQty').value=1;
-    _catId = prod.id;
-  } else {
-    document.getElementById('mTitle').textContent='Añadir producto';
-    document.getElementById('mNom').value='';
-    sel.value='frutas';
-    document.getElementById('mPr').value='';
-    document.getElementById('mUn').value='ud';
-    document.getElementById('mNota').value='';
-    document.getElementById('mQty').value=1;
-    _catId = null;
-  }
+// ════════ MODAL ════════
+let _catId=null;
+function openModal(prod){
+  const sel=document.getElementById('mSec');
+  sel.innerHTML=SEC.map(s=>`<option value="${s.id}">${s.ic} ${s.n}</option>`).join('');
+  if(prod){document.getElementById('mTitle').textContent=prod.n;document.getElementById('mNom').value=prod.n;sel.value=prod.s;
+    document.getElementById('mPr').value=prod.p||'';document.getElementById('mUn').value=prod.u||'ud';_catId=prod.id;}
+  else{document.getElementById('mTitle').textContent='Añadir producto';document.getElementById('mNom').value='';sel.value='frutas';
+    document.getElementById('mPr').value='';document.getElementById('mUn').value='ud';_catId=null;}
+  document.getElementById('mNota').value='';document.getElementById('mQty').value=1;
   document.getElementById('modal').style.display='';
-  setTimeout(()=>document.getElementById('mNom').focus(),250);
+  setTimeout(()=>document.getElementById('mNom').focus(),260);
+}
+function closeModal(e){if(!e||e.target===document.getElementById('modal'))document.getElementById('modal').style.display='none'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('modal').style.display='none'});
+function confirmAdd(){
+  const n=document.getElementById('mNom').value.trim();
+  if(!n){toast('Escribe el nombre');return}
+  const qty=parseInt(document.getElementById('mQty').value)||1;
+  S.lista.push({id:uid(),catId:_catId||null,n,sec:document.getElementById('mSec').value,qty,
+    pr:parseFloat(document.getElementById('mPr').value)||0,un:document.getElementById('mUn').value,
+    nota:document.getElementById('mNota').value.trim(),img:(_catId&&getProd(_catId)||{}).img||'',ck:false});
+  save();closeModal();renderLista();toast(`✅ ${n}`);_catId=null;
 }
 
-function closeModal(e) {
-  if(!e||e.target===document.getElementById('modal'))
-    document.getElementById('modal').style.display='none';
+// ════════ CATÁLOGO ════════
+let cSec='all',cQ='';
+function renderCat(){renderChips();renderProds()}
+function renderChips(){
+  document.getElementById('chips').innerHTML=[{id:'all',n:'Todos',ic:'🛒'},...SEC]
+    .map(s=>`<button class="chip ${cSec===s.id?'on':''}" onclick="setSec('${s.id}')">${s.ic} ${s.n}</button>`).join('');
 }
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape') document.getElementById('modal').style.display='none';
-});
-
-function confirmAdd() {
-  const n = document.getElementById('mNom').value.trim();
-  if(!n){ toast('Escribe el nombre del producto'); return; }
-  const qty  = parseInt(document.getElementById('mQty').value)||1;
-  const ya = _catId && S.lista.find(i=>i.catId===_catId);
-  if(ya){
-    ya.qty=(ya.qty||1)+qty;
-    toast(`+${qty} ${n}`);
-  } else {
-    S.lista.push({
-      id:uid(), catId:_catId||null,
-      n, sec:document.getElementById('mSec').value,
-      qty, pr:parseFloat(document.getElementById('mPr').value)||0,
-      un:document.getElementById('mUn').value,
-      nota:document.getElementById('mNota').value.trim(),
-      ck:false,
-    });
-    toast(`✅ ${n} añadido`);
-  }
-  save(); closeModal(); renderLista(); renderCat(); _catId=null;
+function setSec(id){cSec=id;renderChips();renderProds();window.scrollTo(0,0)}
+function filtrar(){cQ=document.getElementById('catQ').value.toLowerCase().trim();
+  document.getElementById('clrBtn').style.display=cQ?'':'none';renderProds()}
+function clearSearch(){document.getElementById('catQ').value='';cQ='';document.getElementById('clrBtn').style.display='none';renderProds()}
+function renderProds(){
+  let prods=CAT;
+  if(cSec!=='all')prods=prods.filter(p=>p.s===cSec);
+  if(cQ)prods=prods.filter(p=>p.n.toLowerCase().includes(cQ));
+  const inL=new Map();S.lista.forEach(i=>{if(i.catId)inL.set(i.catId,(inL.get(i.catId)||0)+(i.qty||1))});
+  const inF=new Set(S.favs.map(f=>f.id));
+  const el=document.getElementById('catGrid');
+  if(!prods.length){el.innerHTML='<div class="empty" style="grid-column:1/-1"><div class="ei">🔍</div><p>Sin resultados</p><span>Prueba con otra palabra o sección</span></div>';return}
+  el.innerHTML=prods.map(p=>pcHTML(p,inL.get(p.id)||0,inF.has(p.id))).join('');
 }
-
-// ══════════════════════════════════════════════════════════════
-// CATÁLOGO
-// ══════════════════════════════════════════════════════════════
-let cSec='all', cQ='';
-
-function renderCat() { renderChips(); renderProds(); }
-
-function renderChips() {
-  document.getElementById('chips').innerHTML =
-    [{id:'all',n:'Todos',ic:'🛒'},...SEC]
-    .map(s=>`<button class="chip ${cSec===s.id?'on':''}" onclick="setSec('${s.id}')">${s.ic} ${s.n}</button>`)
-    .join('');
-}
-
-function setSec(id){ cSec=id; renderCat(); }
-function filtrar(){ cQ=document.getElementById('catQ').value.toLowerCase(); renderProds(); }
-
-function renderProds() {
-  let prods = CAT;
-  if(cSec!=='all') prods=prods.filter(p=>p.s===cSec);
-  if(cQ) prods=prods.filter(p=>p.n.toLowerCase().includes(cQ));
-  const enLista = new Set(S.lista.map(i=>i.catId).filter(Boolean));
-  const enFavs  = new Set(S.favs.map(f=>f.id));
-  const el = document.getElementById('catList');
-  if(!prods.length){
-    el.innerHTML='<div class="empty" style="margin:0"><div class="ei">🔍</div><p>Sin resultados</p></div>';
-    return;
-  }
-  el.innerHTML = prods.map(p=>{
-    const inL=enLista.has(p.id), inF=enFavs.has(p.id);
-    return `<div class="cat-item">
-      <span class="ci-ico">${p.ic}</span>
-      <div class="ci-info">
-        <div class="ci-n">${esc(p.n)}</div>
-        <div class="ci-u">${esc(p.u)}</div>
+function pcHTML(p,qty,fav){
+  return `<div class="pc">
+    <button class="pc-fav ${fav?'on':''}" onclick="event.stopPropagation();toggleFav('${p.id}')">${fav?'⭐':'☆'}</button>
+    ${qty>0?`<span class="pc-qty">${qty}</span>`:''}
+    <div class="pc-img">${imgTag(p)}</div>
+    <div class="pc-body">
+      <div class="pc-n">${esc(p.n)}</div>
+      <div class="pc-u">${esc(p.u||'')}</div>
+      <div class="pc-foot">
+        <div class="pc-pr">${p.p.toFixed(2).replace('.',',')}€ <small>/${esc((p.u||'ud').toLowerCase().slice(0,5))}</small></div>
+        <button class="pc-add ${qty>0?'in':''}" onclick="addCat('${p.id}')">+</button>
       </div>
-      <span class="ci-pr">${p.p.toFixed(2).replace('.',',')} €</span>
-      <button class="ci-fav ${inF?'on':''}" onclick="toggleFav('${p.id}')" title="${inF?'Quitar de favoritos':'Añadir a favoritos'}">${inF?'⭐':'☆'}</button>
-      <button class="ci-add ${inL?'in':''}" onclick="addCat('${p.id}')" title="${inL?'Ya en cesta (añadir más)':'Añadir'}">${inL?'✓':'+'}
-      </button>
-    </div>`;
-  }).join('');
+    </div>
+  </div>`;
 }
-
-function addCat(id) {
-  const p=getProd(id); if(!p) return;
+function addCat(id){
+  const p=getProd(id);if(!p)return;
   const ya=S.lista.find(i=>i.catId===id);
-  if(ya){ ya.qty=(ya.qty||1)+1; toast(`+1 ${p.n}`); }
-  else {
-    S.lista.push({id:uid(),catId:id,n:p.n,sec:p.s,qty:1,pr:p.p,un:p.u,nota:'',ck:false});
-    toast(`✅ ${p.n}`);
-  }
-  save(); renderLista(); renderProds();
+  if(ya){ya.qty=(ya.qty||1)+1;toast(`+1 · ${p.n}`)}
+  else{S.lista.push({id:uid(),catId:id,n:p.n,sec:p.s,qty:1,pr:p.p,un:p.u,nota:'',img:p.img,ck:false});toast(`✅ ${p.n}`)}
+  save();renderProds();updHdr();updBadge();
 }
 
-// ══════════════════════════════════════════════════════════════
-// FAVORITOS
-// ══════════════════════════════════════════════════════════════
-function toggleFav(id) {
-  const p=getProd(id); if(!p) return;
+// ════════ FAVORITOS ════════
+function toggleFav(id){
+  const p=getProd(id);if(!p)return;
   const idx=S.favs.findIndex(f=>f.id===id);
-  if(idx>=0){ S.favs.splice(idx,1); toast('Quitado de favoritos'); }
-  else { S.favs.push({id,n:p.n,p:p.p,ic:p.ic,s:p.s}); toast('⭐ Añadido a favoritos'); }
-  save(); renderProds(); renderFavs();
+  if(idx>=0){S.favs.splice(idx,1);toast('Quitado de favoritos')}
+  else{S.favs.push({id});toast('⭐ Añadido a favoritos')}
+  save();
+  if(document.getElementById('tab-catalogo').classList.contains('on'))renderProds();
+  if(document.getElementById('tab-favoritos').classList.contains('on'))renderFavs();
 }
-
-function renderFavs() {
-  const grid=document.getElementById('favGrid');
-  const empty=document.getElementById('favEmpty');
-  if(!S.favs.length){ grid.innerHTML=''; empty.style.display=''; return; }
+function renderFavs(){
+  const grid=document.getElementById('favGrid'),empty=document.getElementById('favEmpty');
+  const favProds=S.favs.map(f=>getProd(f.id)).filter(Boolean);
+  if(!favProds.length){grid.innerHTML='';empty.style.display='';return}
   empty.style.display='none';
-  grid.innerHTML=S.favs.map(f=>`
-    <div class="fav-c" onclick="addCat('${f.id}')">
-      <div class="fav-ico">${f.ic}</div>
-      <div class="fav-n">${esc(f.n)}</div>
-      <div class="fav-pr">${f.p>0?f.p.toFixed(2).replace('.',',')+'€':'—'}</div>
-      <button class="fav-rm" onclick="event.stopPropagation();toggleFav('${f.id}')">✕</button>
-      <span class="fav-plus">+</span>
-    </div>`).join('');
+  const inL=new Map();S.lista.forEach(i=>{if(i.catId)inL.set(i.catId,(inL.get(i.catId)||0)+(i.qty||1))});
+  grid.innerHTML=favProds.map(p=>pcHTML(p,inL.get(p.id)||0,true)).join('');
 }
 
-// ══════════════════════════════════════════════════════════════
-// HISTORIAL
-// ══════════════════════════════════════════════════════════════
-function renderHist() {
-  const cont=document.getElementById('histCont');
-  const empty=document.getElementById('histEmpty');
-  if(!S.hist.length){ cont.innerHTML=''; empty.style.display=''; return; }
+// ════════ HISTORIAL ════════
+function renderHist(){
+  const cont=document.getElementById('histCont'),empty=document.getElementById('histEmpty');
+  if(!S.hist.length){cont.innerHTML='';empty.style.display='';return}
   empty.style.display='none';
   cont.innerHTML=S.hist.map(e=>{
-    const prev=e.items.slice(0,5).map(i=>i.n).join(', ')+(e.items.length>5?'…':'');
+    const thumbs=e.items.slice(0,6).map(i=>i.img?`<div class="ht" style="background-image:url('${IMG(i.img)}')"></div>`:`<div class="ht" style="display:flex;align-items:center;justify-content:center;font-size:18px">${SECIC[i.sec]||'📦'}</div>`).join('');
+    const more=e.items.length>6?`<div class="more">+${e.items.length-6}</div>`:'';
     return `<div class="hist-c">
-      <div class="hist-h">
-        <div><div class="hist-f">📋 ${esc(e.f)}</div></div>
-        <div class="hist-t">${e.t.toFixed(2).replace('.',',')} €</div>
-      </div>
-      <div class="hist-items">${esc(prev)}<br><small>${e.items.length} productos</small></div>
-      <div class="hist-acts">
-        <button class="bsm p" onclick="repeatHist('${e.id}')">🔄 Repetir lista</button>
-        <button class="bsm r" onclick="delHist('${e.id}')">🗑️ Eliminar</button>
-      </div>
+      <div class="hist-h"><div class="hist-f" style="text-transform:capitalize">${esc(e.f||e.fa)}<small>${e.items.length} productos · ${esc(e.fa||'')}</small></div><div class="hist-t">${e.t.toFixed(2).replace('.',',')} €</div></div>
+      <div class="hist-thumbs">${thumbs}${more}</div>
+      <div class="hist-acts"><button class="bsm p" onclick="repeatHist('${e.id}')">🔄 Repetir esta lista</button><button class="bsm r" onclick="delHist('${e.id}')">🗑️</button></div>
     </div>`;
   }).join('');
 }
+function repeatHist(id){const e=S.hist.find(x=>x.id===id);if(!e)return;
+  S.lista.push(...e.items.map(i=>({...i,id:uid(),ck:false})));save();renderLista();goTab('lista');toast(`✅ ${e.items.length} productos cargados`)}
+function delHist(id){S.hist=S.hist.filter(x=>x.id!==id);save();renderHist();toast('Eliminado del historial')}
 
-function repeatHist(id) {
-  const e=S.hist.find(x=>x.id===id); if(!e) return;
-  S.lista.push(...e.items.map(i=>({...i,id:uid(),ck:false})));
-  save(); renderLista(); goTab('lista');
-  toast(`✅ ${e.items.length} productos cargados`);
-}
-function delHist(id) {
-  S.hist=S.hist.filter(x=>x.id!==id);
-  save(); renderHist(); toast('Eliminado del historial');
-}
-
-// ══════════════════════════════════════════════════════════════
-// INIT
-// ══════════════════════════════════════════════════════════════
+// ════════ INIT ════════
 load();
-if(S.mc) document.body.classList.add('mc');
+if(S.mc){document.body.classList.add('mc');setTimeout(()=>{document.getElementById('btnMC').classList.add('act');document.getElementById('btnMC').textContent='✓'},0)}
 renderLista();
-renderCat();
 </script>
 </body>
 </html>
