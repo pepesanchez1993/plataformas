@@ -107,9 +107,18 @@ footer{margin-top:2.2rem;color:var(--muted);font-size:.78rem;text-align:center}
         <p class="pill-info">Si las crisis duran &lt;1 min, indícalo en segundos o minutos (p. ej. 20 segundos).</p>
       </div>
       <div class="grp">
-        <label class="q">Número total de crisis a lo largo de toda la evolución (estimación aproximada)</label>
-        <div class="numfield"><input type="number" id="numAttacks" min="0" step="1" placeholder="nº de crisis"></div>
-        <p class="pill-info">Los criterios ICVD (migraña vestibular ≥5, Ménière ≥2, paroxismia vestibular ≥10) cuentan el nº acumulado de episodios en toda la historia clínica, no una frecuencia reciente — no hace falta precisión exacta, basta una estimación razonable aunque la evolución sea de años. El umbral de "≥3 meses" es un criterio distinto (cronicidad de un síntoma continuo) que se recoge aparte en la casilla correspondiente de los trastornos crónicos (PPPD, vestibulopatía bilateral, presbivestibulopatía).</p>
+        <label class="q">Número total de crisis a lo largo de toda la evolución</label>
+        <div class="numfield">
+          <select id="numAttacks">
+            <option value="" selected>— selecciona un rango —</option>
+            <option value="0">0 (ninguna crisis clara)</option>
+            <option value="1">1 crisis</option>
+            <option value="2">2 a 4 crisis</option>
+            <option value="5">5 a 9 crisis</option>
+            <option value="10">10 o más crisis</option>
+          </select>
+        </div>
+        <p class="pill-info">No hace falta un recuento exacto (es poco fiable preguntarlo tras años de evolución): basta con ubicar al paciente en el rango correcto, que es lo único que distingue los criterios ICVD (migraña vestibular ≥5, Ménière ≥2, paroxismia vestibular ≥10 episodios en toda la historia clínica). El "≥3 meses" es un criterio distinto (cronicidad de un síntoma continuo) que se recoge aparte en la casilla correspondiente de los trastornos crónicos (PPPD, vestibulopatía bilateral, presbivestibulopatía).</p>
       </div>
       <div class="grp">
         <label class="opt"><input type="checkbox" id="chronic3m"> Síntoma (mareo/inestabilidad/vértigo no rotatorio) presente la mayoría de los días, de forma prácticamente continua, durante ≥3 meses</label>
