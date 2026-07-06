@@ -1,1 +1,503 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0f1a1c">
+<title>Criterios ICVD · Bárány Society — Ayuda diagnóstica vestibular</title>
+<style>
+:root{
+  --bg:#0f1210; --panel:#171d1b; --panel2:#1e2624; --ink:#eef3f1; --muted:#9db0ac;
+  --line:#2a3532; --red:#c0392b; --green:#2e8b57; --amber:#b8893b; --teal:#34c6d6; --blue:#4a90c9;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100dvh;line-height:1.45;
+  background-image:radial-gradient(circle at 1px 1px, rgba(52,198,214,.05) 1px, transparent 0);background-size:22px 22px;}
+.wrap{max-width:920px;margin:0 auto;padding:5vh 18px 8vh}
+header{text-align:center;margin-bottom:1.8rem}
+.kicker{font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;color:var(--teal);font-weight:700}
+h1{font-family:var(--serif);font-size:clamp(1.8rem,5.5vw,2.6rem);margin:.3em 0 .2em;font-weight:600;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:.95rem;max-width:640px;margin:0 auto}
+.disclaimer{background:linear-gradient(160deg,#241c14,#2b2013);border:1px solid #4a3620;border-radius:14px;
+  padding:16px 18px;margin:1.6rem 0;font-size:.86rem;color:#e8dcc8}
+.disclaimer b{color:var(--amber)}
+.disclaimer ul{margin:.5em 0 0 1.1em}
+.excl{background:linear-gradient(160deg,#241416,#2b1a1c);border:1px solid #4a2226;border-radius:14px;
+  padding:14px 18px;margin:1rem 0;font-size:.85rem;color:#f0d9da}
+section.card{background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  border-radius:16px;padding:18px 20px;margin-bottom:16px;box-shadow:0 10px 30px -18px rgba(0,0,0,.8)}
+h2.sect{font-family:var(--serif);font-size:1.25rem;margin-bottom:.7em;color:var(--teal)}
+.grp{margin-bottom:14px}
+.grp label.q{display:block;font-size:.85rem;color:var(--muted);margin-bottom:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{display:flex;align-items:center;gap:6px;background:#141a18;border:1px solid var(--line);border-radius:10px;
+  padding:8px 10px;font-size:.82rem;cursor:pointer}
+.opt:hover{border-color:var(--teal)}
+.opt input{accent-color:var(--teal)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:560px){.row2{grid-template-columns:1fr}}
+.numfield{display:flex;align-items:center;gap:8px;background:#141a18;border:1px solid var(--line);border-radius:10px;padding:8px 10px}
+.numfield input[type=number]{width:90px;background:transparent;border:none;color:var(--ink);font-size:.9rem}
+.numfield input[type=number]:focus{outline:none}
+.numfield select{background:transparent;border:none;color:var(--ink);font-size:.85rem}
+button#calc{display:block;width:100%;margin:1.4rem 0;padding:16px;border:none;border-radius:14px;
+  background:linear-gradient(160deg,var(--teal),#1d8b98);color:#04211f;font-weight:700;font-size:1.05rem;cursor:pointer;
+  box-shadow:0 10px 30px -12px rgba(52,198,214,.5)}
+button#calc:hover{filter:brightness(1.08)}
+#results{margin-top:1.2rem}
+.dz{border-radius:16px;border:1px solid var(--line);margin-bottom:14px;overflow:hidden}
+.dz-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 18px;cursor:pointer;
+  background:var(--panel)}
+.dz-head h3{font-family:var(--serif);font-size:1.1rem}
+.badge{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.badge.definite{background:rgba(46,139,87,.22);color:#7ee0ac;border:1px solid #2e8b57}
+.badge.probable{background:rgba(184,137,59,.22);color:#e3b877;border:1px solid var(--amber)}
+.badge.no{background:rgba(160,160,160,.12);color:#9db0ac;border:1px solid var(--line)}
+.badge.alert{background:rgba(192,57,43,.22);color:#f0a39a;border:1px solid var(--red)}
+.dz-body{padding:4px 18px 16px;display:none;font-size:.86rem;background:#141917}
+.dz.open .dz-body{display:block}
+.crit{display:flex;gap:10px;padding:7px 0;border-bottom:1px dashed var(--line)}
+.crit:last-child{border-bottom:none}
+.crit .mark{flex:0 0 20px;font-weight:700}
+.crit.ok .mark{color:var(--green)}
+.crit.bad .mark{color:var(--red)}
+.crit.unk .mark{color:var(--amber)}
+.cite{margin-top:10px;font-size:.76rem;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.cite a{color:var(--teal)}
+footer{margin-top:2.2rem;color:var(--muted);font-size:.78rem;text-align:center}
+.pill-info{font-size:.72rem;color:var(--muted);margin-top:4px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="kicker">ORL · Ayuda al diagnóstico</div>
+    <h1>Criterios ICVD de la Bárány Society</h1>
+    <p class="sub">Introduce los datos clínicos del paciente y la aplicación evalúa, criterio por criterio, qué patologías vestibulares crónicas cumplen los criterios diagnósticos de consenso de la Bárány Society (ICVD).</p>
+  </header>
+
+  <div class="disclaimer">
+    <b>Uso previsto y límites.</b> Esta herramienta es una ayuda de apoyo a la decisión clínica (CDSS), no un sistema de diagnóstico automático. Reproduce, criterio por criterio, los documentos de consenso publicados por el Committee for the Classification of Vestibular Disorders de la Bárány Society (ICVD). El resultado nunca sustituye el juicio clínico del especialista ni la lectura del documento original.
+    <ul>
+      <li>Todos los criterios de consenso exigen explícitamente <i>"no explicado mejor por otro diagnóstico"</i>: esa exclusión diferencial es responsabilidad tuya y no se puede automatizar.</li>
+      <li>Los umbrales numéricos (duraciones, ganancia VOR, nº de crisis) se han transcrito con el máximo cuidado, pero en una tarea de este nivel de exigencia clínica te recomiendo cotejarlos una vez contra el PDF original antes de apoyarte en ellos en decisiones difíciles — el enlace a cada documento está en cada tarjeta de resultado.</li>
+      <li>Por instrucción expresa, esta aplicación <b>no incluye</b> la vestibulopatía aguda unilateral (neuritis vestibular) ni el vértigo cervicogénico.</li>
+    </ul>
+  </div>
+
+  <form id="f">
+
+    <section class="card">
+      <h2 class="sect">1 · Perfil temporal de las crisis</h2>
+      <div class="grp">
+        <label class="q">Duración típica de cada episodio de vértigo/mareo</label>
+        <div class="numfield">
+          <input type="number" id="durVal" min="0" step="any" placeholder="valor">
+          <select id="durUnit">
+            <option value="s">segundos</option>
+            <option value="min" selected>minutos</option>
+            <option value="h">horas</option>
+            <option value="d">días</option>
+          </select>
+        </div>
+        <p class="pill-info">Si las crisis duran &lt;1 min, indícalo en segundos o minutos (p. ej. 20 segundos).</p>
+      </div>
+      <div class="grp">
+        <label class="q">Número total de crisis a lo largo de la evolución (estimado)</label>
+        <div class="numfield"><input type="number" id="numAttacks" min="0" step="1" placeholder="nº de crisis"></div>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="chronic3m"> Síntoma (mareo/inestabilidad/vértigo no rotatorio) presente la mayoría de los días, de forma prácticamente continua, durante ≥3 meses</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="stereotyped"> Las crisis son siempre clínicamente idénticas entre sí (estereotipadas) en este paciente</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">2 · Vértigo posicional y nistagmo</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="positional"> Vértigo/mareo posicional al tumbarse, girarse en la cama o extender la cabeza</label>
+      </div>
+      <div class="grp">
+        <label class="q">Patrón de nistagmo posicional observado (Dix-Hallpike / decúbito lateral / roll test en supino)</label>
+        <div class="opts">
+          <label class="opt"><input type="radio" name="nystagmus" value="torsional_up"> Torsional-vertical hacia arriba (canal posterior)</label>
+          <label class="opt"><input type="radio" name="nystagmus" value="horiz_geo"> Horizontal geotrópico cambiante (canal horizontal — canalolitiasis)</label>
+          <label class="opt"><input type="radio" name="nystagmus" value="horiz_apo"> Horizontal apogeotrópico cambiante (canal horizontal — cupulolitiasis)</label>
+          <label class="opt"><input type="radio" name="nystagmus" value="downbeat_tors"> Vertical hacia abajo ± torsional (canal anterior)</label>
+          <label class="opt"><input type="radio" name="nystagmus" value="none" checked> Ninguno / no explorado / atípico</label>
+        </div>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="latencyFatig"> El nistagmo posicional aparece con latencia de segundos y es fatigable/reversible al incorporarse</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">3 · Síntomas auditivos y otológicos</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="auralFluct"> Síntomas auditivos fluctuantes unilaterales (hipoacusia, acúfeno y/o plenitud ótica) en el oído afecto, asociados temporalmente a las crisis</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="audiometrySNHL"> Hipoacusia neurosensorial de frecuencias baja-media documentada por audiometría en el oído afecto, coincidiendo con un episodio (antes/durante/después)</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">4 · Migraña</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="migraineHx"> Historia actual o previa de migraña con o sin aura (criterios ICHD)</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="migFeatures50"> En ≥50% de los episodios vestibulares aparece cefalea migrañosa, y/o fotofobia+fonofobia, y/o aura visual</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">5 · Patrón crónico postural-perceptivo</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="exacUpright"> Empeora en bipedestación / postura erguida</label>
+        <label class="opt"><input type="checkbox" id="exacMove"> Empeora con el movimiento activo o pasivo propio, sea cual sea la dirección</label>
+        <label class="opt"><input type="checkbox" id="exacVisual"> Empeora con estímulos visuales en movimiento o patrones visuales complejos</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="precipEvent"> El cuadro comenzó tras un episodio vestibular agudo/episódico, otra enfermedad neurológica/médica, o un cuadro de ansiedad/estrés</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="distressImpair"> Causa malestar significativo o afectación funcional relevante</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">6 · Inestabilidad crónica y función vestibular (VOR)</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="worseWalking"> Inestabilidad/inseguridad crónica al caminar o estar de pie</label>
+        <label class="opt"><input type="checkbox" id="worseDark"> Empeora en oscuridad y/o sobre terreno irregular</label>
+        <label class="opt"><input type="checkbox" id="oscillopsia"> Oscilopsia / visión borrosa inducida por el movimiento cefálico o al caminar</label>
+        <label class="opt"><input type="checkbox" id="noSymptomsStatic"> Ausencia de síntomas sentado o tumbado en condiciones estáticas</label>
+      </div>
+      <div class="grp row2">
+        <div class="numfield"><label style="font-size:.78rem;color:var(--muted);margin-right:6px">Ganancia VOR horizontal (vHIT), lado peor:</label><input type="number" id="vhitGain" min="0" max="2" step="0.01" placeholder="ej. 0.5"></div>
+        <div class="numfield"><label style="font-size:.78rem;color:var(--muted);margin-right:6px">Suma calórica bitérmica ambos lados (°/s):</label><input type="number" id="caloricSum" min="0" step="0.1" placeholder="ej. 8"></div>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="bedsideHITbilateral"> Head Impulse Test clínico (bedside) patológico de forma bilateral (sacadas correctoras visibles en ambos lados)</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="age60"> Edad ≥ 60 años</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">7 · Vestibulopatía episódica breve y respuesta terapéutica</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="triggeredByHeadMove"> Las crisis pueden desencadenarse por determinados movimientos cefálicos (además de aparecer espontáneamente)</label>
+        <label class="opt"><input type="checkbox" id="carbamazepineResponse"> Respuesta terapéutica clara a un ensayo con carbamazepina/oxcarbazepina (si se ha probado)</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">8 · Mal de Débarquement (MdDS)</h2>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="rocking"> Sensación de balanceo / mecido / bamboleo no rotatorio (no vértigo giratorio)</label>
+        <label class="opt"><input type="checkbox" id="onsetAfterTravel"> Comenzó en las 48 horas siguientes a un viaje o exposición a movimiento pasivo (barco, avión, coche, tren)</label>
+        <label class="opt"><input type="checkbox" id="reliefWithMotion"> Mejora transitoriamente al volver a moverse (p. ej., conducir o ir en coche)</label>
+        <label class="opt"><input type="checkbox" id="duration48h"> Los síntomas persisten &gt;48 horas, la mayor parte del día</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="sect">9 · Factores de riesgo vascular (cribado de alarma)</h2>
+      <p class="pill-info" style="margin-bottom:8px">Este bloque no calcula un diagnóstico Bárány completo (los criterios cuantitativos exactos de "vértigo/mareo vascular" — p. ej. puntuaciones de riesgo — no se garantizan con precisión suficiente en esta versión); sirve únicamente para activar una alerta de derivación urgente.</p>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="vascRisk"> ≥2 factores de riesgo cardiovascular (HTA, diabetes, fibrilación auricular u otra cardiopatía embolígena, tabaquismo, dislipemia, ictus/AIT previo)</label>
+        <label class="opt"><input type="checkbox" id="focalNeuro"> Signos neurológicos focales asociados (diplopía, disartria, ataxia de tronco, debilidad/parestesias, cefalea occipital súbita e intensa)</label>
+      </div>
+    </section>
+
+    <button type="button" id="calc">Evaluar criterios diagnósticos</button>
+  </form>
+
+  <div id="results"></div>
+
+  <div class="excl">
+    <b>Excluidos deliberadamente de esta aplicación</b> (por instrucción expresa): vestibulopatía aguda unilateral / neuritis vestibular, y vértigo cervicogénico. Si el cuadro es un síndrome vestibular agudo único, continuo y de instauración brusca (no episódico), esta herramienta no es aplicable: valora la exploración HINTS y descarta ictus de fosa posterior por la vía clínica habitual.
+  </div>
+
+  <footer>
+    Fuente: documentos de consenso del Committee for the Classification of Vestibular Disorders, Bárány Society (ICVD) — <a href="https://www.thebaranysociety.org/icvd-consensus-documents/" style="color:var(--teal)">thebaranysociety.org/icvd-consensus-documents</a>. Herramienta de apoyo, no diagnóstica. Uso profesional (ORL). — José Sánchez.
+  </footer>
+</div>
+
+<script>
+function val(id){return document.getElementById(id).value}
+function chk(id){return document.getElementById(id).checked}
+function num(id){var v=parseFloat(document.getElementById(id).value); return isNaN(v)?null:v}
+function nystagmusVal(){var r=document.querySelector('input[name=nystagmus]:checked'); return r?r.value:'none'}
+
+function durationMinutes(){
+  var v = num('durVal'); if(v===null) return null;
+  var u = val('durUnit');
+  if(u==='s') return v/60;
+  if(u==='min') return v;
+  if(u==='h') return v*60;
+  if(u==='d') return v*60*24;
+  return null;
+}
+
+function C(text, met){ // met: true/false/null(unknown/manual)
+  return {text:text, met:met};
+}
+
+function evaluate(){
+  var dur = durationMinutes();
+  var n = num('numAttacks');
+  var nyst = nystagmusVal();
+  var out = [];
+
+  // ---- Vestibular Migraine (Lempert 2012 / Barany-IHS, actualización literaria 2021) ----
+  (function(){
+    var critA_def = (n!==null && dur!==null) ? (n>=5 && dur>=5 && dur<=72*60) : null;
+    var critB = chk('migraineHx');
+    var critC = chk('migFeatures50');
+    var critD_manual = null;
+    var crits = [
+      C('A · ≥5 episodios de síntomas vestibulares de intensidad moderada-severa, de 5 min a 72 h de duración', critA_def),
+      C('B · Historia actual o previa de migraña con o sin aura (ICHD)', critB),
+      C('C · En ≥50% de los episodios: cefalea migrañosa con ≥2 de (unilateral, pulsátil, intensidad moderada-severa, agravada por actividad física) y/o fotofobia+fonofobia y/o aura visual', critC),
+      C('D · No explicado mejor por otro diagnóstico vestibular o de la ICHD (juicio clínico)', critD_manual)
+    ];
+    var isDefinite = critA_def===true && critB===true && critC===true;
+    var probA = (n!==null && dur!==null) ? (n>=5 && dur>=5 && dur<=72*60) : null;
+    var isProbable = !isDefinite && probA===true && (critB===true || critC===true);
+    out.push({
+      id:'vm', name:'Migraña vestibular (VM)',
+      status: isDefinite ? 'definite' : (isProbable ? 'probable' : (critA_def===false ? 'no' : 'unk')),
+      crits: crits,
+      note: isProbable ? 'Cumple el patrón de "migraña vestibular probable" (criterio A + solo uno de B/C).' : '',
+      cite:'Lempert T, Olesen J, Furman J, et al. Vestibular migraine: diagnostic criteria. J Vestib Res. 2012;22(4):167-172. Actualización: Lempert et al. J Vestib Res. 2022;32(1):1-6 (literature update 2021, criterios sin cambios).'
+    });
+  })();
+
+  // ---- Menière's Disease (Lopez-Escamez 2015) ----
+  (function(){
+    var attacks2plus = n!==null ? n>=2 : null;
+    var durDefOK = dur!==null ? (dur>=20 && dur<=12*60) : null;
+    var durProbOK = dur!==null ? (dur>=20 && dur<=24*60) : null;
+    var B = chk('audiometrySNHL');
+    var C_ = chk('auralFluct');
+    var crits = [
+      C('A · ≥2 episodios espontáneos de vértigo, cada uno de 20 min a 12 h', (attacks2plus!==null&&durDefOK!==null)?(attacks2plus&&durDefOK):null),
+      C('B · Hipoacusia neurosensorial de baja-media frecuencia documentada audiométricamente en el oído afecto, en al menos una ocasión antes/durante/después de un episodio', B),
+      C('C · Síntomas auditivos fluctuantes (hipoacusia, acúfeno o plenitud) en el oído afecto', C_),
+      C('D · No explicado mejor por otro diagnóstico vestibular (juicio clínico)', null)
+    ];
+    var isDefinite = attacks2plus===true && durDefOK===true && B===true && C_===true;
+    var isProbable = !isDefinite && attacks2plus===true && durProbOK===true && C_===true;
+    out.push({
+      id:'meniere', name:"Enfermedad de Ménière",
+      status: isDefinite?'definite':(isProbable?'probable':((attacks2plus===false||durDefOK===false&&durProbOK===false)?'no':'unk')),
+      crits: crits,
+      note: isProbable?'Cumple "Ménière probable" (episodios de 20 min-24 h + síntomas auditivos fluctuantes, sin audiometría confirmatoria de definite).':'',
+      cite:"Lopez-Escamez JA, Carey J, Chung WH, et al. Diagnostic criteria for Menière's disease. J Vestib Res. 2015;25(1):1-7 (Bárány Society / JSER / EAONO / AAO-HNS Equilibrium Committee / Korean Balance Society)."
+    });
+  })();
+
+  // ---- BPPV (von Brevern 2015) ----
+  (function(){
+    var durLt1 = dur!==null ? dur<1 : null;
+    var posOK = chk('positional');
+    // Posterior canal
+    (function(){
+      var nystOK = nyst==='torsional_up';
+      var crits = [
+        C('A · Crisis recurrentes de vértigo/mareo posicional al tumbarse o girarse en decúbito', posOK),
+        C('B · Duración de cada crisis &lt; 1 minuto', durLt1),
+        C('C · Nistagmo posicional torsional-vertical hacia arriba, con latencia de segundos, en Dix-Hallpike/decúbito lateral, fatigable/reversible', nystOK ? chk('latencyFatig') : (nyst==='torsional_up'?null:false)),
+        C('D · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+      ];
+      var isDefinite = posOK===true && durLt1===true && nystOK && chk('latencyFatig')===true;
+      var isProbable = !isDefinite && posOK===true && durLt1===true && !nystOK && nyst==='none';
+      out.push({id:'bppv_pc', name:'BPPV — canal posterior (canalolitiasis)', status:isDefinite?'definite':(isProbable?'probable':(posOK===false?'no':'unk')), crits:crits,
+        note: isProbable?'"BPPV probable de canal posterior": clínica típica pero nistagmo no confirmado/no explorado con el patrón característico.':'',
+        cite:'von Brevern M, Bertholon P, Brandt T, et al. Benign paroxysmal positional vertigo: diagnostic criteria. J Vestib Res. 2015;25(3-4):105-117 (Bárány Society).'});
+    })();
+    // Horizontal canal geotropic
+    (function(){
+      var nystOK = nyst==='horiz_geo';
+      var crits = [
+        C('A · Crisis recurrentes de vértigo/mareo posicional al tumbarse, girarse en supino o girar la cabeza', posOK),
+        C('B · Nistagmo horizontal geotrópico, cambiante de dirección con el giro cefálico en el roll test en supino, hacia el oído más declive', nystOK),
+        C('C · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+      ];
+      var isDefinite = posOK===true && nystOK;
+      out.push({id:'bppv_hc_geo', name:'BPPV — canal horizontal, geotrópico (canalolitiasis)', status:isDefinite?'definite':(posOK===false?'no':'unk'), crits:crits, note:'',
+        cite:'von Brevern M, Bertholon P, Brandt T, et al. J Vestib Res. 2015;25(3-4):105-117 (Bárány Society).'});
+    })();
+    // Horizontal canal apogeotropic
+    (function(){
+      var nystOK = nyst==='horiz_apo';
+      var crits = [
+        C('A · Crisis recurrentes de vértigo/mareo posicional al tumbarse, girarse en supino o girar la cabeza', posOK),
+        C('B · Nistagmo horizontal apogeotrópico, cambiante de dirección con el giro cefálico en el roll test en supino, hacia el oído menos declive', nystOK),
+        C('C · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+      ];
+      var isDefinite = posOK===true && nystOK;
+      out.push({id:'bppv_hc_apo', name:'BPPV — canal horizontal, apogeotrópico (cupulolitiasis)', status:isDefinite?'definite':(posOK===false?'no':'unk'), crits:crits, note:'',
+        cite:'von Brevern M, Bertholon P, Brandt T, et al. J Vestib Res. 2015;25(3-4):105-117 (Bárány Society).'});
+    })();
+  })();
+
+  // ---- PPPD (Staab 2017) ----
+  (function(){
+    var A = chk('chronic3m');
+    var B = (chk('exacUpright') || chk('exacMove') || chk('exacVisual'));
+    var Bfull = chk('exacUpright') && chk('exacMove') && chk('exacVisual');
+    var Cp = chk('precipEvent');
+    var D = chk('distressImpair');
+    var crits = [
+      C('A · ≥1 síntoma de mareo, inestabilidad o vértigo no rotatorio, presente la mayoría de los días, ≥3 meses', A),
+      C('B · Síntomas persistentes exacerbados por bipedestación, movimiento activo/pasivo propio, y estímulos visuales en movimiento/complejos (los 3 factores)', Bfull),
+      C('C · Precipitado por un cuadro que causó vértigo/inestabilidad/mareo (síndrome vestibular agudo, episódico o crónico, otra enfermedad neurológica/médica, o distrés psicológico)', Cp),
+      C('D · Causa malestar significativo o afectación funcional', D),
+      C('E · No explicado mejor por otra enfermedad o trastorno (juicio clínico)', null)
+    ];
+    var isDefinite = A===true && Bfull===true && Cp===true && D===true;
+    out.push({id:'pppd', name:'Mareo postural-perceptivo persistente (PPPD)', status:isDefinite?'definite':(A===false?'no':'unk'), crits:crits, note:'',
+      cite:'Staab JP, Eckhardt-Henn A, Horii A, et al. Diagnostic criteria for persistent postural-perceptual dizziness (PPPD). J Vestib Res. 2017;27(4):191-208 (Bárány Society).'});
+  })();
+
+  // ---- Bilateral Vestibulopathy (Strupp 2017) ----
+  (function(){
+    var Acl = chk('worseWalking') && (chk('oscillopsia') || chk('worseDark'));
+    var Bstatic = chk('noSymptomsStatic');
+    var gain = num('vhitGain');
+    var caloric = num('caloricSum');
+    var bedsideBil = chk('bedsideHITbilateral');
+    var vorDefinite = (gain!==null && gain<0.6) || (caloric!==null && caloric<6);
+    var vorProbable = !vorDefinite && ((gain!==null && gain<0.8) || bedsideBil===true);
+    var crits = [
+      C('A · Síndrome vestibular crónico con inestabilidad al caminar/estar de pie, más oscilopsia inducida por movimiento y/o empeoramiento en oscuridad/terreno irregular', Acl),
+      C('B · Ausencia de síntomas sentado/tumbado en condiciones estáticas', Bstatic),
+      C('C(definite) · Ganancia VOR angular horizontal bilateral &lt; 0.6 (vHIT/bobina escleral) y/o respuesta calórica bitérmica bilateral (suma) &lt; 6°/s', vorDefinite),
+      C('C(probable) · Ganancia VOR horizontal bilateral &lt; 0.8, y/o HIT clínico patológico bilateral', vorProbable),
+      C('D · No explicado mejor por otra enfermedad (juicio clínico)', null)
+    ];
+    var isDefinite = Acl===true && Bstatic===true && vorDefinite===true;
+    var isProbable = !isDefinite && Acl===true && Bstatic===true && vorProbable===true;
+    out.push({id:'bvp', name:'Vestibulopatía bilateral (BVP)', status:isDefinite?'definite':(isProbable?'probable':(Acl===false?'no':'unk')), crits:crits, note:'',
+      cite:'Strupp M, Kim JS, Murofushi T, et al. Bilateral vestibulopathy: diagnostic criteria. J Vestib Res. 2017;27(4):177-189 (Bárány Society).'});
+  })();
+
+  // ---- Vestibular Paroxysmia (Strupp 2016) ----
+  (function(){
+    var durLt1 = dur!==null ? dur<1 : null;
+    var durLt5 = dur!==null ? dur<5 : null;
+    var n10 = n!==null ? n>=10 : null;
+    var n5 = n!==null ? n>=5 : null;
+    var stereo = chk('stereotyped');
+    var triggered = chk('triggeredByHeadMove');
+    var response = chk('carbamazepineResponse');
+    var crits = [
+      C('A(definite) · ≥10 crisis de vértigo giratorio o no giratorio', n10),
+      C('B(definite) · Duración &lt; 1 minuto', durLt1),
+      C('C · Síntomas estereotipados en ese paciente', stereo),
+      C('D(definite) · Respuesta a tratamiento de prueba con carbamazepina/oxcarbazepina', response),
+      C('E · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+    ];
+    var isDefinite = n10===true && durLt1===true && stereo===true && response===true;
+    var isProbable = !isDefinite && n5===true && durLt5===true && stereo===true;
+    out.push({id:'vp', name:'Paroxismia vestibular', status:isDefinite?'definite':(isProbable?'probable':((n5===false||durLt5===false)?'no':'unk')), crits:crits,
+      note: isProbable?'"Paroxismia vestibular probable": ≥5 crisis, &lt;5 min, estereotipadas, con o sin desencadenante posicional cefálico, sin confirmar aún respuesta terapéutica.':'',
+      cite:'Strupp M, Lopez-Escamez JA, Kim JS, et al. Vestibular paroxysmia: diagnostic criteria. J Vestib Res. 2016;26(5-6):409-415 (Bárány Society).'});
+  })();
+
+  // ---- Presbyvestibulopathy (Agrawal 2019) ----
+  (function(){
+    var A = chk('worseWalking') || chk('worseDark');
+    var age = chk('age60');
+    var gain = num('vhitGain');
+    var caloric = num('caloricSum');
+    var mildBVestib = (gain!==null && gain>=0.6 && gain<0.8) || (caloric!==null && caloric>=6 && caloric<25);
+    var crits = [
+      C('A · Síntomas vestibulares crónicos: inestabilidad, alteración de la marcha y/o caídas', A),
+      C('B · Hipofunción vestibular bilateral leve: ganancia VOR horizontal (vHIT) 0.6-0.8, y/o suma calórica bitérmica 6-25°/s', mildBVestib),
+      C('C · Edad ≥ 60 años', age),
+      C('D · No explicado mejor por otra enfermedad vestibular (juicio clínico)', null)
+    ];
+    var isDefinite = A===true && mildBVestib===true && age===true;
+    out.push({id:'presby', name:'Presbivestibulopatía', status:isDefinite?'definite':(age===false?'no':'unk'), crits:crits, note:'',
+      cite:'Agrawal Y, van de Berg R, Wuyts F, et al. Presbyvestibulopathy: diagnostic criteria. J Vestib Res. 2019;29(4):161-170 (Bárány Society).'});
+  })();
+
+  // ---- Mal de Débarquement Syndrome (Cha 2020) ----
+  (function(){
+    var rocking = chk('rocking');
+    var onset = chk('onsetAfterTravel');
+    var relief = chk('reliefWithMotion');
+    var dur48 = chk('duration48h');
+    var crits = [
+      C('A · Sensación de balanceo/mecido/bamboleo no rotatorio, presente de forma continua o casi todo el día', rocking),
+      C('B · Inicio en las 48 h siguientes al cese de exposición a movimiento pasivo (barco/avión/coche/tren) [subtipo clásico]', onset),
+      C('C · Mejora transitoria de los síntomas al volver a exponerse a movimiento pasivo (p. ej. conducir)', relief),
+      C('D · Duración &gt; 48 horas', dur48),
+      C('E · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+    ];
+    var isDefinite = rocking===true && onset===true && relief===true && dur48===true;
+    var isProbable = !isDefinite && rocking===true && dur48===true && (relief===true || onset===true);
+    out.push({id:'mdds', name:'Mal de Débarquement (MdDS)', status:isDefinite?'definite':(isProbable?'probable':(rocking===false?'no':'unk')), crits:crits,
+      note: isProbable?'Cuadro compatible con MdDS pero sin cumplir el patrón clásico completo (p. ej. inicio no ligado a viaje = subtipo "other-onset"/espontáneo, descrito pero menos caracterizado).':'',
+      cite:'Cha YH, Baloh RW, Cho C, et al. Mal de debarquement syndrome diagnostic criteria. J Vestib Res. 2020;30(5):285-293 (Bárány Society).'});
+  })();
+
+  // ---- Vascular alert (screening only, not full ICVD criteria) ----
+  (function(){
+    var risk = chk('vascRisk');
+    var focal = chk('focalNeuro');
+    var crits = [
+      C('Factores de riesgo vascular relevantes (≥2)', risk),
+      C('Signos neurológicos focales acompañantes', focal)
+    ];
+    var alert = risk===true || focal===true;
+    out.push({id:'vasc', name:'Alerta — posible causa vascular', status: alert?'alert':'no', crits:crits,
+      note:'Módulo de cribado, no un cálculo completo de los criterios ICVD de "vértigo/mareo vascular" (que incluyen escalas de riesgo y hallazgos de neuroimagen no evaluables aquí). Si se marca la alerta: valora estudio neurovascular urgente/preferente y RM con difusión antes de asumir un diagnóstico vestibular periférico crónico.',
+      cite:'Kim HA, Bisdorff A, Bronstein AM, et al. Vascular vertigo and dizziness: diagnostic criteria. J Vestib Res. 2022;32(3):205-222 (Bárány Society).'});
+  })();
+
+  render(out);
+}
+
+function badgeLabel(status){
+  return {definite:'Cumple criterios · definite', probable:'Cumple criterios · probable', no:'No cumple', unk:'Datos insuficientes', alert:'⚠ Alerta vascular'}[status];
+}
+
+function render(list){
+  var order = {definite:0, probable:1, alert:2, unk:3, no:4};
+  list.sort(function(a,b){return order[a.status]-order[b.status]});
+  var html = '';
+  list.forEach(function(d){
+    html += '<div class="dz'+(d.status==='definite'||d.status==='probable'||d.status==='alert'?' open':'')+'">';
+    html += '<div class="dz-head" onclick="this.parentElement.classList.toggle(\'open\')"><h3>'+d.name+'</h3><span class="badge '+d.status+'">'+badgeLabel(d.status)+'</span></div>';
+    html += '<div class="dz-body">';
+    d.crits.forEach(function(c){
+      var cls = c.met===true?'ok':(c.met===false?'bad':'unk');
+      var mk = c.met===true?'✓':(c.met===false?'✗':'?');
+      html += '<div class="crit '+cls+'"><span class="mark">'+mk+'</span><span>'+c.text+'</span></div>';
+    });
+    if(d.note) html += '<p class="pill-info" style="margin-top:8px">'+d.note+'</p>';
+    html += '<p class="cite">'+d.cite+'</p>';
+    html += '</div></div>';
+  });
+  document.getElementById('results').innerHTML = html;
+  document.getElementById('results').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+document.getElementById('calc').addEventListener('click', evaluate);
+</script>
+</body>
+</html>
