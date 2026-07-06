@@ -90,7 +90,7 @@ footer{margin-top:2.2rem;color:var(--muted);font-size:.78rem;text-align:center}
     <ul>
       <li>Todos los criterios de consenso exigen explícitamente <i>"no explicado mejor por otro diagnóstico"</i>: esa exclusión diferencial es responsabilidad tuya y no se puede automatizar.</li>
       <li>Los umbrales numéricos (duraciones, ganancia VOR, nº de crisis) se han transcrito con el máximo cuidado, pero en una tarea de este nivel de exigencia clínica te recomiendo cotejarlos una vez contra el PDF original antes de apoyarte en ellos en decisiones difíciles — el enlace a cada documento está en cada tarjeta de resultado.</li>
-      <li>Por instrucción expresa, esta aplicación <b>no incluye</b> la vestibulopatía aguda unilateral (neuritis vestibular) ni el vértigo cervicogénico.</li>
+      <li>Por instrucción expresa, esta aplicación <b>no incluye</b> el vértigo cervicogénico. La vestibulopatía aguda unilateral (neuritis vestibular) sí está cubierta en el bloque 10, solo para el episodio agudo único — su secuela crónica compensada queda fuera de alcance.</li>
     </ul>
   </div>
 
@@ -235,13 +235,32 @@ footer{margin-top:2.2rem;color:var(--muted);font-size:.78rem;text-align:center}
       </div>
     </section>
 
+    <section class="card">
+      <h2 class="sect">10 · Síndrome vestibular agudo único (vestibulopatía aguda unilateral / neuritis vestibular)</h2>
+      <p class="pill-info" style="margin-bottom:8px">Este bloque solo tiene sentido ante un episodio único, continuo y no episódico (no encaja con "crisis" recurrentes de las secciones anteriores). Antes de aplicarlo, descarta siempre causa central con la exploración HINTS.</p>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="auvpDur24h"> Inicio agudo/subagudo de vértigo o mareo sostenido y continuo (no episódico), de intensidad moderada-severa, con duración ≥24 horas</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="auvpNystPattern"> Nistagmo espontáneo de patrón periférico: horizontal-torsional, unidireccional (no cambia de sentido con la mirada), que aumenta al retirar la fijación visual</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="auvpVorObjective"> Evidencia objetiva/cuantificada de hipofunción vestibular unilateral: vHIT con ganancia &lt; 0.7 y asimetría &gt; 0.3 respecto al lado sano, y/o paresia calórica unilateral &gt; 25%</label>
+        <label class="opt"><input type="checkbox" id="auvpHitBedside"> Head Impulse Test clínico (bedside), sin cuantificar, con sacada correctora patológica hacia el lado de la lesión</label>
+      </div>
+      <div class="grp">
+        <label class="opt"><input type="checkbox" id="auvpNoAudio"> Sin síntomas ni signos audiológicos agudos asociados (sin hipoacusia/acúfeno agudo de nueva aparición)</label>
+        <label class="opt"><input type="checkbox" id="auvpNoCentral"> Sin signos centrales agudos (HINTS sin skew deviation ni nistagmo que cambia de dirección con la mirada; HIT coherente con causa periférica)</label>
+      </div>
+    </section>
+
     <button type="button" id="calc">Evaluar criterios diagnósticos</button>
   </form>
 
   <div id="results"></div>
 
   <div class="excl">
-    <b>Excluidos deliberadamente de esta aplicación</b> (por instrucción expresa): vestibulopatía aguda unilateral / neuritis vestibular, y vértigo cervicogénico. Si el cuadro es un síndrome vestibular agudo único, continuo y de instauración brusca (no episódico), esta herramienta no es aplicable: valora la exploración HINTS y descarta ictus de fosa posterior por la vía clínica habitual.
+    <b>Excluido deliberadamente de esta aplicación</b> (por instrucción expresa): vértigo cervicogénico. Si el cuadro es un síndrome vestibular agudo único, continuo y de instauración brusca (no episódico), usa el bloque 10, pero recuerda que esta herramienta no sustituye la exploración HINTS ni el descarte de ictus de fosa posterior por la vía clínica habitual.
   </div>
 
   <footer>
@@ -470,6 +489,31 @@ function evaluate(){
       cite:'Cha YH, Baloh RW, Cho C, et al. Mal de debarquement syndrome diagnostic criteria. J Vestib Res. 2020;30(5):285-293 (Bárány Society).'});
   })();
 
+  // ---- Acute unilateral vestibulopathy / vestibular neuritis (Strupp 2022) ----
+  (function(){
+    var dur24h = chk('auvpDur24h');
+    var nyst = chk('auvpNystPattern');
+    var vorObjective = chk('auvpVorObjective');
+    var hitBedside = chk('auvpHitBedside');
+    var noAudio = chk('auvpNoAudio');
+    var noCentral = chk('auvpNoCentral');
+    var crits = [
+      C('A · Inicio agudo/subagudo de vértigo sostenido y continuo (no episódico), moderado-severo, ≥24 horas', dur24h),
+      C('B · Nistagmo espontáneo de patrón periférico: horizontal-torsional, unidireccional, aumentado sin fijación visual', nyst),
+      C('C(definite) · Evidencia objetiva/cuantificada de hipofunción VOR unilateral (vHIT &lt; 0.7 con asimetría &gt; 0.3, y/o paresia calórica &gt; 25%)', vorObjective),
+      C('C(probable) · HIT clínico (bedside) patológico unilateral, sin cuantificar', hitBedside),
+      C('D · Sin síntomas/signos audiológicos agudos asociados', noAudio),
+      C('E · Sin signos centrales agudos (HINTS: sin skew, sin nistagmo que cambia de dirección)', noCentral),
+      C('F · No explicado mejor por otro diagnóstico (juicio clínico)', null)
+    ];
+    var ruledOut = dur24h===false || noCentral===false || noAudio===false;
+    var isDefinite = dur24h===true && nyst===true && vorObjective===true && noAudio===true && noCentral===true;
+    var isProbable = !isDefinite && dur24h===true && nyst===true && (vorObjective===true || hitBedside===true) && noAudio===true && noCentral===true;
+    out.push({id:'auvp', name:'Vestibulopatía aguda unilateral (neuritis vestibular)', status:isDefinite?'definite':(isProbable?'probable':(ruledOut?'no':'unk')), crits:crits,
+      note:'Aplicable solo a un síndrome vestibular agudo único y continuo (no a crisis recurrentes). Antes de asumir este diagnóstico, descarta siempre causa central mediante la exploración HINTS y valora neuroimagen si hay cualquier duda.',
+      cite:'Strupp M, Bisdorff A, Furman J, et al. Acute unilateral vestibulopathy/vestibular neuritis: diagnostic criteria. J Vestib Res. 2022;32(5):389-406 (Bárány Society).'});
+  })();
+
   // ---- Vascular alert (screening only, not full ICVD criteria) ----
   (function(){
     var risk = chk('vascRisk');
@@ -497,8 +541,8 @@ function buildNextSteps(){
   if(document.getElementById('numAttacks').value==='') items.push('Ubicar al paciente en un rango de nº de crisis a lo largo de la evolución (0 / 1 / 2-4 / 5-9 / ≥10) — sin este dato no se puede aplicar ningún criterio de recuento.');
   if(num('vhitGain')===null && num('caloricSum')===null) items.push('Completar vHIT (ganancia VOR horizontal) y/o pruebas calóricas bitérmicas si aún no se han realizado — sin ellas no se puede valorar vestibulopatía bilateral ni presbivestibulopatía.');
   items.push('Valorar RM craneal con contraste (fosa posterior / ángulo pontocerebeloso / conducto auditivo interno) si el cuadro es atípico, progresivo, refractario o no encaja con ninguna entidad de esta lista — para descartar causa estructural central (p. ej. schwannoma vestibular, lesión de fosa posterior, esclerosis múltiple).');
-  items.push('Si ya se dispone de VNG/calóricas, revisar patrones no capturados en este formulario: paresia canalicular unilateral (apunta a un déficit periférico unilateral, p. ej. secuela de neuritis vestibular — excluida de esta app), preponderancia direccional, o hallazgos de nistagmo central (vertical puro, no suprimible con fijación visual, rebote) — orientan a una causa distinta de las cubiertas aquí.');
-  items.push('Ninguna de las entidades de esta app ha quedado activada: valora también diagnósticos fuera de su alcance — vestibulopatía aguda unilateral (neuritis vestibular), vértigo cervicogénico, causa otológica no vestibular (p. ej. otosclerosis), fármacos ototóxicos/vestibulotóxicos, o un origen psiquiátrico/funcional primario — y la lectura directa de los documentos ICVD originales ante un cuadro atípico.');
+  items.push('Si ya se dispone de VNG/calóricas, revisar patrones no capturados en este formulario: paresia canalicular unilateral aguda (valorar bloque 10, vestibulopatía aguda unilateral/neuritis, si el cuadro es un episodio único continuo), preponderancia direccional, o hallazgos de nistagmo central (vertical puro, no suprimible con fijación visual, rebote) — orientan a una causa distinta de las cubiertas aquí.');
+  items.push('Ninguna de las entidades de esta app ha quedado activada: valora también diagnósticos fuera de su alcance — vértigo cervicogénico, causa otológica no vestibular (p. ej. otosclerosis), fármacos ototóxicos/vestibulotóxicos, secuela crónica compensada de una neuritis vestibular previa, o un origen psiquiátrico/funcional primario — y la lectura directa de los documentos ICVD originales ante un cuadro atípico.');
   return items;
 }
 
