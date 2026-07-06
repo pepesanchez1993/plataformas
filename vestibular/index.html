@@ -70,6 +70,11 @@ button#calc:hover{filter:brightness(1.08)}
 .cite a{color:var(--teal)}
 footer{margin-top:2.2rem;color:var(--muted);font-size:.78rem;text-align:center}
 .pill-info{font-size:.72rem;color:var(--muted);margin-top:4px}
+.suggest{background:linear-gradient(160deg,#14201f,#182826);border:1px solid #234745;border-radius:16px;
+  padding:16px 20px;margin-bottom:16px}
+.suggest h3{font-family:var(--serif);font-size:1.1rem;color:var(--teal);margin-bottom:.5em}
+.suggest ul{margin:.4em 0 0 1.1em;font-size:.86rem}
+.suggest li{margin-bottom:6px}
 </style>
 </head>
 <body>
@@ -486,10 +491,31 @@ function badgeLabel(status){
   return {definite:'Cumple criterios · definite', probable:'Cumple criterios · probable', no:'No cumple', unk:'Datos insuficientes', alert:'⚠ Alerta vascular'}[status];
 }
 
+function buildNextSteps(){
+  var items = [];
+  if(num('durVal')===null) items.push('Precisar la duración típica de las crisis (segundos/minutos/horas) — es el dato que más discrimina entre patologías.');
+  if(document.getElementById('numAttacks').value==='') items.push('Ubicar al paciente en un rango de nº de crisis a lo largo de la evolución (0 / 1 / 2-4 / 5-9 / ≥10) — sin este dato no se puede aplicar ningún criterio de recuento.');
+  if(nystagmusVal()==='none') items.push('Explorar y registrar el nistagmo posicional con Dix-Hallpike / decúbito lateral / roll test en supino — imprescindible para valorar un BPPV.');
+  if(num('vhitGain')===null && num('caloricSum')===null) items.push('Solicitar vHIT (ganancia VOR horizontal) y/o pruebas calóricas bitérmicas — necesarias para vestibulopatía bilateral y presbivestibulopatía.');
+  if(!chk('audiometrySNHL') && !chk('auralFluct')) items.push('Solicitar audiometría tonal y preguntar activamente por síntomas auditivos fluctuantes (hipoacusia, acúfeno, plenitud ótica) — clave para la enfermedad de Ménière.');
+  if(!chk('chronic3m')) items.push('Si el síntoma es continuo o casi diario, registrar un diario de síntomas durante ≥3 meses (frecuencia, desencadenantes posturales/de movimiento/visuales) — necesario para valorar un PPPD.');
+  if(!chk('migraineHx')) items.push('Preguntar activamente por antecedentes de migraña (actual o pasada, con o sin aura) y por cefalea/fotofobia/fonofobia asociadas a las crisis.');
+  if(chk('stereotyped') && !chk('carbamazepineResponse')) items.push('Si las crisis son muy breves (&lt;1-5 min) y estereotipadas, valorar un ensayo terapéutico con carbamazepina/oxcarbazepina — apoya (sin confirmar por sí solo) el diagnóstico de paroxismia vestibular.');
+  if(!chk('vascRisk') && !chk('focalNeuro')) items.push('Revisar activamente los factores de riesgo vascular y explorar signos neurológicos focales, para no pasar por alto una causa vascular.');
+  items.push('Ninguna de las entidades de esta app ha quedado activada: valora también diagnósticos fuera de su alcance — vestibulopatía aguda unilateral (neuritis vestibular), vértigo cervicogénico, causa otológica no vestibular (p. ej. otosclerosis), fármacos ototóxicos/vestibulotóxicos, o un origen psiquiátrico/funcional primario — y la lectura directa de los documentos ICVD originales ante un cuadro atípico.');
+  return items;
+}
+
 function render(list){
   var order = {definite:0, probable:1, alert:2, unk:3, no:4};
   list.sort(function(a,b){return order[a.status]-order[b.status]});
+  var noSignal = list.every(function(d){return d.status==='no'||d.status==='unk'});
   var html = '';
+  if(noSignal){
+    html += '<div class="suggest"><h3>Sin patrón claro por ahora — próximos pasos sugeridos</h3><ul>';
+    buildNextSteps().forEach(function(t){ html += '<li>'+t+'</li>'; });
+    html += '</ul></div>';
+  }
   list.forEach(function(d){
     html += '<div class="dz'+(d.status==='definite'||d.status==='probable'||d.status==='alert'?' open':'')+'">';
     html += '<div class="dz-head" onclick="this.parentElement.classList.toggle(\'open\')"><h3>'+d.name+'</h3><span class="badge '+d.status+'">'+badgeLabel(d.status)+'</span></div>';
