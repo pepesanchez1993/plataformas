@@ -493,15 +493,11 @@ function badgeLabel(status){
 
 function buildNextSteps(){
   var items = [];
-  if(num('durVal')===null) items.push('Precisar la duración típica de las crisis (segundos/minutos/horas) — es el dato que más discrimina entre patologías.');
+  if(num('durVal')===null) items.push('Precisar la duración típica de las crisis (segundos/minutos/horas) — es el dato que más discrimina entre patologías y aún no está registrado.');
   if(document.getElementById('numAttacks').value==='') items.push('Ubicar al paciente en un rango de nº de crisis a lo largo de la evolución (0 / 1 / 2-4 / 5-9 / ≥10) — sin este dato no se puede aplicar ningún criterio de recuento.');
-  if(nystagmusVal()==='none') items.push('Explorar y registrar el nistagmo posicional con Dix-Hallpike / decúbito lateral / roll test en supino — imprescindible para valorar un BPPV.');
-  if(num('vhitGain')===null && num('caloricSum')===null) items.push('Solicitar vHIT (ganancia VOR horizontal) y/o pruebas calóricas bitérmicas — necesarias para vestibulopatía bilateral y presbivestibulopatía.');
-  if(!chk('audiometrySNHL') && !chk('auralFluct')) items.push('Solicitar audiometría tonal y preguntar activamente por síntomas auditivos fluctuantes (hipoacusia, acúfeno, plenitud ótica) — clave para la enfermedad de Ménière.');
-  if(!chk('chronic3m')) items.push('Si el síntoma es continuo o casi diario, registrar un diario de síntomas durante ≥3 meses (frecuencia, desencadenantes posturales/de movimiento/visuales) — necesario para valorar un PPPD.');
-  if(!chk('migraineHx')) items.push('Preguntar activamente por antecedentes de migraña (actual o pasada, con o sin aura) y por cefalea/fotofobia/fonofobia asociadas a las crisis.');
-  if(chk('stereotyped') && !chk('carbamazepineResponse')) items.push('Si las crisis son muy breves (&lt;1-5 min) y estereotipadas, valorar un ensayo terapéutico con carbamazepina/oxcarbazepina — apoya (sin confirmar por sí solo) el diagnóstico de paroxismia vestibular.');
-  if(!chk('vascRisk') && !chk('focalNeuro')) items.push('Revisar activamente los factores de riesgo vascular y explorar signos neurológicos focales, para no pasar por alto una causa vascular.');
+  if(num('vhitGain')===null && num('caloricSum')===null) items.push('Completar vHIT (ganancia VOR horizontal) y/o pruebas calóricas bitérmicas si aún no se han realizado — sin ellas no se puede valorar vestibulopatía bilateral ni presbivestibulopatía.');
+  items.push('Valorar RM craneal con contraste (fosa posterior / ángulo pontocerebeloso / conducto auditivo interno) si el cuadro es atípico, progresivo, refractario o no encaja con ninguna entidad de esta lista — para descartar causa estructural central (p. ej. schwannoma vestibular, lesión de fosa posterior, esclerosis múltiple).');
+  items.push('Si ya se dispone de VNG/calóricas, revisar patrones no capturados en este formulario: paresia canalicular unilateral (apunta a un déficit periférico unilateral, p. ej. secuela de neuritis vestibular — excluida de esta app), preponderancia direccional, o hallazgos de nistagmo central (vertical puro, no suprimible con fijación visual, rebote) — orientan a una causa distinta de las cubiertas aquí.');
   items.push('Ninguna de las entidades de esta app ha quedado activada: valora también diagnósticos fuera de su alcance — vestibulopatía aguda unilateral (neuritis vestibular), vértigo cervicogénico, causa otológica no vestibular (p. ej. otosclerosis), fármacos ototóxicos/vestibulotóxicos, o un origen psiquiátrico/funcional primario — y la lectura directa de los documentos ICVD originales ante un cuadro atípico.');
   return items;
 }
