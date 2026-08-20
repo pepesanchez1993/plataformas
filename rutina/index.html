@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#16140f">
+<link rel="apple-touch-icon" href="../icon.png">
+<title>Rutina Nicole · Seguimiento</title>
+<style>
+:root{
+  --bg:#16140f; --panel:#211e18; --panel2:#2a261e; --panel3:#2f2a20;
+  --ink:#f3ece0; --muted:#a89f8d; --faint:#7d7466;
+  --line:#332e25; --line2:#413a2d;
+  --red:#c0392b; --green:#4fae72; --green-d:#2e8b57; --gold:#b8893b; --amber:#d98c3b;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --habitos:#b8893b; --estudio:#34c6d6; --entreno:#4fae72;
+  --aprende:#9d8be0; --movim:#d98c3b; --casa:#a89f8d;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);min-height:100dvh;
+  background-image:radial-gradient(circle at 1px 1px, rgba(184,137,59,.05) 1px, transparent 0);background-size:22px 22px;
+  padding:max(16px,env(safe-area-inset-top)) 0 calc(78px + env(safe-area-inset-bottom));}
+.wrap{width:100%;max-width:560px;margin:0 auto;padding:0 18px}
+a{color:inherit}
+
+/* ---------- Header ---------- */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:6px 0 18px}
+.back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);text-decoration:none;font-size:.82rem;
+  padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--panel);transition:.2s}
+.back:hover{color:var(--ink);border-color:var(--line2)}
+.brand{text-align:right}
+.brand .kicker{font-size:.62rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
+.brand h1{font-family:var(--serif);font-size:1.35rem;font-weight:600;line-height:1.1;letter-spacing:-.01em}
+
+/* ---------- Hero ring ---------- */
+.hero{display:flex;align-items:center;gap:20px;padding:20px;border-radius:18px;margin-bottom:16px;
+  background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 14px 34px -22px rgba(0,0,0,.85)}
+.ring{flex:0 0 auto;position:relative;width:104px;height:104px}
+.ring svg{transform:rotate(-90deg)}
+.ring .pcttxt{position:absolute;inset:0;display:grid;place-items:center;flex-direction:column;text-align:center}
+.ring .pcttxt b{font-family:var(--serif);font-size:1.9rem;font-weight:600;line-height:1}
+.ring .pcttxt span{font-size:.62rem;color:var(--muted);letter-spacing:.14em;text-transform:uppercase;margin-top:3px}
+.herox{flex:1 1 auto;min-width:0}
+.herox .greet{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:4px}
+.herox .msg{color:var(--muted);font-size:.85rem;line-height:1.4}
+.herox .band{display:inline-flex;align-items:center;gap:7px;margin-top:9px;font-size:.72rem;
+  padding:5px 11px;border-radius:999px;border:1px solid var(--line2);background:var(--panel3);color:var(--muted)}
+.herox .band .dot{width:8px;height:8px;border-radius:50%}
+
+/* ---------- Date nav ---------- */
+.datenav{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px}
+.datenav button{width:38px;height:38px;border-radius:12px;border:1px solid var(--line);background:var(--panel);
+  color:var(--ink);font-size:1.1rem;cursor:pointer;display:grid;place-items:center;transition:.18s}
+.datenav button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+.datenav button:disabled{opacity:.3;cursor:default}
+.datenav .datelbl{flex:1;text-align:center;font-size:.9rem}
+.datenav .datelbl b{display:block;font-family:var(--serif);font-size:1.05rem;text-transform:capitalize}
+.datenav .datelbl small{color:var(--muted);font-size:.72rem}
+.todaybtn{margin:0 auto 16px;display:block;font-size:.74rem;letter-spacing:.06em;color:var(--gold);
+  background:none;border:1px dashed var(--line2);padding:6px 14px;border-radius:999px;cursor:pointer;transition:.18s}
+.todaybtn:hover{border-color:var(--gold);background:color-mix(in srgb,var(--gold) 10%,transparent)}
+.todaybtn.hidden{display:none}
+
+/* ---------- Objective list ---------- */
+.group{display:flex;align-items:center;gap:10px;margin:20px 2px 10px;
+  color:var(--gc,var(--gold));font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:700}
+.group::after{content:"";flex:1;height:1px;background:var(--line)}
+.group .gc{font-variant-numeric:tabular-nums;letter-spacing:.04em;color:var(--faint)}
+.obj{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:14px;margin-bottom:9px;
+  background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  cursor:pointer;user-select:none;position:relative;overflow:hidden;transition:transform .12s,border-color .2s,background .2s}
+.obj::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--c);opacity:.5;transition:opacity .2s}
+.obj:active{transform:scale(.99)}
+.obj .ico{flex:0 0 auto;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.25rem;
+  background:color-mix(in srgb,var(--c) 16%,transparent);border:1px solid color-mix(in srgb,var(--c) 34%,transparent);transition:.2s}
+.obj .txt{flex:1 1 auto;min-width:0}
+.obj .txt h3{font-size:.98rem;font-weight:600;line-height:1.2;transition:.2s}
+.obj .txt p{color:var(--muted);font-size:.76rem;margin-top:2px;font-variant-numeric:tabular-nums}
+.check{flex:0 0 auto;width:28px;height:28px;border-radius:9px;border:2px solid var(--line2);
+  display:grid;place-items:center;transition:.2s;color:transparent;font-size:.95rem;font-weight:700}
+.obj.done{border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+.obj.done::before{opacity:1}
+.obj.done .ico{background:color-mix(in srgb,var(--c) 26%,transparent);transform:scale(1.02)}
+.obj.done .txt h3{color:var(--ink)}
+.obj.done .check{background:var(--c);border-color:var(--c);color:#16140f}
+.obj:not(.done) .txt h3{color:#d9d0c1}
+
+/* ---------- Tabs (bottom) ---------- */
+.tabbar{position:fixed;left:0;right:0;bottom:0;z-index:40;
+  background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(14px);
+  border-top:1px solid var(--line);padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+.tabbar .inner{max-width:560px;margin:0 auto;display:flex;justify-content:space-around}
+.tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;
+  color:var(--faint);font-size:.64rem;letter-spacing:.03em;cursor:pointer;padding:5px 0;transition:.18s;font-weight:600}
+.tab .ti{font-size:1.28rem;line-height:1;filter:grayscale(1) opacity(.7);transition:.18s}
+.tab.on{color:var(--gold)}
+.tab.on .ti{filter:none;transform:translateY(-1px)}
+
+/* ---------- Panels ---------- */
+.panel{display:none;animation:fade .25s ease}
+.panel.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.card{padding:18px;border-radius:16px;margin-bottom:14px;
+  background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);
+  box-shadow:0 1px 0 rgba(255,255,255,.03) inset,0 12px 30px -22px rgba(0,0,0,.85)}
+.card h2{font-family:var(--serif);font-size:1.15rem;font-weight:600;margin-bottom:3px}
+.card .csub{color:var(--muted);font-size:.8rem;margin-bottom:14px}
+
+/* Weekly grid */
+.wgrid{display:flex;flex-direction:column;gap:8px}
+.wrow{display:flex;align-items:center;gap:12px}
+.wrow .wd{flex:0 0 92px;font-size:.82rem;text-transform:capitalize}
+.wrow .wd small{display:block;color:var(--faint);font-size:.68rem}
+.wbar{flex:1;height:26px;border-radius:8px;background:var(--panel3);border:1px solid var(--line);overflow:hidden;position:relative}
+.wbar .fill{height:100%;border-radius:7px 0 0 7px;transition:width .5s var(--ease,cubic-bezier(.16,1,.3,1))}
+.wbar .wpct{position:absolute;inset:0;display:flex;align-items:center;padding:0 9px;font-size:.72rem;
+  font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.wrow.future{opacity:.4}
+.weekhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.weekhead .avg{font-family:var(--serif);font-size:1.4rem;font-weight:600}
+.weekhead .avg small{font-size:.72rem;color:var(--muted);font-family:var(--sans)}
+.wknav{display:flex;align-items:center;gap:8px}
+.wknav button{width:32px;height:32px;border-radius:9px;border:1px solid var(--line);background:var(--panel3);
+  color:var(--ink);cursor:pointer;transition:.18s}
+.wknav button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}
+.wknav button:disabled{opacity:.3}
+.wklbl{font-size:.76rem;color:var(--muted);min-width:120px;text-align:center}
+
+/* Stats */
+.statrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
+.stat{padding:16px;border-radius:14px;background:linear-gradient(160deg,var(--panel),var(--panel2));border:1px solid var(--line);text-align:center}
+.stat .n{font-family:var(--serif);font-size:2rem;font-weight:600;line-height:1}
+.stat .n .u{font-size:.9rem;color:var(--muted)}
+.stat .l{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-top:6px}
+.stat.flame .n{color:var(--amber)}
+
+/* Heatmap */
+.heat{overflow-x:auto;padding-bottom:4px}
+.heatgrid{display:grid;grid-auto-flow:column;grid-template-rows:repeat(7,1fr);gap:4px;min-width:min-content}
+.hcell{width:14px;height:14px;border-radius:4px;background:var(--panel3);border:1px solid var(--line)}
+.hleg{display:flex;align-items:center;gap:7px;justify-content:flex-end;margin-top:10px;font-size:.68rem;color:var(--muted)}
+.hleg .sw{width:12px;height:12px;border-radius:3px;border:1px solid var(--line)}
+
+/* Trend bars */
+.trend{display:flex;align-items:flex-end;gap:6px;height:110px;margin-top:6px}
+.tcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.tcol .tb{width:100%;max-width:26px;border-radius:6px 6px 3px 3px;background:var(--green-d);transition:height .5s var(--ease,cubic-bezier(.16,1,.3,1));min-height:3px}
+.tcol .tl{font-size:.62rem;color:var(--faint);white-space:nowrap}
+.tcol .tv{font-size:.6rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* Body / measures */
+.mform{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.mfield{display:flex;flex-direction:column;gap:5px}
+.mfield label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+.mfield input{background:var(--panel3);border:1px solid var(--line2);border-radius:10px;padding:11px 12px;
+  color:var(--ink);font-size:1rem;font-family:var(--sans);width:100%}
+.mfield input:focus{outline:none;border-color:var(--gold)}
+.mfield.wide{grid-column:1/-1}
+.btn{width:100%;padding:13px;border-radius:12px;border:1px solid var(--gold);cursor:pointer;font-size:.9rem;font-weight:600;
+  background:color-mix(in srgb,var(--gold) 18%,transparent);color:var(--gold);transition:.18s}
+.btn:hover{background:color-mix(in srgb,var(--gold) 28%,transparent)}
+.mlog{margin-top:4px}
+.mrow{display:flex;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid var(--line);font-size:.85rem}
+.mrow:last-child{border-bottom:none}
+.mrow .md{flex:0 0 78px;color:var(--muted);font-size:.76rem}
+.mrow .mv{flex:1;font-variant-numeric:tabular-nums}
+.mrow .mv b{font-weight:600}
+.mrow .delta{font-size:.72rem;font-variant-numeric:tabular-nums}
+.up{color:var(--red)} .down{color:var(--green)} .flat{color:var(--faint)}
+.empty{text-align:center;color:var(--faint);font-size:.85rem;padding:22px 10px;line-height:1.5}
+.tip{font-size:.8rem;color:var(--muted);line-height:1.5;padding:13px 15px;border-radius:12px;
+  background:color-mix(in srgb,var(--gold) 8%,transparent);border:1px solid var(--line);margin-top:4px}
+.tip b{color:var(--gold)}
+footer{text-align:center;color:var(--faint);font-size:.72rem;margin:22px 0 6px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <a class="back" href="../">← Plataformas</a>
+    <div class="brand">
+      <div class="kicker">Nicole</div>
+      <h1>Rutina Nicole</h1>
+    </div>
+  </div>
+
+  <!-- ============ HOY ============ -->
+  <section class="panel on" id="p-hoy">
+    <div class="hero">
+      <div class="ring">
+        <svg width="104" height="104" viewBox="0 0 104 104">
+          <circle cx="52" cy="52" r="46" fill="none" stroke="var(--line)" stroke-width="9"/>
+          <circle id="ringFill" cx="52" cy="52" r="46" fill="none" stroke="var(--green)" stroke-width="9"
+            stroke-linecap="round" stroke-dasharray="289" stroke-dashoffset="289"/>
+        </svg>
+        <div class="pcttxt"><div><b id="heroPct">0%</b><span id="heroFrac">0 / 0</span></div></div>
+      </div>
+      <div class="herox">
+        <div class="greet" id="greet">Hola</div>
+        <div class="msg" id="heroMsg">Marca lo que vayas haciendo.</div>
+        <div class="band"><span class="dot" id="bandDot"></span><span id="bandTxt">Objetivo: 70–80%</span></div>
+      </div>
+    </div>
+
+    <div class="datenav">
+      <button id="dPrev" aria-label="Día anterior">‹</button>
+      <div class="datelbl"><b id="dName">—</b><small id="dFull">—</small></div>
+      <button id="dNext" aria-label="Día siguiente">›</button>
+    </div>
+    <button class="todaybtn hidden" id="btnToday">↩ Volver a hoy</button>
+
+    <div id="objList"></div>
+
+    <div class="tip"><b>Recuerda:</b> el objetivo es <b>70–80% de constancia</b>, no la perfección. Un día flojo no rompe nada — mira la tendencia de la semana.</div>
+    <footer>Los datos se guardan solo en este dispositivo.</footer>
+  </section>
+
+  <!-- ============ SEMANA ============ -->
+  <section class="panel" id="p-semana">
+    <div class="card">
+      <div class="weekhead">
+        <div><div class="avg"><span id="wkAvg">0%</span> <small>cumplimiento medio</small></div></div>
+        <div class="wknav">
+          <button id="wkPrev" aria-label="Semana anterior">‹</button>
+          <button id="wkNext" aria-label="Semana siguiente">›</button>
+        </div>
+      </div>
+      <div class="wklbl" id="wkLbl">—</div>
+      <div class="wgrid" id="wkGrid" style="margin-top:14px"></div>
+    </div>
+    <div class="tip"><b>Vista rápida</b> de cuánto cumples cada día. La barra se pone verde a partir del 70%.</div>
+  </section>
+
+  <!-- ============ PROGRESO ============ -->
+  <section class="panel" id="p-progreso">
+    <div class="statrow">
+      <div class="stat flame"><div class="n" id="stStreak">0<span class="u"> d</span></div><div class="l">Racha actual</div></div>
+      <div class="stat"><div class="n" id="st30">0<span class="u">%</span></div><div class="l">Últimos 30 días</div></div>
+    </div>
+    <div class="statrow">
+      <div class="stat"><div class="n" id="stBest">0<span class="u"> d</span></div><div class="l">Mejor racha</div></div>
+      <div class="stat"><div class="n" id="stDays">0</div><div class="l">Días registrados</div></div>
+    </div>
+
+    <div class="card">
+      <h2>Cumplimiento por semana</h2>
+      <p class="csub">Últimas 8 semanas. Cuenta la tendencia, no un día suelto.</p>
+      <div class="trend" id="trend"></div>
+    </div>
+
+    <div class="card">
+      <h2>Mapa de constancia</h2>
+      <p class="csub">Cada cuadro es un día de las últimas 12 semanas.</p>
+      <div class="heat"><div class="heatgrid" id="heat"></div></div>
+      <div class="hleg">Menos
+        <span class="sw" style="background:var(--panel3)"></span>
+        <span class="sw" style="background:color-mix(in srgb,var(--green) 30%,var(--panel3))"></span>
+        <span class="sw" style="background:color-mix(in srgb,var(--green) 60%,var(--panel3))"></span>
+        <span class="sw" style="background:var(--green)"></span>
+      Más</div>
+    </div>
+  </section>
+
+  <!-- ============ CUERPO ============ -->
+  <section class="panel" id="p-cuerpo">
+    <div class="card">
+      <h2>Medidas de hoy</h2>
+      <p class="csub">Registra una vez por semana, en condiciones parecidas.</p>
+      <div class="mform">
+        <div class="mfield"><label>Peso (kg)</label><input id="iPeso" type="number" inputmode="decimal" step="0.1" placeholder="—"></div>
+        <div class="mfield"><label>Cintura (cm)</label><input id="iCintura" type="number" inputmode="decimal" step="0.5" placeholder="—"></div>
+        <div class="mfield"><label>Cadera (cm)</label><input id="iCadera" type="number" inputmode="decimal" step="0.5" placeholder="—"></div>
+        <div class="mfield"><label>Busto (cm)</label><input id="iBusto" type="number" inputmode="decimal" step="0.5" placeholder="—"></div>
+      </div>
+      <button class="btn" id="saveBody">Guardar medida de hoy</button>
+    </div>
+    <div class="card">
+      <h2>Historial</h2>
+      <p class="csub">El peso no es el único indicador: ganar fuerza y reducir cintura también es progreso.</p>
+      <div class="mlog" id="mlog"></div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ TAB BAR ============ -->
+<nav class="tabbar"><div class="inner">
+  <button class="tab on" data-tab="hoy"><span class="ti">📋</span>Hoy</button>
+  <button class="tab" data-tab="semana"><span class="ti">📅</span>Semana</button>
+  <button class="tab" data-tab="progreso"><span class="ti">📈</span>Progreso</button>
+  <button class="tab" data-tab="cuerpo"><span class="ti">📏</span>Cuerpo</button>
+</div></nav>
+
+<script>
+"use strict";
+/* ---------------- Modelo de la rutina ---------------- */
+const TARGET = 70;                 // % suelo de "día cumplido"
+const TYPES = {
+  habitos:{label:"Hábitos",  c:"var(--habitos)"},
+  estudio:{label:"Estudio",  c:"var(--estudio)"},
+  entreno:{label:"Entrenamiento", c:"var(--entreno)"},
+  aprende:{label:"Aprendizaje", c:"var(--aprende)"},
+  movim:  {label:"Movimiento", c:"var(--movim)"},
+  casa:   {label:"Casa", c:"var(--casa)"},
+};
+// weekly:true => solo cuenta el día indicado (0=domingo). sunOnly limpieza.
+const OBJ = [
+  {id:"desayuno",  name:"Desayuno",       time:"7:00–8:00",  type:"habitos", ico:"🍳"},
+  {id:"skin-am",   name:"Skincare AM",    time:"7:00–8:00",  type:"habitos", ico:"🧴"},
+  {id:"lectura",   name:"Lectura",        time:"7:15–7:30",  type:"habitos", ico:"📖"},
+  {id:"orl",       name:"ORL",            time:"16:00–17:00",type:"estudio", ico:"🩺"},
+  {id:"fuerza",    name:"Fuerza",         time:"17:00–17:45",type:"entreno", ico:"🏋️"},
+  {id:"pilates",   name:"Pilates",        time:"17:00–18:00",type:"entreno", ico:"🧘"},
+  {id:"aprende",   name:"Aprendizaje",    time:"18:15–19:00",type:"aprende", ico:"💡"},
+  {id:"caminata",  name:"Caminata",       time:"19:00–20:00",type:"movim",   ico:"🚶"},
+  {id:"medita",    name:"Meditación",     time:"22:00–22:10",type:"habitos", ico:"🧠"},
+  {id:"skin-pm",   name:"Skincare PM",    time:"22:00–22:15",type:"habitos", ico:"🌙"},
+  {id:"limpieza",  name:"Limpieza general",time:"Domingo 10:00–12:00",type:"casa",ico:"🧹",weeklyDay:0},
+];
+const ORDER = ["habitos","estudio","entreno","aprende","movim","casa"];
+
+/* ---------------- Estado / persistencia ---------------- */
+const LS = "rutina.v1";
+let STORE = load();
+function load(){
+  try{const o=JSON.parse(localStorage.getItem(LS));if(o&&o.marks)return o;}catch(e){}
+  return {marks:{}, body:{}, updatedAt:0};
+}
+function save(){STORE.updatedAt=Date.now();localStorage.setItem(LS,JSON.stringify(STORE));}
+
+/* ---------------- Fechas ---------------- */
+const DAYNAMES=["domingo","lunes","martes","miércoles","jueves","viernes","sábado"];
+const MONTHS=["ene","feb","mar","abr","may","jun","jul","ago","sep","oct","nov","dic"];
+function ymd(d){return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;}
+function parseYmd(s){const[y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d);}
+function todayStr(){return ymd(new Date());}
+function addDays(s,n){const d=parseYmd(s);d.setDate(d.getDate()+n);return ymd(d);}
+function mondayOf(s){const d=parseYmd(s);d.setDate(d.getDate()-((d.getDay()+6)%7));return ymd(d);}
+
+/* ---------------- Lógica de cumplimiento ---------------- */
+function objectivesFor(dateStr){
+  const dow=parseYmd(dateStr).getDay();
+  return OBJ.filter(o=>o.weeklyDay===undefined || o.weeklyDay===dow);
+}
+function marksFor(dateStr){return STORE.marks[dateStr]||[];}
+function compliance(dateStr){
+  const objs=objectivesFor(dateStr), done=marksFor(dateStr);
+  const c=objs.filter(o=>done.includes(o.id)).length;
+  return {done:c, total:objs.length, pct: objs.length? Math.round(c/objs.length*100):0};
+}
+function hasData(dateStr){return (STORE.marks[dateStr]||[]).length>0;}
+
+/* ---------------- Vista HOY ---------------- */
+let curDate=todayStr();
+const $=id=>document.getElementById(id);
+
+function pctColor(p){
+  if(p>=TARGET) return "var(--green)";
+  if(p>=40)     return "var(--gold)";
+  return "var(--amber)";
+}
+function renderHero(){
+  const {done,total,pct}=compliance(curDate);
+  const col=pctColor(pct);
+  const circ=289, off=circ*(1-pct/100);
+  const rf=$("ringFill"); rf.style.stroke=col; rf.style.strokeDashoffset=off;
+  $("heroPct").textContent=pct+"%";
+  $("heroFrac").textContent=`${done} / ${total}`;
+  const h=new Date().getHours();
+  const isToday=curDate===todayStr();
+  $("greet").textContent = !isToday ? "Ese día" : h<6?"Buenas noches":h<13?"Buenos días":h<20?"Buenas tardes":"Buenas noches";
+  let msg;
+  if(pct===0) msg="Empieza por lo primero de la mañana.";
+  else if(pct>=100) msg="Día redondo. Descansa sin culpa.";
+  else if(pct>=TARGET) msg="Vas por encima del objetivo. Muy bien.";
+  else if(pct>=40) msg="Buen ritmo, sigue marcando.";
+  else msg="Cada casilla suma. Sin presión.";
+  $("heroMsg").textContent=msg;
+  $("bandDot").style.background=col;
+  $("bandTxt").textContent = pct>=TARGET ? "Objetivo cumplido (70–80%)" : "Objetivo: 70–80%";
+}
+function renderDateNav(){
+  const d=parseYmd(curDate);
+  $("dName").textContent=DAYNAMES[d.getDay()];
+  $("dFull").textContent=`${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+  $("dNext").disabled = curDate>=todayStr();
+  $("btnToday").classList.toggle("hidden", curDate===todayStr());
+}
+function renderObjs(){
+  const done=marksFor(curDate);
+  const objs=objectivesFor(curDate);
+  let html="";
+  for(const t of ORDER){
+    const items=objs.filter(o=>o.type===t);
+    if(!items.length) continue;
+    const dn=items.filter(o=>done.includes(o.id)).length;
+    html+=`<div class="group" style="--gc:${TYPES[t].c}">${TYPES[t].label}<span class="gc">${dn}/${items.length}</span></div>`;
+    for(const o of items){
+      const on=done.includes(o.id);
+      html+=`<div class="obj ${on?'done':''}" data-id="${o.id}" style="--c:${TYPES[o.type].c}">
+        <span class="ico">${o.ico}</span>
+        <span class="txt"><h3>${o.name}</h3><p>${o.time}</p></span>
+        <span class="check">✓</span>
+      </div>`;
+    }
+  }
+  $("objList").innerHTML=html;
+}
+function toggle(id){
+  const arr=(STORE.marks[curDate]||[]).slice();
+  const i=arr.indexOf(id);
+  if(i>=0) arr.splice(i,1); else arr.push(id);
+  if(arr.length) STORE.marks[curDate]=arr; else delete STORE.marks[curDate];
+  save();
+  renderHero(); renderObjs();
+}
+$("objList").addEventListener("click",e=>{
+  const el=e.target.closest(".obj"); if(el) toggle(el.dataset.id);
+});
+$("dPrev").onclick=()=>{curDate=addDays(curDate,-1);renderHoy();};
+$("dNext").onclick=()=>{if(curDate<todayStr()){curDate=addDays(curDate,1);renderHoy();}};
+$("btnToday").onclick=()=>{curDate=todayStr();renderHoy();};
+function renderHoy(){renderDateNav();renderHero();renderObjs();}
+
+/* ---------------- Vista SEMANA ---------------- */
+let wkStart=mondayOf(todayStr());
+function renderWeek(){
+  const days=[...Array(7)].map((_,i)=>addDays(wkStart,i));
+  const today=todayStr();
+  let sum=0,cnt=0,html="";
+  for(const ds of days){
+    const d=parseYmd(ds);
+    const future=ds>today;
+    const {pct,done,total}=compliance(ds);
+    if(!future){sum+=pct;cnt++;}
+    const col=pctColor(pct);
+    const isT=ds===today;
+    html+=`<div class="wrow ${future?'future':''}">
+      <div class="wd">${DAYNAMES[d.getDay()]}${isT?' •':''}<small>${d.getDate()} ${MONTHS[d.getMonth()]}</small></div>
+      <div class="wbar"><div class="fill" style="width:${future?0:pct}%;background:${col}"></div>
+        <div class="wpct">${future?'':pct+'%'}</div></div>
+    </div>`;
+  }
+  $("wkGrid").innerHTML=html;
+  const avg=cnt?Math.round(sum/cnt):0;
+  const a=$("wkAvg"); a.textContent=avg+"%"; a.style.color=pctColor(avg);
+  const s=parseYmd(wkStart), e=parseYmd(addDays(wkStart,6));
+  $("wkLbl").textContent=`${s.getDate()} ${MONTHS[s.getMonth()]} — ${e.getDate()} ${MONTHS[e.getMonth()]}`;
+  $("wkNext").disabled = wkStart>=mondayOf(todayStr());
+}
+$("wkPrev").onclick=()=>{wkStart=addDays(wkStart,-7);renderWeek();};
+$("wkNext").onclick=()=>{if(wkStart<mondayOf(todayStr())){wkStart=addDays(wkStart,7);renderWeek();}};
+
+/* ---------------- Vista PROGRESO ---------------- */
+function streaks(){
+  // recorre hacia atrás desde hoy; un día cuenta si pct>=TARGET
+  let cur=0, best=0, run=0;
+  const today=todayStr();
+  // racha actual: desde hoy (o ayer si hoy aún a 0) hacia atrás
+  let cursor=today;
+  if(compliance(today).pct<TARGET && !hasData(today)) cursor=addDays(today,-1);
+  while(compliance(cursor).pct>=TARGET){cur++;cursor=addDays(cursor,-1);}
+  // mejor racha entre los días con datos
+  const dates=Object.keys(STORE.marks).sort();
+  if(dates.length){
+    let prev=null;
+    for(const d of dates){
+      const ok=compliance(d).pct>=TARGET;
+      if(!ok){run=0;prev=d;continue;}
+      if(prev && addDays(prev,1)===d) run++; else run=1;
+      if(run>best)best=run;
+      prev=d;
+    }
+  }
+  return {cur,best:Math.max(best,cur)};
+}
+function renderProgreso(){
+  const {cur,best}=streaks();
+  $("stStreak").innerHTML=cur+'<span class="u"> d</span>';
+  $("stBest").innerHTML=best+'<span class="u"> d</span>';
+  // últimos 30 días (solo días con datos, media de pct)
+  let sum=0,cnt=0;
+  for(let i=0;i<30;i++){const d=addDays(todayStr(),-i);if(hasData(d)){sum+=compliance(d).pct;cnt++;}}
+  $("st30").innerHTML=(cnt?Math.round(sum/cnt):0)+'<span class="u">%</span>';
+  $("stDays").textContent=Object.keys(STORE.marks).length;
+
+  // tendencia 8 semanas
+  const wkNow=mondayOf(todayStr());
+  let th="";
+  for(let w=7;w>=0;w--){
+    const ws=addDays(wkNow,-7*w);
+    let s=0,c=0;
+    for(let i=0;i<7;i++){const d=addDays(ws,i);if(d>todayStr())break;if(hasData(d)){s+=compliance(d).pct;c++;}}
+    const pct=c?Math.round(s/c):0;
+    const wd=parseYmd(ws);
+    th+=`<div class="tcol"><div class="tv">${c?pct:''}</div>
+      <div class="tb" style="height:${pct}%;background:${pctColor(pct)}"></div>
+      <div class="tl">${wd.getDate()}/${wd.getMonth()+1}</div></div>`;
+  }
+  $("trend").innerHTML=th;
+
+  // heatmap 12 semanas
+  const start=mondayOf(addDays(todayStr(),-7*11));
+  let hh="";
+  for(let i=0;i<7*12;i++){
+    const d=addDays(start,i);
+    if(d>todayStr()){hh+=`<div class="hcell" style="visibility:hidden"></div>`;continue;}
+    const pct=hasData(d)?compliance(d).pct:0;
+    let bg="var(--panel3)";
+    if(hasData(d)){
+      const f=pct>=TARGET?1:pct>=45?.6:pct>0?.3:.12;
+      bg=`color-mix(in srgb,var(--green) ${Math.round(f*100)}%,var(--panel3))`;
+    }
+    const dd=parseYmd(d);
+    hh+=`<div class="hcell" style="background:${bg}" title="${dd.getDate()}/${dd.getMonth()+1}: ${hasData(d)?pct+'%':'sin datos'}"></div>`;
+  }
+  $("heat").innerHTML=hh;
+}
+
+/* ---------------- Vista CUERPO ---------------- */
+function renderBody(){
+  const dates=Object.keys(STORE.body).sort();
+  const last=dates.length?STORE.body[dates[dates.length-1]]:null;
+  // no autorrellenar inputs salvo la medida de hoy
+  const today=todayStr(), tb=STORE.body[today];
+  $("iPeso").value    = tb?.peso    ?? "";
+  $("iCintura").value = tb?.cintura ?? "";
+  $("iCadera").value  = tb?.cadera  ?? "";
+  $("iBusto").value   = tb?.busto   ?? "";
+  if(!dates.length){$("mlog").innerHTML=`<div class="empty">Aún no hay medidas.<br>Guarda la primera cuando quieras.</div>`;return;}
+  let html="";
+  for(let i=dates.length-1;i>=0;i--){
+    const ds=dates[i], b=STORE.body[ds], d=parseYmd(ds);
+    const prev=i>0?STORE.body[dates[i-1]]:null;
+    const del=(k)=>{
+      if(!prev||prev[k]==null||b[k]==null)return `<span class="delta flat">—</span>`;
+      const diff=+(b[k]-prev[k]).toFixed(1);
+      if(diff===0)return `<span class="delta flat">±0</span>`;
+      const cls=diff<0?"down":"up";
+      return `<span class="delta ${cls}">${diff>0?'+':''}${diff}</span>`;
+    };
+    const parts=[];
+    if(b.peso!=null)   parts.push(`<b>${b.peso}</b> kg ${del("peso")}`);
+    if(b.cintura!=null)parts.push(`cint <b>${b.cintura}</b> ${del("cintura")}`);
+    if(b.cadera!=null) parts.push(`cad <b>${b.cadera}</b> ${del("cadera")}`);
+    html+=`<div class="mrow"><span class="md">${d.getDate()} ${MONTHS[d.getMonth()]}</span>
+      <span class="mv">${parts.join(" · ")||'—'}</span></div>`;
+  }
+  $("mlog").innerHTML=html;
+}
+$("saveBody").onclick=()=>{
+  const num=el=>{const v=parseFloat($(el).value);return isNaN(v)?null:v;};
+  const rec={peso:num("iPeso"),cintura:num("iCintura"),cadera:num("iCadera"),busto:num("iBusto")};
+  if(Object.values(rec).every(v=>v==null)){alert("Introduce al menos una medida.");return;}
+  STORE.body[todayStr()]=rec; save(); renderBody();
+  $("saveBody").textContent="✓ Guardado"; setTimeout(()=>$("saveBody").textContent="Guardar medida de hoy",1400);
+};
+
+/* ---------------- Navegación pestañas ---------------- */
+const RENDER={hoy:renderHoy,semana:()=>{wkStart=mondayOf(todayStr());renderWeek();},progreso:renderProgreso,cuerpo:renderBody};
+document.querySelectorAll(".tab").forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll(".tab").forEach(b=>b.classList.remove("on"));
+    document.querySelectorAll(".panel").forEach(p=>p.classList.remove("on"));
+    btn.classList.add("on");
+    const t=btn.dataset.tab;
+    $("p-"+t).classList.add("on");
+    RENDER[t]();
+    window.scrollTo({top:0,behavior:"smooth"});
+  };
+});
+
+/* ---------------- Init ---------------- */
+renderHoy();
+</script>
+</body>
+</html>
