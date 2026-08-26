@@ -1,8 +1,8 @@
-/* Service worker de Gym José — precache del shell + módulos para uso offline.
+/* Service worker de Gym Nicole — precache del shell + módulos para uso offline.
    Estrategia: cache-first para lo precacheado; red con fallback a caché para el resto.
    Sube CACHE_VERSION al publicar cambios para invalidar la caché anterior. */
 
-const CACHE_PREFIX = 'gym-jose-';
+const CACHE_PREFIX = 'gym-nicole-';
 const CACHE_VERSION = `${CACHE_PREFIX}v2`;
 
 const ASSETS = [

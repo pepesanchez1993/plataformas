@@ -1,25 +1,26 @@
 /* ==========================================================================
-   Gym José — estilos. Móvil primero, oscuro por defecto, toques grandes.
+   Gym Nicole — estilos. Móvil primero, oscuro por defecto, toques grandes.
    ========================================================================== */
 
 :root {
-  --bg:        #16140f;
-  --bg-2:      #1e1b14;
-  --surface:   #26221a;
-  --surface-2: #2f2a20;
-  --line:      #3a3327;
-  --ink:       #f3ece0;
-  --ink-dim:   #b8ad99;
-  --muted:     #8a8069;
-  --gold:      #b8893b;
-  --gold-soft: #d0a758;
-  --green:     #6ea67f;
-  --red:       #d9704f;
+  --bg:        #17121c;
+  --bg-2:      #201826;
+  --surface:   #291f31;
+  --surface-2: #33273d;
+  --line:      #3d3049;
+  --ink:       #f2ecf5;
+  --ink-dim:   #b6a9c4;
+  --muted:     #8a7d99;
+  /* Acento primario = morado (mantiene el nombre --gold por compatibilidad de estilos) */
+  --gold:      #8b5cf6;
+  --gold-soft: #a78bfa;
+  --green:     #5cc98f;
+  --red:       #e0554f;
   --blue:      #6f97c9;
 
-  --meso-1: #6ea67f;
-  --meso-2: #d0a758;
-  --meso-3: #d9704f;
+  --meso-1: #a78bfa;
+  --meso-2: #e0554f;
+  --meso-3: #8b5cf6;
 
   --radius:    16px;
   --radius-sm: 10px;
@@ -136,7 +137,7 @@ button { font-family: inherit; }
 }
 .btn:active { transform: scale(0.97); }
 .btn--block { display: flex; width: 100%; }
-.btn--primary { background: var(--gold); border-color: var(--gold); color: #17130a; }
+.btn--primary { background: var(--gold); border-color: var(--gold); color: #fff; }
 .btn--primary:active { background: var(--gold-soft); }
 .btn--ghost { background: var(--surface); }
 .btn--danger { background: transparent; border-color: var(--red); color: var(--red); }
@@ -176,7 +177,7 @@ button { font-family: inherit; }
   background: none; color: var(--ink-dim); font-weight: 600; font-size: 0.92rem;
   cursor: pointer; transition: background 0.15s, color 0.15s;
 }
-.seg.is-active { background: var(--gold); color: #17130a; }
+.seg.is-active { background: var(--gold); color: #fff; }
 
 /* ---------- Cards & lists ---------- */
 .stack { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -220,7 +221,7 @@ button { font-family: inherit; }
   font-size: 0.72rem; font-weight: 700;
   background: var(--surface-2); color: var(--ink-dim); border: 1px solid var(--line);
 }
-.chip--pr { background: rgba(184, 137, 59, 0.18); color: var(--gold-soft); border-color: var(--gold); }
+.chip--pr { background: rgba(139, 92, 246, 0.18); color: var(--gold-soft); border-color: var(--gold); }
 .chip--zone { background: var(--bg-2); }
 .chip--cardio { background: rgba(110, 166, 127, 0.18); color: var(--green); border-color: var(--green); }
 
