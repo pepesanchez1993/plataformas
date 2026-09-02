@@ -166,6 +166,11 @@ footer a{color:var(--muted)}
       <div class="scale"><span>Leve 0–3</span><span>Moderada &gt;3–7</span><span>Grave &gt;7</span></div>
     </div>
     <div class="field">
+      <div class="flab"><span>Obstrucción / congestión nasal <span class="hint">EVA 0–10 · síntoma cardinal</span></span><span class="fval"><span id="congestV">5.0</span></span></div>
+      <input type="range" id="congest" min="0" max="10" step="0.5" value="5">
+      <div class="scale"><span>Leve 0–3</span><span>Moderada &gt;3–7</span><span>Grave &gt;7</span></div>
+    </div>
+    <div class="field">
       <div class="flab"><span>Pérdida de olfato <span class="hint">EVA 0–10</span></span><span class="fval"><span id="olfV">5.0</span></span></div>
       <input type="range" id="olf" min="0" max="10" step="0.5" value="5">
       <div class="scale"><span>Leve</span><span>Moderada</span><span>Anosmia</span></div>
@@ -205,9 +210,13 @@ footer a{color:var(--muted)}
       <span class="switch"></span>
     </label>
     <div class="field">
-      <div class="flab"><span>Tamaño de pólipos <span class="hint">score endoscópico 0–8</span></span><span class="fval"><span id="polV">2</span></span></div>
+      <div class="flab"><span>Nasal Polyp Score (NPS) <span class="hint">suma bilateral 0–8 · 0–4 por fosa</span></span><span class="fval"><span id="polV">2</span></span></div>
       <input type="range" id="pol" min="0" max="8" step="1" value="2">
-      <div class="scale"><span>≤2</span><span>3–4</span><span>≥5</span></div>
+      <div class="scale"><span>≤2 leve</span><span>3–4 moderado</span><span>≥5 grave</span></div>
+      <div class="loem-desc">
+        <b>Nasal Polyp Score (NPS)</b> — grado endoscópico <b>por cada fosa (0–4)</b>, se suman ambas → total <b>0–8</b> (escala de la <i>Rhinosinusitis Initiative</i>, usada en SINUS-24/52, POLYP, SYNAPSE, WAYPOINT):
+        <br><b>0</b> sin pólipos · <b>1</b> pólipos pequeños en meato medio, sin rebasar el borde inferior del cornete medio · <b>2</b> pólipos por debajo del borde inferior del cornete medio · <b>3</b> pólipos que alcanzan el borde inferior del cornete inferior o mediales al cornete medio · <b>4</b> pólipos que obstruyen completamente la fosa.
+      </div>
     </div>
     <label class="tog field" id="endoDxTog" data-key="endoDx">
       <span class="flab"><span>Mucosa enferma en endoscopia <span class="hint">edema / secreción mucopurulenta / pólipos — signo objetivo EPOS (dx y control)</span></span></span>
@@ -262,6 +271,18 @@ footer a{color:var(--muted)}
 
   <div class="group">Tratamiento médico en curso</div>
   <div class="card">
+    <label class="tog field" id="cinTog" data-key="cin">
+      <span class="flab"><span>Corticoide intranasal (CIN) <span class="hint">mometasona / fluticasona furoato — tratamiento de base</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="rinseTog" data-key="rinse">
+      <span class="flab"><span>Lavados nasales salinos <span class="hint">suero salino a diario — tratamiento de base</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="adherTog" data-key="adher">
+      <span class="flab"><span>Buen cumplimiento / técnica correcta <span class="hint">adherencia y aplicación adecuadas del tratamiento tópico</span></span></span>
+      <span class="switch"></span>
+    </label>
     <div class="field">
       <div class="flab"><span>Ciclos de corticoide oral <span class="hint">en el último año</span></span></div>
       <div class="seg" id="coSeg" data-key="co">
@@ -271,6 +292,7 @@ footer a{color:var(--muted)}
         <button data-v="3">≥3</button>
       </div>
     </div>
+    <div class="note" id="optNote" style="margin-top:11px"></div>
   </div>
 
   <div class="group">Comorbilidades y biomarcadores</div>
@@ -303,6 +325,11 @@ footer a{color:var(--muted)}
       <span class="flab"><span>EREA <span class="hint">intolerancia a AINE / aspirina</span></span></span>
       <span class="switch"></span>
     </label>
+    <label class="tog field" id="allergyTog" data-key="allergy">
+      <span class="flab"><span>Alergia / rinitis alérgica concomitante <span class="hint">sensibilización a aeroalérgenos (IgE específica / prick +)</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <div class="note" id="allergyNote" style="display:none;margin-top:9px"></div>
   </div>
 
   <!-- ================= RESULTS ================= -->
@@ -398,10 +425,11 @@ footer a{color:var(--muted)}
 <script>
 "use strict";
 const S = {
-  eva:5, olf:5, snot:30, pol:2, co:0,
+  eva:5, congest:5, olf:5, snot:30, pol:2, co:0,
+  cin:false, rinse:false, adher:false,
   bilat:false, cens:0, contraQx:false, recidiva:0,
   loem:0, lm:0, reman:false,
-  t2:false, asma:false, erea:false,
+  t2:false, asma:false, erea:false, allergy:false,
   facial:false, sleep:false,
   eosBlood:0, eosTissue:0, ige:0, olfTest:0, endoDx:false, rhino:false
 };
@@ -435,13 +463,13 @@ function setRange(id, key){
   const out = document.getElementById(key+"V");
   const upd = ()=>{
     S[key] = parseFloat(el.value);
-    out.textContent = (id==="eva"||id==="olf") ? S[key].toFixed(1) : S[key];
+    out.textContent = (id==="eva"||id==="congest"||id==="olf") ? S[key].toFixed(1) : S[key];
     el.style.setProperty("--p",(el.value-el.min)/(el.max-el.min)*100+"%");
     render();
   };
   el.addEventListener("input",upd); upd();
 }
-setRange("eva","eva"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol"); setRange("lm","lm");
+setRange("eva","eva"); setRange("congest","congest"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol"); setRange("lm","lm");
 setRange("eosBlood","eosBlood"); setRange("eosTissue","eosTissue"); setRange("ige","ige");
 
 const olfTestSeg=document.getElementById("olfTestSeg");
@@ -561,13 +589,14 @@ function phenotype(){
   const extra=[];
   if(S.erea) extra.push("EREA");
   if(S.asma) extra.push("asma (vía única)");
+  if(S.allergy) extra.push("rinitis alérgica concomitante");
   let d = endo + (extra.length?" · "+extra.join(" · "):"");
 
   // EPOS 2020 (Fig 1.2.1/1.2.2): clasificación primaria/secundaria → localizada/difusa → tipo 2 / no-tipo 2
   const eposEndo = t2.epos ? "tipo 2 dominante" : "no-tipo 2";
   let eposClass;
   if(S.bilat){
-    const ej = t2.epos ? "eCRS, CRSwNP, CCAD, RSCfA" : "RSC no eosinofílica";
+    const ej = t2.epos ? "eCRS, RSCfA (fúngica alérgica), CCAD" : "RSC no eosinofílica (neutrofílica)";
     eposClass = "EPOS: CRS primaria · difusa (bilateral) · "+eposEndo+" — fenotipos: "+ej;
   } else {
     eposClass = "EPOS: localizada (unilateral) · "+eposEndo+" — descartar CRS secundaria (Fig 1.2.2): odontógena, bola fúngica, tumor; o sistémica (GPA/EGPA, DCP, FQ, inmunodeficiencia)";
@@ -614,7 +643,7 @@ function biologics(){
    complejo osteomeatal y/o senos). */
 function eposDx(){
   return [
-    {ok:true,             t:"Obstrucción/congestión o rinorrea (cardinal)", s:"≥1 síntoma cardinal — asumido en RSCcPN"},
+    {ok:true,             t:"Obstrucción/congestión o rinorrea (cardinal)", s:"obstrucción/congestión EVA "+S.congest.toFixed(1)+" · ≥1 síntoma cardinal — asumido en RSCcPN"},
     {ok:S.facial,         t:"Dolor / presión facial", s:"síntoma accesorio EPOS"},
     {ok:S.olf>0,          t:"Reducción / pérdida de olfato", s:"EVA olfato "+S.olf.toFixed(1)},
     {ok:true,             t:"Duración ≥12 semanas", s:"criterio de cronicidad"},
@@ -645,10 +674,13 @@ function eposBio(){
 /* EPOS 1.2.2.8 — RSC difícil de tratar: no alcanza control aceptable pese a cirugía
    adecuada + corticoide intranasal + HASTA 2 tandas de ATB o CO sistémico en el último año.
    Las "hasta 2 tandas" son el techo de tratamiento intentado, no un requisito; el rasgo
-   definitorio es el no-control tras cirugía + CIN. No se exige S.co>=1 (la app no captura
-   tandas de antibiótico, exigir CO sistémico infra-detectaría a los manejados con ATB). */
+   definitorio es el no-control tras cirugía + CIN. Se exige CIN en curso con buen
+   cumplimiento (S.cin && S.adher): sin tratamiento tópico adecuado y bien aplicado NO puede
+   hablarse de "difícil de tratar" —sería enfermedad no tratada, no refractaria—. No se exige
+   S.co>=1 (la app no captura tandas de antibiótico; exigir CO sistémico infra-detectaría a
+   los manejados con ATB). */
 function difficultToTreat(ctrl){
-  return S.cens>=1 && ctrl.k>=1;
+  return S.cens>=1 && S.cin && S.adher && ctrl.k>=1;
 }
 
 /* EPOS 2020 control (Fig 1.2.3) — 7 parámetros del último mes (6 dominios + rescate).
@@ -657,7 +689,7 @@ function difficultToTreat(ctrl){
 function eposControl(){
   const smellOn = S.olfTest>=2 || (S.olfTest===0 && S.olf>5);
   const flags = [
-    {on:S.eva>5,             t:"obstrucción nasal (VAS>5)"},
+    {on:S.congest>5,         t:"obstrucción / congestión nasal (VAS>5)"},
     {on:S.rhino,             t:"rinorrea / goteo posnasal"},
     {on:S.facial,            t:"dolor / presión facial"},
     {on:smellOn,             t:"alteración del olfato"},
@@ -698,7 +730,7 @@ function bioProfile(){
     {
       name:"Omalizumab",
       trade:"(Xolair®)",
-      preferred: false,
+      preferred: S.allergy && S.ige>=30 && S.ige<=1500,
       profile: omalizumabProfile()
     },
     {
@@ -746,6 +778,7 @@ function omalizumabProfile(){
   const parts=[];
   parts.push("Anti-IgE (POLYP 1/2). Efecto sobre el pólipo más modesto del grupo. La dosis se determina por IgE total basal (30–1500 UI/ml) Y peso corporal (30–150 kg) según tabla; fuera de esa malla no es dosificable según ficha técnica.");
   parts.push("Nicho: asma alérgico/IgE-mediado comórbido en rango dosificable, o intolerancia a otras dianas (no exige alergia para eficacia en RSCcPN, pero su preferencia se da cuando aplica el racional anti-IgE).");
+  if(S.allergy) parts.push("✓ Rinitis alérgica concomitante (enfermedad IgE-mediada): perfil donde el bloqueo anti-IgE cubre a la vez pólipos y componente alérgico — opción preferente si la IgE total y el peso caen en la malla de dosificación.");
   if(S.asma) parts.push("Valorar IgE total y peso para confirmar dosificación.");
   return parts.join(" ");
 }
@@ -772,14 +805,34 @@ function ladder(ctrl, bio){
     {h:"Añadir biológico anti-tipo 2",t:" — elegir según perfil (ver abajo)"},
     {h:"Reevaluar a 6 y 12 meses",t:" — Tabla 10.1 POLINA; suspender si no respuesta a 6 meses"}
   ];
+  const optimal = S.cin && S.rinse && S.adher;
 
   if(ctrl.k===0){
     const riskNote = S.recidiva>0
       ? " <b>Modificador de riesgo</b>: antecedente de recidiva "+(S.recidiva===2?"precoz (&lt;2a)":"tardía (≥2a)")+" — vigilancia estrecha pese al buen control actual."
       : "";
+    const baseNote = !optimal
+      ? " <b>Asegure el tratamiento de base</b> como mantenimiento: "+[!S.cin?"corticoide intranasal":null,!S.rinse?"lavados salinos diarios":null,!S.adher?"buena adherencia/técnica":null].filter(Boolean).join(", ")+"."
+      : "";
     return {step:"Escalón 1 — Tratamiento médico de mantenimiento",cls:"green",
       meds:base,
-      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral para exacerbaciones."+riskNote};
+      note:"Enfermedad <b>controlada</b>: mantener escalón 1 y revisar periódicamente. Reservar tanda corta de corticoide oral para exacerbaciones."+baseNote+riskNote};
+  }
+
+  // Enfermedad no controlada/parcial PERO con tratamiento médico de base incompleto o mal
+  // cumplido: hay que optimizarlo antes de considerar refractariedad (y por tanto antes de
+  // escalar a cirugía o biológico). POLINA/EPOS definen la refractariedad SOBRE un tratamiento
+  // médico adecuado y bien cumplido — no sobre enfermedad infratratada. Prioriza esta vía
+  // incluso si formalmente ya se cumplieran criterios de biológico.
+  if(!optimal){
+    const miss=[];
+    if(!S.cin)   miss.push({h:"Instaurar corticoide intranasal",t:" — mometasona o fluticasona furoato, 2 pulv./fosa/día (base imprescindible)"});
+    if(!S.rinse) miss.push({h:"Añadir lavados nasales salinos",t:" — suero salino isotónico a diario, previos al CIN"});
+    if(!S.adher) miss.push({h:"Reforzar adherencia y técnica",t:" — revisar cumplimiento y aplicación correcta del spray (posición cabeza / dirección lateral)"});
+    const gaps=[!S.cin?"sin corticoide intranasal":null,!S.rinse?"sin lavados salinos":null,!S.adher?"cumplimiento/técnica no óptimos":null].filter(Boolean).join(", ");
+    return {step:"Escalón 1 — Optimizar el tratamiento médico de base antes de escalar",cls:"amber",
+      meds:[...miss,co],
+      note:"Enfermedad <b>"+(ctrl.k===2?"no controlada":"parcialmente controlada")+"</b>, pero el <b>tratamiento médico de base no está optimizado</b> ("+gaps+"). Según POLINA/EPOS, la refractariedad —y con ella la indicación de cirugía o biológico— <b>solo se establece tras agotar un tratamiento médico adecuado y bien cumplido</b> (CIN + lavados diarios, reevaluado a las 4–12 semanas). Optimice primero y reevalúe: el no-control sobre un tratamiento incompleto NO define enfermedad refractaria."};
   }
 
   if(bio.eligible){
@@ -869,6 +922,22 @@ function render(){
   const st=document.getElementById("stepTitle"); st.textContent=L.step; st.className="tx-strong "+L.cls;
   document.getElementById("stepMeds").innerHTML=L.meds.map(m=>`<li><span><b>${m.h}</b><small>${m.t}</small></span></li>`).join("");
   document.getElementById("stepNote").innerHTML=L.note;
+
+  // Estado del tratamiento médico de base (óptimo / no óptimo) — gobierna el escalón
+  const optimalMed = S.cin && S.rinse && S.adher;
+  const optGaps=[!S.cin?"falta corticoide intranasal":null,!S.rinse?"faltan lavados salinos diarios":null,!S.adher?"cumplimiento/técnica no óptimos":null].filter(Boolean);
+  document.getElementById("optNote").innerHTML = optimalMed
+    ? "<b style=\"color:var(--green)\">Tratamiento médico de base óptimo</b> — corticoide intranasal + lavados diarios con buena adherencia. El grado de control es interpretable como respuesta real al tratamiento."
+    : "<b style=\"color:var(--amber)\">Tratamiento médico de base NO optimizado</b> — "+optGaps.join(", ")+". La falta de control sobre un tratamiento incompleto o mal cumplido no equivale a enfermedad refractaria: optimícelo y reevalúe antes de indicar cirugía o biológico.";
+
+  // Peso de la alergia concomitante (modificador pronóstico y de tratamiento, no criterio)
+  const alBox=document.getElementById("allergyNote");
+  if(S.allergy){
+    alBox.style.display="";
+    alBox.innerHTML="<b>Alergia / rinitis alérgica concomitante</b> — <b>no</b> es criterio diagnóstico de RSCcPN ni de elegibilidad para biológico (EPOS 2020 / SNS). Su peso es de <b>modificador</b>: se asocia a síntomas más intensos y a <b>mayor recidiva postquirúrgica</b>, y comparte mecanismo IgE-mediado con la RSCcPN. Conducta: <b>tratar la rinitis alérgica</b> (antihistamínico ± corticoide intranasal, evitación del alérgeno, valorar inmunoterapia) e integrarla en el <b>racional anti-IgE (omalizumab)</b> si la IgE total es dosificable.";
+  } else {
+    alBox.style.display="none";
+  }
 
   // biologics eligibility
   const bv=document.getElementById("bioVerdict");
