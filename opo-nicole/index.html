@@ -109,7 +109,7 @@ var S;
 function load(){
   try { S = JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ S = null; }
   if(!S) S = {};
-  if(!S.start) S.start = mondayOf(new Date());
+  if(!S.start) S.start = iso(today());
   if(!S.done) S.done = {};
   if(!S.qs) S.qs = {};
   if(!S.hist) S.hist = [];
@@ -190,7 +190,7 @@ function vHoy(){
   }
   var wk = D.plan[p.w];
   if(p.dow === 6){
-    out += '<div class="card"><h2>Domingo · descanso</h2>' +
+    out += '<div class="card"><h2>Día libre · descanso</h2>' +
       '<p class="muted">Día libre por diseño del plan. Si quieres algo ligero, 10 preguntas de repaso y nada más.</p>' +
       '<div class="btn-row"><button data-go="fall">Repaso de falladas</button></div></div>';
   } else {
@@ -208,7 +208,7 @@ function vHoy(){
         '<div class="chk' + (S.done[k] ? " on" : "") + '" data-done="' + k + '">' + (S.done[k] ? "✓" : "") + '</div>' +
         '<div class="dd">' + DN[x.x] + '</div><div class="tx">' + h(x.t) + '</div></div>';
     });
-    out += '<div class="day"><div class="chk" style="opacity:.35"></div><div class="dd">Dom</div>' +
+    out += '<div class="day"><div class="chk" style="opacity:.35"></div><div class="dd">Libre</div>' +
       '<div class="tx muted">Descanso</div></div></div>';
   }
   var tot = 0, dn = 0;
@@ -246,13 +246,13 @@ function bindGo(){
 function vPlan(){
   var p = pos(), out = "";
   out += '<div class="card"><h2>Plan de 26 semanas</h2><p class="muted">' +
-    'Seis días de estudio y domingo libre. Laringe, rinología y faringe van primero por revisión más reciente; ' +
-    'la otología llega después con el mismo nivel de exigencia — es el bloque que más se pregunta (45 %) y no un simple repaso — ' +
-    'y la parte general queda para el final.</p>' +
+    'Seis días de estudio y uno libre por semana. Laringe y rinología abren por revisión más reciente; ' +
+    'la otología va justo después, con el mismo nivel de exigencia — es el bloque que más se pregunta (45 %) y no un simple repaso — ' +
+    'faringe cierra las específicas y la parte general queda para el final.</p>' +
     '<div class="kv"><span>Laringe · 27 % del examen</span><b>Semanas 1-6</b></div>' +
     '<div class="kv"><span>Rinología · 20 %</span><b>Semanas 7-10</b></div>' +
-    '<div class="kv"><span>Faringe · 7 %</span><b>Semanas 11-12</b></div>' +
-    '<div class="kv"><span>Otología · 45 %</span><b>Semanas 13-21</b></div>' +
+    '<div class="kv"><span>Otología · 45 %</span><b>Semanas 11-19</b></div>' +
+    '<div class="kv"><span>Faringe · 7 %</span><b>Semanas 20-21</b></div>' +
     '<div class="kv"><span>Parte general · 15 preguntas</span><b>Semanas 22-24</b></div>' +
     '<div class="kv"><span>Repaso y simulacros</span><b>Semanas 25-26</b></div></div>';
   D.plan.forEach(function(w, wi){
@@ -473,8 +473,10 @@ function vStats(){
   }
 
   out += '<div class="card"><h2>Ajustes</h2>' +
-    '<h3>Fecha de inicio del plan (un lunes)</h3><input type="date" id="st" value="' + S.start + '">' +
-    '<div class="btn-row"><button id="setSt">Guardar fecha</button></div>' +
+    '<h3>Fecha de inicio del plan</h3><p class="muted" style="margin-top:0">Puedes elegir cualquier día — no hace falta que sea lunes. ' +
+    'Ese día será tu "día 1" (Tema 1) y a partir de ahí el plan sigue su ciclo de 6 días de estudio + 1 libre.</p>' +
+    '<input type="date" id="st" value="' + S.start + '">' +
+    '<div class="btn-row"><button id="setSt">Guardar fecha</button><button id="stToday">Empezar hoy</button></div>' +
     '<h3>Datos</h3><div class="btn-row"><button id="rs">Reiniciar progreso</button></div>' +
     '<div class="warn">Todo se guarda solo en este dispositivo (localStorage). ' +
     'El temario procede de la convocatoria publicada en el BOC nº 7 de 11-I-2023; si la nueva convocatoria ' +
@@ -482,7 +484,10 @@ function vStats(){
   app.innerHTML = out;
   document.getElementById("setSt").onclick = function(){
     var v = document.getElementById("st").value;
-    if(v){ S.start = mondayOf(parseISO(v)); save(); alert("Plan recalculado desde el lunes " + S.start); render(); }
+    if(v){ S.start = v; save(); alert("Plan recalculado desde el " + fdate(parseISO(v))); render(); }
+  };
+  document.getElementById("stToday").onclick = function(){
+    S.start = iso(today()); save(); alert("Día 1 fijado en hoy, " + fdate(today())); render();
   };
   document.getElementById("rs").onclick = function(){
     if(confirm("¿Borrar el progreso, las estadísticas y el historial?")){
