@@ -189,16 +189,18 @@ footer a{color:var(--muted)}
       <input type="range" id="snot" min="0" max="110" step="1" value="30">
       <div class="scale"><span>≤20</span><span>&gt;20–50 · ≥40 EPOS bio</span><span>&gt;50</span></div>
     </div>
-    <label class="tog field" id="facialTog" data-key="facial">
-      <span class="flab"><span>Dolor / presión facial <span class="hint">síntoma EPOS · dominio de control</span></span></span>
-      <span class="switch"></span>
-    </label>
+    <div class="field">
+      <div class="flab"><span>Dolor / presión facial <span class="hint">EVA 0–10 · síntoma EPOS · dominio de control</span></span><span class="fval"><span id="facialV">0.0</span></span></div>
+      <input type="range" id="facial" min="0" max="10" step="0.5" value="0">
+      <div class="scale"><span>Ausente 0</span><span>Moderado &gt;3–7</span><span>Intenso &gt;7</span></div>
+    </div>
+    <div class="field">
+      <div class="flab"><span>Rinorrea / goteo posterior <span class="hint">EVA 0–10 · anterior o posterior — dominio de control EPOS</span></span><span class="fval"><span id="rhinoV">0.0</span></span></div>
+      <input type="range" id="rhino" min="0" max="10" step="0.5" value="0">
+      <div class="scale"><span>Ausente 0</span><span>Moderada &gt;3–7</span><span>Intensa &gt;7</span></div>
+    </div>
     <label class="tog field" id="sleepTog" data-key="sleep">
       <span class="flab"><span>Alteración del sueño o fatiga <span class="hint">dominio de control EPOS 2020</span></span></span>
-      <span class="switch"></span>
-    </label>
-    <label class="tog field" id="rhinoTog" data-key="rhino">
-      <span class="flab"><span>Rinorrea / goteo posterior <span class="hint">mucopurulenta la mayoría de días — dominio de control EPOS</span></span></span>
       <span class="switch"></span>
     </label>
   </div>
@@ -281,6 +283,10 @@ footer a{color:var(--muted)}
     </label>
     <label class="tog field" id="adherTog" data-key="adher">
       <span class="flab"><span>Buen cumplimiento / técnica correcta <span class="hint">adherencia y aplicación adecuadas del tratamiento tópico</span></span></span>
+      <span class="switch"></span>
+    </label>
+    <label class="tog field" id="mechanicTog" data-key="mechanic">
+      <span class="flab"><span>El tópico no penetra por obstrucción polipoidea <span class="hint">la poliposis ocupa la fosa e impide el paso del spray/lavado — barrera mecánica, no incumplimiento (típico con NPS alto)</span></span></span>
       <span class="switch"></span>
     </label>
     <div class="field">
@@ -426,12 +432,12 @@ footer a{color:var(--muted)}
 "use strict";
 const S = {
   eva:5, congest:5, olf:5, snot:30, pol:2, co:0,
-  cin:false, rinse:false, adher:false,
+  cin:false, rinse:false, adher:false, mechanic:false,
   bilat:false, cens:0, contraQx:false, recidiva:0,
   loem:0, lm:0, reman:false,
   t2:false, asma:false, erea:false, allergy:false,
-  facial:false, sleep:false,
-  eosBlood:0, eosTissue:0, ige:0, olfTest:0, endoDx:false, rhino:false
+  facial:0, rhino:0, sleep:false,
+  eosBlood:0, eosTissue:0, ige:0, olfTest:0, endoDx:false
 };
 
 /* Control POLINA (Tabla 10.1): la tabla define SEIS criterios. Esta app puntúa los cinco
@@ -463,7 +469,7 @@ function setRange(id, key){
   const out = document.getElementById(key+"V");
   const upd = ()=>{
     S[key] = parseFloat(el.value);
-    out.textContent = (id==="eva"||id==="congest"||id==="olf") ? S[key].toFixed(1) : S[key];
+    out.textContent = (id==="eva"||id==="congest"||id==="olf"||id==="facial"||id==="rhino") ? S[key].toFixed(1) : S[key];
     el.style.setProperty("--p",(el.value-el.min)/(el.max-el.min)*100+"%");
     render();
   };
@@ -471,6 +477,7 @@ function setRange(id, key){
 }
 setRange("eva","eva"); setRange("congest","congest"); setRange("olf","olf"); setRange("snot","snot"); setRange("pol","pol"); setRange("lm","lm");
 setRange("eosBlood","eosBlood"); setRange("eosTissue","eosTissue"); setRange("ige","ige");
+setRange("facial","facial"); setRange("rhino","rhino");
 
 const olfTestSeg=document.getElementById("olfTestSeg");
 olfTestSeg.addEventListener("click",e=>{
@@ -644,7 +651,7 @@ function biologics(){
 function eposDx(){
   return [
     {ok:true,             t:"Obstrucción/congestión o rinorrea (cardinal)", s:"obstrucción/congestión EVA "+S.congest.toFixed(1)+" · ≥1 síntoma cardinal — asumido en RSCcPN"},
-    {ok:S.facial,         t:"Dolor / presión facial", s:"síntoma accesorio EPOS"},
+    {ok:S.facial>0,       t:"Dolor / presión facial", s:"síntoma accesorio EPOS · EVA "+S.facial.toFixed(1)},
     {ok:S.olf>0,          t:"Reducción / pérdida de olfato", s:"EVA olfato "+S.olf.toFixed(1)},
     {ok:true,             t:"Duración ≥12 semanas", s:"criterio de cronicidad"},
     {ok:(S.pol>0)||S.bilat||(S.lm>0)||S.endoDx, t:"Signo objetivo: endoscopia y/o TC", s:"pólipos en meato medio, mucosa enferma o cambios en complejo osteomeatal (TC Lund-Mackay "+S.lm+"/24)"}
@@ -690,8 +697,8 @@ function eposControl(){
   const smellOn = S.olfTest>=2 || (S.olfTest===0 && S.olf>5);
   const flags = [
     {on:S.congest>5,         t:"obstrucción / congestión nasal (VAS>5)"},
-    {on:S.rhino,             t:"rinorrea / goteo posnasal"},
-    {on:S.facial,            t:"dolor / presión facial"},
+    {on:S.rhino>5,           t:"rinorrea / goteo posnasal (VAS>5)"},
+    {on:S.facial>5,          t:"dolor / presión facial (VAS>5)"},
     {on:smellOn,             t:"alteración del olfato"},
     {on:S.sleep,             t:"alteración del sueño o fatiga"},
     {on:(S.pol>0)||S.endoDx, t:"endoscopia: pólipos / secreción / mucosa inflamada"},
@@ -824,6 +831,28 @@ function ladder(ctrl, bio){
   // escalar a cirugía o biológico). POLINA/EPOS definen la refractariedad SOBRE un tratamiento
   // médico adecuado y bien cumplido — no sobre enfermedad infratratada. Prioriza esta vía
   // incluso si formalmente ya se cumplieran criterios de biológico.
+  // Barrera mecánica: la poliposis ocupa completamente la fosa y el spray/lavado no
+  // penetra. Esto NO es incumplimiento —el paciente no puede aplicar un tratamiento que
+  // no entra— y no debe leerse como adherencia deficiente. Se intercepta aquí, antes del
+  // mensaje genérico de "optimizar/reforzar adherencia", con una vía propia: tanda de
+  // corticoide oral para reducir la carga polipoidea y reabrir la fosa, reinstaurar el
+  // tópico en cuanto sea posible, y valorar CENS si no cede. Si el paciente YA cumple
+  // criterios de biológico (p.ej. tras CENS previa con recidiva voluminosa), no se
+  // suprime esa conclusión: se combina con el puente de corticoide oral.
+  if(!optimal && S.mechanic){
+    if(bio.eligible){
+      return {step:"Escalón 4 — Tratamiento biológico (con tanda de corticoide oral puente)",cls:"red",
+        meds:[co,...bioMeds],
+        note:"El tratamiento tópico <b>no penetra por obstrucción polipoidea completa de la fosa</b> — barrera mecánica, no incumplimiento. El paciente ya cumple criterios de biológico. Pauta corticoide oral corto como puente para reducir el volumen y facilitar la exploración/tratamiento, e inicie el biológico sin esperar a reinstaurar el tópico."};
+    }
+    return {step:"Escalón 1–2 — Corticoide oral para reducir la poliposis y reabrir la fosa",cls:"amber",
+      meds:[co,
+        {h:"Reinstaurar corticoide intranasal y lavados",t:" — en cuanto la fosa lo permita tras el corticoide oral"},
+        {h:"Valorar CENS",t:" — si la obstrucción no cede con corticoide oral, la cirugía es la vía para permitir de nuevo el tratamiento tópico"}
+      ],
+      note:"El tratamiento tópico <b>no penetra por obstrucción polipoidea completa de la fosa</b> (poliposis muy voluminosa) — es una <b>barrera mecánica, no un incumplimiento</b>. No corresponde \"reforzar adherencia\": el spray/lavado no puede llegar a la mucosa. Indicado: tanda corta de corticoide oral para reducir el volumen y reabrir la vía; valorar CENS si no cede. Reinstaure CIN + lavados en cuanto sea posible y reevalúe el escalón según control."};
+  }
+
   if(!optimal){
     const miss=[];
     if(!S.cin)   miss.push({h:"Instaurar corticoide intranasal",t:" — mometasona o fluticasona furoato, 2 pulv./fosa/día (base imprescindible)"});
@@ -928,6 +957,8 @@ function render(){
   const optGaps=[!S.cin?"falta corticoide intranasal":null,!S.rinse?"faltan lavados salinos diarios":null,!S.adher?"cumplimiento/técnica no óptimos":null].filter(Boolean);
   document.getElementById("optNote").innerHTML = optimalMed
     ? "<b style=\"color:var(--green)\">Tratamiento médico de base óptimo</b> — corticoide intranasal + lavados diarios con buena adherencia. El grado de control es interpretable como respuesta real al tratamiento."
+    : S.mechanic
+    ? "<b style=\"color:var(--amber)\">Tratamiento médico de base NO optimizado — barrera mecánica, no incumplimiento</b> — la poliposis ocupa la fosa e impide el paso del spray/lavado ("+optGaps.join(", ")+"). No es un problema de adherencia: el tópico no puede administrarse. Pauta de corticoide oral para reducir el volumen y reabrir la vía; valore CENS si no cede."
     : "<b style=\"color:var(--amber)\">Tratamiento médico de base NO optimizado</b> — "+optGaps.join(", ")+". La falta de control sobre un tratamiento incompleto o mal cumplido no equivale a enfermedad refractaria: optimícelo y reevalúe antes de indicar cirugía o biológico.";
 
   // Peso de la alergia concomitante (modificador pronóstico y de tratamiento, no criterio)
