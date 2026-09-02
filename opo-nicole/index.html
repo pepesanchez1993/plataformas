@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>OPO NICOLE · ORL</title>
+<meta name="theme-color" content="#16140f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="OPO NICOLE">
+<style>
+:root{
+  --bg:#16140f; --panel:#211e18; --panel2:#2a261e; --ink:#f3ece0; --muted:#a89f8d;
+  --line:#332e25; --red:#c0392b; --green:#2e8b57; --gold:#b8893b; --blue:#4a7ba8;
+  --oto:#b8893b; --lar:#8a7bd8; --rino:#4a9e8f; --far:#c0725b; --gen:#7d8a99;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+  font-size:16px;line-height:1.5;padding-bottom:78px}
+header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg,#16140f 82%,rgba(22,20,15,0));
+  padding:14px 16px 10px;border-bottom:1px solid var(--line)}
+header h1{margin:0;font-size:19px;letter-spacing:.09em;text-transform:uppercase}
+header p{margin:2px 0 0;font-size:12px;color:var(--muted);letter-spacing:.04em}
+main{padding:14px 14px 20px;max-width:820px;margin:0 auto}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 12px}
+.card h2{margin:0 0 8px;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--gold)}
+.card h3{margin:14px 0 6px;font-size:14px;color:var(--muted);letter-spacing:.04em}
+.muted{color:var(--muted);font-size:13px}
+.tag{display:inline-block;font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;
+  padding:2px 7px;border-radius:99px;border:1px solid var(--line);color:var(--muted);vertical-align:middle}
+.tag.OTO{color:var(--oto);border-color:var(--oto)} .tag.LAR{color:var(--lar);border-color:var(--lar)}
+.tag.RINO{color:var(--rino);border-color:var(--rino)} .tag.FAR{color:var(--far);border-color:var(--far)}
+.tag.GEN{color:var(--gen);border-color:var(--gen)} .tag.REP{color:var(--gold);border-color:var(--gold)}
+button{font-family:inherit;font-size:15px;color:var(--ink);background:var(--panel2);
+  border:1px solid var(--line);border-radius:10px;padding:11px 14px;cursor:pointer}
+button:active{transform:scale(.985)}
+.btn-main{background:var(--gold);color:#1a1710;border-color:var(--gold);font-weight:700;letter-spacing:.03em}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.btn-row button{flex:1 1 auto;min-width:120px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.day{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.day:first-child{border-top:0}
+.day .chk{flex:0 0 26px;height:26px;border-radius:8px;border:1px solid var(--line);
+  background:var(--panel2);display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;margin-top:1px}
+.day .chk.on{background:var(--green);border-color:var(--green);color:#fff}
+.day .dd{flex:0 0 20px;color:var(--muted);font-size:12px;letter-spacing:.06em;margin-top:5px}
+.day .tx{flex:1;font-size:14.5px}
+.day.today{background:rgba(184,137,59,.08);border-radius:8px;padding-left:6px;padding-right:6px}
+.wk{border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--panel);overflow:hidden}
+.wk > .hd{display:flex;align-items:center;gap:9px;padding:11px 12px;cursor:pointer}
+.wk > .hd .n{font-size:12px;color:var(--muted);letter-spacing:.06em;flex:0 0 auto}
+.wk > .hd .t{flex:1;font-size:14.5px}
+.wk > .bd{padding:0 12px 10px;display:none}
+.wk.open > .bd{display:block}
+.bar{height:7px;border-radius:99px;background:var(--panel2);overflow:hidden;margin-top:5px}
+.bar > i{display:block;height:100%;background:var(--gold)}
+.opt{display:block;width:100%;text-align:left;margin:7px 0;padding:11px 12px;font-size:15px;line-height:1.4}
+.opt.ok{background:rgba(46,139,87,.22);border-color:var(--green)}
+.opt.ko{background:rgba(192,57,43,.22);border-color:var(--red)}
+.opt b{color:var(--gold);margin-right:6px}
+.expl{margin-top:10px;padding:11px 12px;border-left:3px solid var(--gold);background:var(--panel2);
+  border-radius:0 10px 10px 0;font-size:14px}
+nav{position:fixed;bottom:0;left:0;right:0;z-index:30;display:flex;background:var(--panel);
+  border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;border:0;border-radius:0;background:none;padding:9px 2px 10px;font-size:10.5px;
+  letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+nav button .ic{display:block;font-size:19px;margin-bottom:1px}
+nav button.on{color:var(--gold)}
+select,input[type=date]{font-family:inherit;font-size:15px;color:var(--ink);background:var(--panel2);
+  border:1px solid var(--line);border-radius:10px;padding:10px;width:100%}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+td{padding:5px 0;border-top:1px solid var(--line);vertical-align:middle}
+td:first-child{width:52px;color:var(--muted);font-size:12px}
+td:last-child{width:64px;text-align:right;color:var(--muted);font-size:12px}
+.warn{font-size:12.5px;color:var(--muted);border:1px dashed var(--line);border-radius:10px;padding:10px;margin-top:10px}
+.big{font-size:30px;letter-spacing:.02em}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-top:1px solid var(--line);font-size:14px}
+.kv:first-child{border-top:0}
+.prog{position:sticky;top:0;background:var(--panel);border:1px solid var(--line);border-radius:12px;
+  padding:9px 12px;margin-bottom:10px;font-size:13px;color:var(--muted);z-index:5}
+</style>
+</head>
+<body>
+<header>
+  <h1>OPO Nicole</h1>
+  <p id="sub">Otorrinolaringología · OPE Servicio Cántabro de Salud</p>
+</header>
+<main id="app"></main>
+<nav>
+  <button data-v="hoy" class="on"><span class="ic">📅</span>Hoy</button>
+  <button data-v="plan"><span class="ic">🗺️</span>Plan</button>
+  <button data-v="test"><span class="ic">✅</span>Test</button>
+  <button data-v="stats"><span class="ic">📊</span>Datos</button>
+  <button data-v="temario"><span class="ic">📚</span>Temario</button>
+</nav>
+<script src="data.js"></script>
+<script>
+(function(){
+"use strict";
+var D = window.ORL, KEY = "oponicole.orl.v1";
+var BN = {OTO:"Otología", LAR:"Laringe", RINO:"Rinología", FAR:"Faringe", GEN:"Parte general", REP:"Repaso"};
+var DN = {L:"Lun", M:"Mar", X:"Mié", J:"Jue", V:"Vie", S:"Sáb"};
+var TT = {}; D.temario.forEach(function(t){ TT[t.id] = t; });
+
+/* ---------- estado ---------- */
+var S;
+function load(){
+  try { S = JSON.parse(localStorage.getItem(KEY)) || null; } catch(e){ S = null; }
+  if(!S) S = {};
+  if(!S.start) S.start = mondayOf(new Date());
+  if(!S.done) S.done = {};
+  if(!S.qs) S.qs = {};
+  if(!S.hist) S.hist = [];
+}
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
+function mondayOf(d){
+  var x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  var w = (x.getDay() + 6) % 7;
+  x.setDate(x.getDate() - w);
+  return iso(x);
+}
+function iso(d){
+  return d.getFullYear() + "-" + String(d.getMonth()+1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
+}
+function parseISO(s){ var p = s.split("-"); return new Date(+p[0], +p[1]-1, +p[2]); }
+function today(){ var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate()); }
+function pos(){
+  var diff = Math.floor((today() - parseISO(S.start)) / 86400000);
+  if(diff < 0) return {w:0, dow:-1, pre:true};
+  var w = Math.floor(diff/7), dow = diff % 7;
+  return {w:w, dow:dow, pre:false};
+}
+function dateOf(w, di){
+  var d = parseISO(S.start); d.setDate(d.getDate() + w*7 + di);
+  return d;
+}
+function fdate(d){
+  return d.toLocaleDateString("es-ES", {weekday:"long", day:"numeric", month:"long"});
+}
+
+/* ---------- preguntas ---------- */
+function qsFor(tags){
+  if(!tags || !tags.length) return D.q.slice();
+  var set = {};
+  tags.forEach(function(t){ set[t] = 1; });
+  if(set.ALL) return D.q.slice();
+  if(set.OPE22) return D.q.filter(function(q){ return q.s === "ope22"; })
+                          .sort(function(a,b){ return a.n - b.n; });
+  return D.q.filter(function(q){ return set[q.t] || set[q.b]; });
+}
+function shuffle(a){
+  a = a.slice();
+  for(var i=a.length-1;i>0;i--){ var j = Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function stat(id){ return S.qs[id] || {ok:0, ko:0}; }
+function falladas(){
+  return D.q.filter(function(q){ var s = stat(q.id); return s.ko > 0 && s.ko >= s.ok; });
+}
+
+/* ---------- render helpers ---------- */
+var app = document.getElementById("app"), view = "hoy";
+function h(s){ return String(s).replace(/[&<>"]/g, function(c){
+  return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function el(html){ var d = document.createElement("div"); d.innerHTML = html; return d.firstElementChild; }
+
+document.querySelectorAll("nav button").forEach(function(b){
+  b.onclick = function(){
+    document.querySelectorAll("nav button").forEach(function(x){ x.classList.remove("on"); });
+    b.classList.add("on"); view = b.dataset.v; test = null; render();
+  };
+});
+
+/* ---------- vista HOY ---------- */
+function vHoy(){
+  var p = pos(), out = "";
+  if(p.pre){
+    out += '<div class="card"><h2>Aún no ha empezado</h2><p class="muted">El plan arranca el ' +
+      h(fdate(parseISO(S.start))) + '. Puedes cambiar la fecha de inicio en Datos.</p></div>';
+    app.innerHTML = out; return;
+  }
+  if(p.w >= D.plan.length){
+    out += '<div class="card"><h2>Plan completado</h2><p class="muted">Has recorrido las 26 semanas. ' +
+      'Sigue con simulacros y repaso de falladas.</p>' +
+      '<div class="btn-row"><button class="btn-main" data-go="fall">Repasar falladas</button>' +
+      '<button data-go="sim">Simulacro aleatorio</button></div></div>';
+    app.innerHTML = out; bindGo(); return;
+  }
+  var wk = D.plan[p.w];
+  if(p.dow === 6){
+    out += '<div class="card"><h2>Domingo · descanso</h2>' +
+      '<p class="muted">Día libre por diseño del plan. Si quieres algo ligero, 10 preguntas de repaso y nada más.</p>' +
+      '<div class="btn-row"><button data-go="fall">Repaso de falladas</button></div></div>';
+  } else {
+    var dd = wk.d[p.dow], key = p.w + "-" + p.dow, done = !!S.done[key];
+    out += '<div class="card"><h2>' + h(fdate(today())) + '</h2>' +
+      '<p class="muted">Semana ' + wk.n + ' de 26 · <span class="tag ' + wk.b + '">' + h(BN[wk.b]) + '</span> · ' + h(wk.tit) + '</p>' +
+      '<h3>Sesión de hoy (1-2 h)</h3><p style="font-size:16px;margin:0 0 4px">' + h(dd.t) + '</p>' +
+      '<div class="btn-row">' +
+      '<button class="btn-main" data-go="dtest" data-tags="' + h(dd.q.join(",")) + '">Test de hoy (15 preguntas)</button>' +
+      '<button data-done="' + key + '">' + (done ? "✓ Hecho" : "Marcar hecho") + '</button></div></div>';
+    out += '<div class="card"><h2>Resto de la semana</h2>';
+    wk.d.forEach(function(x, i){
+      var k = p.w + "-" + i;
+      out += '<div class="day' + (i === p.dow ? " today" : "") + '">' +
+        '<div class="chk' + (S.done[k] ? " on" : "") + '" data-done="' + k + '">' + (S.done[k] ? "✓" : "") + '</div>' +
+        '<div class="dd">' + DN[x.x] + '</div><div class="tx">' + h(x.t) + '</div></div>';
+    });
+    out += '<div class="day"><div class="chk" style="opacity:.35"></div><div class="dd">Dom</div>' +
+      '<div class="tx muted">Descanso</div></div></div>';
+  }
+  var tot = 0, dn = 0;
+  D.plan.forEach(function(w, wi){ w.d.forEach(function(x, i){ tot++; if(S.done[wi + "-" + i]) dn++; }); });
+  out += '<div class="card"><h2>Avance del plan</h2>' +
+    '<div class="kv"><span>Sesiones completadas</span><b>' + dn + " / " + tot + '</b></div>' +
+    '<div class="bar"><i style="width:' + (tot ? (dn*100/tot).toFixed(1) : 0) + '%"></i></div></div>';
+  app.innerHTML = out;
+  bindDone(); bindGo();
+}
+function bindDone(){
+  app.querySelectorAll("[data-done]").forEach(function(b){
+    b.onclick = function(){
+      var k = b.dataset.done;
+      if(S.done[k]) delete S.done[k]; else S.done[k] = 1;
+      save(); render();
+    };
+  });
+}
+function bindGo(){
+  app.querySelectorAll("[data-go]").forEach(function(b){
+    b.onclick = function(){
+      var g = b.dataset.go;
+      if(g === "fall"){ startTest(shuffle(falladas()).slice(0,20), "Repaso de falladas"); }
+      else if(g === "sim"){ startTest(simAleatorio(), "Simulacro aleatorio (110)"); }
+      else if(g === "dtest"){
+        var tags = b.dataset.tags.split(",");
+        startTest(shuffle(qsFor(tags)).slice(0,15), "Test de la sesión");
+      }
+    };
+  });
+}
+
+/* ---------- vista PLAN ---------- */
+function vPlan(){
+  var p = pos(), out = "";
+  out += '<div class="card"><h2>Plan de 26 semanas</h2><p class="muted">' +
+    'Seis días de estudio y domingo libre. El orden va del bloque que más pesa y menos dominas ' +
+    'hacia la otología (que ya llevas trabajada) y deja la parte general para el final.</p>' +
+    '<div class="kv"><span>Laringe · 27 % del examen</span><b>Semanas 1-6</b></div>' +
+    '<div class="kv"><span>Rinología · 20 %</span><b>Semanas 7-10</b></div>' +
+    '<div class="kv"><span>Faringe · 7 %</span><b>Semanas 11-12</b></div>' +
+    '<div class="kv"><span>Otología · 45 %</span><b>Semanas 13-21</b></div>' +
+    '<div class="kv"><span>Parte general · 15 preguntas</span><b>Semanas 22-24</b></div>' +
+    '<div class="kv"><span>Repaso y simulacros</span><b>Semanas 25-26</b></div></div>';
+  D.plan.forEach(function(w, wi){
+    var dn = 0; w.d.forEach(function(x, i){ if(S.done[wi + "-" + i]) dn++; });
+    var open = (wi === p.w);
+    out += '<div class="wk' + (open ? " open" : "") + '" data-wk="' + wi + '">' +
+      '<div class="hd"><span class="n">S' + w.n + '</span><span class="t">' + h(w.tit) + '</span>' +
+      '<span class="tag ' + w.b + '">' + h(BN[w.b]) + '</span><span class="n">' + dn + '/6</span></div>' +
+      '<div class="bd">' +
+      '<p class="muted" style="margin:2px 0 8px">Del ' + h(fdate(dateOf(wi,0))) + ' al ' + h(fdate(dateOf(wi,5))) + '</p>';
+    w.d.forEach(function(x, i){
+      var k = wi + "-" + i;
+      out += '<div class="day"><div class="chk' + (S.done[k] ? " on" : "") + '" data-done="' + k + '">' +
+        (S.done[k] ? "✓" : "") + '</div><div class="dd">' + DN[x.x] + '</div>' +
+        '<div class="tx">' + h(x.t) +
+        '<div class="btn-row"><button data-go="dtest" data-tags="' + h(x.q.join(",")) +
+        '" style="font-size:12.5px;padding:6px 10px;min-width:0">Test de este día</button></div></div></div>';
+    });
+    out += '</div></div>';
+  });
+  app.innerHTML = out;
+  app.querySelectorAll(".wk > .hd").forEach(function(hd){
+    hd.onclick = function(){ hd.parentNode.classList.toggle("open"); };
+  });
+  bindDone(); bindGo();
+}
+
+/* ---------- vista TEMARIO ---------- */
+function vTemario(){
+  var out = '<div class="card"><h2>Temario oficial</h2>' +
+    '<p class="muted">Anexo I de la Orden SAN/62/2022 (BOC nº 7, 11-I-2023), categoría FEA de Otorrinolaringología. ' +
+    'El número entre paréntesis son las preguntas disponibles de cada tema en esta app.</p></div>';
+  ["GEN","OTO","RINO","FAR","LAR"].forEach(function(b){
+    out += '<div class="card"><h2>' + h(BN[b]) + '</h2>';
+    D.temario.filter(function(t){ return t.b === b; }).forEach(function(t){
+      var n = D.q.filter(function(q){ return q.t === t.id; }).length;
+      var ofi = D.q.filter(function(q){ return q.t === t.id && q.s === "ope22"; }).length;
+      out += '<div class="day"><div class="dd" style="flex:0 0 40px">' + h(t.id) + '</div>' +
+        '<div class="tx">' + h(t.t) +
+        '<div class="muted" style="font-size:12px">' + n + ' preguntas · ' + ofi + ' del examen de 2022' +
+        '</div><div class="btn-row"><button data-go="dtest" data-tags="' + h(t.id) +
+        '" style="font-size:12.5px;padding:6px 10px;min-width:0">Test del tema</button></div></div></div>';
+    });
+    out += '</div>';
+  });
+  app.innerHTML = out; bindGo();
+}
+
+/* ---------- vista TEST ---------- */
+function simAleatorio(){
+  var cupo = {OTO:43, LAR:26, RINO:19, GEN:15, FAR:7}, res = [];
+  Object.keys(cupo).forEach(function(b){
+    res = res.concat(shuffle(D.q.filter(function(q){ return q.b === b; })).slice(0, cupo[b]));
+  });
+  return shuffle(res);
+}
+function vTestMenu(){
+  var f = falladas().length;
+  var out = '<div class="card"><h2>Practicar</h2>' +
+    '<p class="muted">' + D.q.length + ' preguntas: 110 del examen oficial de 2022 y ' +
+    (D.q.length - 110) + ' propias para cubrir los temas que no cayeron.</p>' +
+    '<h3>Por bloque</h3><div class="grid">';
+  ["OTO","LAR","RINO","FAR","GEN"].forEach(function(b){
+    out += '<button data-t="' + b + '">' + h(BN[b]) + ' <span class="muted">(' +
+      D.q.filter(function(q){ return q.b === b; }).length + ')</span></button>';
+  });
+  out += '</div><h3>Por tema</h3><select id="selT"><option value="">Elige un tema…</option>';
+  D.temario.forEach(function(t){
+    out += '<option value="' + t.id + '">' + h(t.id + " · " + t.t.slice(0,60)) + '</option>';
+  });
+  out += '</select><div class="btn-row"><button id="goT">Empezar test del tema</button></div>' +
+    '<h3>Simulacros</h3><div class="btn-row">' +
+    '<button class="btn-main" data-t="OPE22">Examen oficial OPE 2022 (110)</button>' +
+    '<button data-go="sim">Simulacro aleatorio (110)</button></div>' +
+    '<h3>Repaso</h3><div class="btn-row">' +
+    '<button data-go="fall">Falladas (' + f + ')</button>' +
+    '<button data-t="ALL">Aleatorio de todo</button></div>' +
+    '<div class="warn">Las respuestas de las 110 preguntas oficiales son una clave propuesta, no la plantilla ' +
+    'oficial (el BOC no la publicó junto al cuadernillo). Cinco preguntas están marcadas como discutibles.</div>' +
+    '</div>';
+  app.innerHTML = out;
+  app.querySelectorAll("[data-t]").forEach(function(b){
+    b.onclick = function(){
+      var t = b.dataset.t;
+      if(t === "OPE22") startTest(qsFor(["OPE22"]), "Examen oficial OPE 2022");
+      else if(t === "ALL") startTest(shuffle(D.q).slice(0,40), "Test aleatorio");
+      else startTest(shuffle(qsFor([t])).slice(0,30), BN[t]);
+    };
+  });
+  document.getElementById("goT").onclick = function(){
+    var v = document.getElementById("selT").value;
+    if(v) startTest(shuffle(qsFor([v])), TT[v] ? (v + " · " + TT[v].t) : v);
+  };
+  bindGo();
+}
+
+var test = null;
+function startTest(list, name){
+  if(!list.length){ alert("No hay preguntas para esa selección."); return; }
+  test = {l:list, i:0, ok:0, ko:0, name:name, ans:null, wrong:[]};
+  view = "test"; render();
+}
+function vTest(){
+  var t = test, q = t.l[t.i];
+  var out = '<div class="prog">' + h(t.name) + ' · ' + (t.i+1) + " / " + t.l.length +
+    ' · <span style="color:var(--green)">' + t.ok + '</span> / <span style="color:var(--red)">' + t.ko + '</span>' +
+    '<div class="bar"><i style="width:' + ((t.i)*100/t.l.length).toFixed(1) + '%"></i></div></div>';
+  out += '<div class="card"><p class="muted" style="margin:0 0 6px">' +
+    '<span class="tag ' + q.b + '">' + h(q.t) + '</span> ' +
+    (q.s === "ope22" ? '<span class="tag">OPE 2022 · nº ' + q.n + '</span>' : '<span class="tag">Propia</span>') +
+    (q.d ? ' <span class="tag" style="color:var(--red);border-color:var(--red)">Discutible</span>' : '') + '</p>' +
+    '<p style="font-size:16.5px;margin:0 0 10px">' + h(q.q) + '</p><div id="opts">';
+  ["A","B","C","D"].forEach(function(L, i){
+    out += '<button class="opt" data-o="' + L + '"><b>' + L + '</b>' + h(q.o[i]) + '</button>';
+  });
+  out += '</div><div id="fb"></div></div>';
+  app.innerHTML = out;
+  app.querySelectorAll(".opt").forEach(function(b){
+    b.onclick = function(){ answer(b.dataset.o); };
+  });
+}
+function answer(L){
+  var t = test, q = t.l[t.i], good = (L === q.r);
+  var st = S.qs[q.id] || {ok:0, ko:0};
+  if(good){ t.ok++; st.ok++; } else { t.ko++; st.ko++; t.wrong.push(q); }
+  st.last = Date.now(); S.qs[q.id] = st; save();
+  app.querySelectorAll(".opt").forEach(function(b){
+    b.disabled = true;
+    if(b.dataset.o === q.r) b.classList.add("ok");
+    else if(b.dataset.o === L) b.classList.add("ko");
+  });
+  var fb = document.getElementById("fb");
+  fb.innerHTML = '<div class="expl"><b style="color:' + (good ? "var(--green)" : "var(--red)") + '">' +
+    (good ? "Correcta" : "Incorrecta · la respuesta es " + q.r) + '.</b> ' + h(q.e) +
+    (q.d ? ' <i style="color:var(--muted)">(pregunta con respuesta discutible: contrástala en el manual)</i>' : '') +
+    '</div><div class="btn-row"><button class="btn-main" id="next">' +
+    (t.i + 1 < t.l.length ? "Siguiente" : "Ver resultado") + '</button>' +
+    '<button id="quit">Salir</button></div>';
+  document.getElementById("next").onclick = function(){
+    t.i++;
+    if(t.i >= t.l.length) endTest(); else { render(); window.scrollTo(0,0); }
+  };
+  document.getElementById("quit").onclick = function(){ test = null; view = "test"; render(); };
+  fb.scrollIntoView({behavior:"smooth", block:"nearest"});
+}
+function endTest(){
+  var t = test, pct = Math.round(t.ok*100/t.l.length);
+  S.hist.unshift({ts:Date.now(), n:t.name, ok:t.ok, tot:t.l.length});
+  S.hist = S.hist.slice(0,40); save();
+  var out = '<div class="card"><h2>Resultado</h2>' +
+    '<p class="big" style="margin:4px 0">' + t.ok + " / " + t.l.length + ' <span class="muted" style="font-size:16px">(' + pct + '%)</span></p>' +
+    '<div class="bar"><i style="width:' + pct + '%;background:' + (pct >= 50 ? "var(--green)" : "var(--red)") + '"></i></div>' +
+    '<p class="muted" style="margin-top:10px">' + h(t.name) + '</p>' +
+    '<div class="btn-row"><button class="btn-main" id="rep">Repasar los ' + t.wrong.length + ' fallos</button>' +
+    '<button id="back">Volver</button></div></div>';
+  if(t.wrong.length){
+    out += '<div class="card"><h2>Fallos</h2>';
+    t.wrong.forEach(function(q){
+      out += '<div class="day"><div class="dd" style="flex:0 0 42px">' + h(q.t) + '</div><div class="tx">' +
+        h(q.q) + '<div class="expl">Respuesta ' + q.r + '. ' + h(q.e) + '</div></div></div>';
+    });
+    out += '</div>';
+  }
+  app.innerHTML = out;
+  document.getElementById("back").onclick = function(){ test = null; view = "test"; render(); };
+  document.getElementById("rep").onclick = function(){
+    if(t.wrong.length) startTest(shuffle(t.wrong), "Repaso de fallos");
+    else { test = null; view = "test"; render(); }
+  };
+  test = null;
+  window.scrollTo(0,0);
+}
+
+/* ---------- vista STATS ---------- */
+function accum(sel){
+  var ok = 0, ko = 0, vistas = 0;
+  D.q.filter(sel).forEach(function(q){
+    var s = stat(q.id); ok += s.ok; ko += s.ko; if(s.ok || s.ko) vistas++;
+  });
+  return {ok:ok, ko:ko, v:vistas, t:D.q.filter(sel).length};
+}
+function vStats(){
+  var g = accum(function(){ return true; });
+  var out = '<div class="card"><h2>Rendimiento global</h2>' +
+    '<p class="big" style="margin:4px 0">' + (g.ok + g.ko ? Math.round(g.ok*100/(g.ok+g.ko)) : 0) + '%</p>' +
+    '<div class="kv"><span>Respuestas acertadas</span><b>' + g.ok + '</b></div>' +
+    '<div class="kv"><span>Respuestas falladas</span><b>' + g.ko + '</b></div>' +
+    '<div class="kv"><span>Preguntas ya vistas</span><b>' + g.v + " / " + g.t + '</b></div>' +
+    '<div class="kv"><span>Pendientes de repaso</span><b>' + falladas().length + '</b></div></div>';
+
+  out += '<div class="card"><h2>Por bloque</h2><table>';
+  ["OTO","LAR","RINO","FAR","GEN"].forEach(function(b){
+    var a = accum(function(q){ return q.b === b; }), p = a.ok+a.ko ? Math.round(a.ok*100/(a.ok+a.ko)) : 0;
+    out += '<tr><td>' + h(BN[b]) + '</td><td><div class="bar"><i style="width:' + p +
+      '%;background:' + (p >= 60 ? "var(--green)" : p >= 40 ? "var(--gold)" : "var(--red)") + '"></i></div></td>' +
+      '<td>' + (a.ok+a.ko ? p + "%" : "—") + '</td></tr>';
+  });
+  out += '</table></div>';
+
+  out += '<div class="card"><h2>Por tema</h2><table>';
+  D.temario.forEach(function(t){
+    var a = accum(function(q){ return q.t === t.id; });
+    if(!(a.ok + a.ko)) return;
+    var p = Math.round(a.ok*100/(a.ok+a.ko));
+    out += '<tr><td>' + h(t.id) + '</td><td><div class="bar"><i style="width:' + p +
+      '%;background:' + (p >= 60 ? "var(--green)" : p >= 40 ? "var(--gold)" : "var(--red)") + '"></i></div></td>' +
+      '<td>' + p + '%</td></tr>';
+  });
+  out += '</table><p class="muted" style="margin-top:8px">Solo aparecen los temas que ya has practicado.</p></div>';
+
+  if(S.hist.length){
+    out += '<div class="card"><h2>Últimos tests</h2>';
+    S.hist.slice(0,12).forEach(function(x){
+      out += '<div class="kv"><span>' + new Date(x.ts).toLocaleDateString("es-ES") + ' · ' + h(x.n) +
+        '</span><b>' + x.ok + "/" + x.tot + '</b></div>';
+    });
+    out += '</div>';
+  }
+
+  out += '<div class="card"><h2>Ajustes</h2>' +
+    '<h3>Fecha de inicio del plan (un lunes)</h3><input type="date" id="st" value="' + S.start + '">' +
+    '<div class="btn-row"><button id="setSt">Guardar fecha</button></div>' +
+    '<h3>Datos</h3><div class="btn-row"><button id="rs">Reiniciar progreso</button></div>' +
+    '<div class="warn">Todo se guarda solo en este dispositivo (localStorage). ' +
+    'El temario procede de la convocatoria publicada en el BOC nº 7 de 11-I-2023; si la nueva convocatoria ' +
+    'cambia algún tema, habrá que ajustar el plan.</div></div>';
+  app.innerHTML = out;
+  document.getElementById("setSt").onclick = function(){
+    var v = document.getElementById("st").value;
+    if(v){ S.start = mondayOf(parseISO(v)); save(); alert("Plan recalculado desde el lunes " + S.start); render(); }
+  };
+  document.getElementById("rs").onclick = function(){
+    if(confirm("¿Borrar el progreso, las estadísticas y el historial?")){
+      S = {start:S.start, done:{}, qs:{}, hist:[]}; save(); render();
+    }
+  };
+}
+
+/* ---------- router ---------- */
+function render(){
+  if(test){ vTest(); return; }
+  if(view === "hoy") vHoy();
+  else if(view === "plan") vPlan();
+  else if(view === "test") vTestMenu();
+  else if(view === "stats") vStats();
+  else vTemario();
+  if(view !== "test") window.scrollTo(0,0);
+}
+load();
+document.getElementById("sub").textContent =
+  "ORL · OPE Servicio Cántabro de Salud · " + D.q.length + " preguntas";
+render();
+})();
+</script>
+</body>
+</html>
